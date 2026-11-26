@@ -7,17 +7,12 @@ import {
   CurriculumJourney,
 } from "@/components/sections/Curriculum";
 import { AlumniCompanies } from "@/components/sections/AlumniCompanies";
-import { Partners } from "@/components/sections/Partners";
-import { Achievements } from "@/components/sections/Achievements";
 import { Campuses } from "@/components/sections/Campuses";
 import { Leaders } from "@/components/sections/Leaders";
 import { Mentors } from "@/components/sections/Mentors";
-import { Voices } from "@/components/sections/Voices";
-import { Festivals } from "@/components/sections/Festivals";
 import { IITRace } from "@/components/sections/IITRace";
 import { Spotlight } from "@/components/sections/Spotlight";
 import { News } from "@/components/sections/News";
-import { Awards } from "@/components/sections/Awards";
 import { Scholarships } from "@/components/sections/Scholarships";
 import { Admission } from "@/components/sections/Admission";
 import { BrochureBook } from "@/components/sections/BrochureBook";
@@ -46,22 +41,26 @@ export default function Home() {
         </div>
         <Campuses />
         <Curriculum />
-        <Mentors />
         <Legacy />
-        <BestOfBoth />
-        <Partners />
+        <Mentors />
+        <Scholarships />
         <AlumniCompanies />
-        <Achievements />
-        <CurriculumJourney />
-        <Voices />
-        <Festivals />
+        <Admission />
         <IITRace />
         <Spotlight />
         <Leaders />
-        <News />
-        <Awards />
-        <Scholarships />
-        <Admission />
+        {/* dark, after Leaders: these sections keep their own markup and take
+            the dark colour tokens (.theme-dark), with the same film grain as
+            Mentors and Scholarships */}
+        <div className="theme-dark relative bg-canvas">
+          <News />
+          <CurriculumJourney />
+          <div
+            aria-hidden
+            className="scene-grain pointer-events-none absolute inset-0 z-10"
+          />
+        </div>
+        <BestOfBoth />
         <BrochureBook />
         <Testimonials />
         <Social />

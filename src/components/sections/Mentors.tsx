@@ -1,21 +1,23 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
 import { Reveal } from "@/components/motion/Reveal";
 
 /**
  * Mentors: the moving wall from the 3D prologue (components/mentors), under
  * the faculty section's own heading ("Taught by World's Top Tech and Academic
  * Minds") instead of the prologue's big one. Two rows of tall portrait cards drift in opposite
- * directions (pausing on hover), each the faculty poster with the person's
- * company logos at the top and their name and designation at the foot.
- * Names, roles and portraits are the faculty from sot.upgrad.com.
+ * directions (pausing on hover), with the person's company logos at the top
+ * and their name and designation at the foot. Names, roles and portraits are
+ * the faculty from sot.upgrad.com.
  *
- * The background follows the Leaders section's rule: white while the
- * section is coming in, then one timed fade to near-black (with the film
- * grain) once it holds the middle of the screen, and back on the way out.
+ * Each card is pure black like the section, so the card itself disappears
+ * (as on sheryians.com's placement wall): only the light and the person show.
+ * Behind the cut-out portrait, a grey dome of light built of vertical columns
+ * rises from the foot and fades into the black.
+ *
+ * The section is black throughout (no light-to-dark change), running on
+ * into the black Scholarships band below it.
  */
 type Person = { name: string; role: string; img: string };
 
@@ -187,25 +189,76 @@ const SPEED_PX_S = 100;
 /** name sized so it always fits the card on one line */
 const nameSize = (name: string) => Math.min(22, 186 / (name.length * 0.66));
 
+/* ------------------------------------------------ the light behind the person
+   After sheryians.com's placement cards, in grey and black: a dome of light
+   rising from the card's foot, built of side-by-side vertical columns of
+   slightly different heights and shades (a softly jagged, curtain-like top
+   edge), dim grey brightening toward the centre; each column fades out at its
+   top and foot, and a soft vignette fades the whole dome at its sides, so the
+   light merges into the black card and section. */
+const COLS = 17;
+/** deterministic jitter, so every card (and the server render) matches */
+const jitter = (i: number, k: number) => {
+  const v = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453;
+  return v - Math.floor(v);
+};
+const COLUMNS = Array.from({ length: COLS }, (_, i) => {
+  const x = (i / (COLS - 1)) * 2 - 1; // -1 … 1 across the card
+  const centre = Math.sqrt(Math.max(0, 1 - x * x)); // 0 at the edges, 1 in the middle
+  const h = 38 + 40 * centre + (jitter(i, 1) - 0.5) * 10; // % of the card's height
+  const l = Math.round(26 + 34 * centre + (jitter(i, 2) - 0.5) * 12); // grey level, 0–255 scale
+  // rounded, so the server render and the browser's parse match exactly
+  return { h: Math.round(h * 100) / 100, color: `rgb(${l}, ${l}, ${l + 3})` };
+});
+
+function CardGlow() {
+  return (
+    <span
+      aria-hidden
+      className="absolute inset-0 [mask-image:radial-gradient(ellipse_65%_85%_at_50%_70%,#000_45%,transparent_100%)]"
+    >
+      {/* a soft grey bloom behind the columns */}
+      <span className="absolute inset-0 bg-[radial-gradient(ellipse_70%_45%_at_50%_72%,rgba(150,150,158,0.22)_0%,rgba(90,90,96,0.08)_55%,rgba(90,90,96,0)_85%)]" />
+      <span className="absolute inset-0 flex items-end">
+        {COLUMNS.map((c, i) => (
+          <span
+            key={i}
+            className="h-full flex-1"
+            style={{
+              height: `${c.h}%`,
+              backgroundImage: `linear-gradient(transparent 0%, ${c.color} 22%, ${c.color} 62%, transparent 100%)`,
+            }}
+          />
+        ))}
+      </span>
+    </span>
+  );
+}
+
 function MentorCard({ p, hidden }: { p: Person; hidden: boolean }) {
   const logos = COMPANIES[p.img] ?? ["upgradsot"];
   return (
     <li
       aria-hidden={hidden || undefined}
-      className="relative h-[294px] w-[208px] shrink-0 overflow-hidden rounded-[9px] bg-[#121113]"
+      // pure black, the section's own dark, with no edge: the card itself
+      // disappears and only the light and the person show
+      className="relative h-[294px] w-[208px] shrink-0 overflow-hidden rounded-[14px] bg-black"
     >
-      {/* the previous site's faculty poster: dark curtain ground + cut-out portrait */}
+      <CardGlow />
+
+      {/* the cut-out portrait */}
       <Image
-        src={`/mentors/posters/${p.img}.webp`}
+        src={`/images/faculty/${p.img}.png`}
         alt={hidden ? "" : `${p.name}, ${p.role}`}
-        fill
-        sizes="208px"
+        width={500}
+        height={500}
+        sizes="230px"
         loading="eager"
-        className="object-cover object-bottom"
+        className="absolute bottom-0 left-1/2 h-auto w-[110%] max-w-none -translate-x-1/2"
       />
 
-      {/* top: company logos, above the portrait */}
-      <span className="absolute inset-x-0 top-0 flex justify-center bg-gradient-to-b from-[#121113]/85 to-transparent px-3 pb-8 pt-4">
+      {/* top: company logos, on the glass */}
+      <span className="absolute inset-x-0 top-0 flex justify-center px-3 pb-8 pt-4">
         <span className="flex max-w-full flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5">
           {logos.map((k) => {
             const l = LOGOS[k];
@@ -224,7 +277,7 @@ function MentorCard({ p, hidden }: { p: Person; hidden: boolean }) {
       </span>
 
       {/* foot: name on one line + designation */}
-      <span className="absolute inset-x-0 bottom-0 flex flex-col items-center bg-gradient-to-t from-[#121113] via-[#121113]/70 to-transparent px-2.5 pb-3.5 pt-14">
+      <span className="absolute inset-x-0 bottom-0 flex flex-col items-center bg-gradient-to-t from-black/75 via-black/35 to-transparent px-2.5 pb-3.5 pt-14">
         <span
           className="block whitespace-nowrap text-center font-extrabold uppercase leading-none tracking-[-0.02em] text-white [text-shadow:0_4px_14px_rgba(0,0,0,0.45)]"
           style={{ fontSize: nameSize(p.name) }}
@@ -239,16 +292,9 @@ function MentorCard({ p, hidden }: { p: Person; hidden: boolean }) {
   );
 }
 
-/* the section's colours, light and dark (the Leaders section's pattern) */
-const LIGHT = {
-  "--mt-bg": "#f4f4f4", // the page's off-white (--canvas)
-  "--mt-fg": "#0b0d12",
-  "--mt-soft": "#3d4452",
-  "--mt-muted": "rgba(61,68,82,0.85)",
-  "--mt-grain": "0",
-};
+/* the section's colours: black throughout, no light state */
 const DARK = {
-  "--mt-bg": "#121113", // the posters' own curtain ground, so the cards melt into it
+  "--mt-bg": "#000000", // pure black, the cards' own ground, so they disappear into it
   "--mt-fg": "#ffffff",
   "--mt-soft": "#e5e5e5",
   "--mt-muted": "rgba(229,229,229,0.8)",
@@ -256,52 +302,19 @@ const DARK = {
 };
 
 export function Mentors() {
-  const root = useRef<HTMLElement>(null);
-
-  // white -> near-black in one timed fade while the section holds the middle
-  // of the screen, and back on the way out: the same rule as Leaders and the
-  // nav
-  useEffect(() => {
-    const section = root.current;
-    if (!section) return;
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    let dark: boolean | null = null;
-    const check = () => {
-      const r = section.getBoundingClientRect();
-      const h = window.innerHeight;
-      const next = r.top < h * 0.55 && r.bottom > h * 0.45;
-      if (next === dark) return;
-      dark = next;
-      gsap.to(section, {
-        ...(next ? DARK : LIGHT),
-        duration: reduced ? 0 : 0.7,
-        ease: "power2.inOut",
-        overwrite: true,
-      });
-    };
-    check();
-    window.addEventListener("scroll", check, { passive: true });
-    window.addEventListener("resize", check);
-    return () => {
-      window.removeEventListener("scroll", check);
-      window.removeEventListener("resize", check);
-    };
-  }, []);
-
   return (
     <section
-      ref={root}
       id="mentors"
       aria-label="Our mentors"
-      className="relative overflow-hidden bg-[var(--mt-bg)] py-16 lg:py-24"
-      style={LIGHT as React.CSSProperties}
+      className="relative overflow-hidden bg-[var(--mt-bg)] pb-16 pt-12 lg:pb-24 lg:pt-12"
+      style={DARK as React.CSSProperties}
     >
       {/* the same film grain as over the particle scene, only once dark */}
       <div
         aria-hidden
-        className="scene-grain pointer-events-none absolute inset-0"
+        // above the cards, so the grain lies evenly over them and the black
+        // around them and can't outline them
+        className="scene-grain pointer-events-none absolute inset-0 z-10"
         style={{ opacity: "var(--mt-grain)" }}
       />
 

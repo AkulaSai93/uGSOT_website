@@ -124,14 +124,14 @@ function Book({ s }: { s: Story }) {
         <span className="block text-[9px] font-semibold uppercase tracking-[0.12em] text-accent">
           {s.outlet}
         </span>
-        <span className="mt-2 line-clamp-4 block text-[9.5px] font-semibold leading-snug text-ink">
+        <span className="mt-2 line-clamp-4 block text-[9.5px] font-semibold leading-snug text-[#0b0d12]">
           {s.headline}
         </span>
         <span className="mt-3 flex flex-col gap-1.5">
           {[100, 92, 96, 70].map((w) => (
             <span
               key={w}
-              className="block h-[3px] rounded-full bg-ink/10"
+              className="block h-[3px] rounded-full bg-black/10"
               style={{ width: `${w}%` }}
             />
           ))}
@@ -164,7 +164,7 @@ function StoryCard({ s, copy }: { s: Story; copy: boolean }) {
         data-story
         // phones: the book above the words, in a card narrow enough to be
         // seen whole in the strip; from sm the two sit side by side
-        className="group flex h-full w-[min(72vw,300px)] flex-col items-start gap-5 rounded-[4px] border border-black/[0.08] bg-white p-5 sm:w-[min(86vw,540px)] sm:flex-row sm:items-center sm:gap-7"
+        className="group flex h-full w-[min(72vw,300px)] flex-col items-start gap-5 rounded-[8px] border border-white/[0.1] bg-[#121214] p-5 sm:w-[min(86vw,540px)] sm:flex-row sm:items-center sm:gap-7"
       >
         <Book s={s} />
         <div className="min-w-0">
@@ -183,7 +183,7 @@ function StoryCard({ s, copy }: { s: Story; copy: boolean }) {
             {...linkProps(s.href)}
             tabIndex={copy ? -1 : undefined}
             aria-label={`Read more: ${s.headline} (${s.outlet})`}
-            className="group/link mt-4 inline-flex items-center gap-2 rounded-[6px] bg-accent px-4 py-2.5 text-[13.5px] font-semibold text-white transition-colors duration-300 hover:bg-ink"
+            className="group/link mt-4 inline-flex items-center gap-2 rounded-[6px] bg-accent px-4 py-2.5 text-[13.5px] font-semibold text-white transition-colors duration-300 hover:bg-accent-hover"
           >
             Read more
             <ArrowUpRight

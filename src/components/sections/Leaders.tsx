@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -14,10 +14,9 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
  * Copy is sot.upgrad.com's, verbatim: heading, quote, the line under it, and
  * each leader's name, role and bio.
  *
- * Layout after a "FOUNDERS" reference the client supplied. Like Pathways,
- * the section fades from white to black as it reaches the middle of the
- * screen (timed GSAP fade of its --ld-* colour tokens) and back on the way
- * out; the nav goes dark with it. Then: a dark section
+ * Layout after a "FOUNDERS" reference the client supplied. The section is
+ * black throughout (no light-to-dark fade); the nav is dark over it. A dark
+ * section
  * with one enormous word running edge to edge, a single group photo, the
  * title set beside it overlapping the photo's edge (a hand-drawn ring around
  * "Leaders", the rest of the heading in red beneath), and the leaders below
@@ -51,15 +50,7 @@ const LEADERS = [
   },
 ] as const;
 
-const LIGHT = {
-  "--ld-bg": "#f4f4f4", // the page's off-white (--canvas)
-  "--ld-fg": "#0b0d12",
-  "--ld-word": "rgba(11,13,18,0.9)",
-  "--ld-muted": "#3d4452",
-  "--ld-soft": "rgba(61,68,82,0.8)",
-  "--ld-ring": "rgba(11,13,18,0.6)",
-  "--ld-line": "rgba(11,13,18,0.12)",
-};
+/* the section's colours: black throughout, no light state */
 const DARK = {
   "--ld-bg": "#0b0b0c",
   "--ld-fg": "#ffffff",
@@ -73,36 +64,6 @@ const DARK = {
 export function Leaders() {
   const root = useRef<HTMLElement>(null);
 
-  // white -> black in one timed fade while the section holds the middle of the
-  // screen, and back on the way out — the same rule as Pathways and the nav
-  useEffect(() => {
-    const section = root.current;
-    if (!section) return;
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    let dark: boolean | null = null;
-    const check = () => {
-      const r = section.getBoundingClientRect();
-      const h = window.innerHeight;
-      const next = r.top < h * 0.55 && r.bottom > h * 0.45;
-      if (next === dark) return;
-      dark = next;
-      gsap.to(section, {
-        ...(next ? DARK : LIGHT),
-        duration: reduced ? 0 : 0.7,
-        ease: "power2.inOut",
-        overwrite: true,
-      });
-    };
-    check();
-    window.addEventListener("scroll", check, { passive: true });
-    window.addEventListener("resize", check);
-    return () => {
-      window.removeEventListener("scroll", check);
-      window.removeEventListener("resize", check);
-    };
-  }, []);
 
   useGSAP(
     () => {
@@ -191,7 +152,7 @@ export function Leaders() {
       id="leaders"
       aria-labelledby="leaders-heading"
       className="overflow-hidden bg-[var(--ld-bg)] py-8 text-[color:var(--ld-fg)] lg:py-16"
-      style={LIGHT as React.CSSProperties}
+      style={DARK as React.CSSProperties}
     >
       {/* one enormous word, wider than the screen so it runs off both edges */}
       <div aria-hidden className="flex justify-center">

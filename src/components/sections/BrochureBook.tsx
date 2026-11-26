@@ -207,7 +207,7 @@ export function BrochureBook({ id = "brochure" }: { id?: string }) {
   const shift = turned === 0 ? "-25%" : turned === LEAVES ? "25%" : "0%";
 
   const arrow =
-    "grid size-11 place-items-center rounded-[6px] border border-black/[0.1] bg-white text-ink transition-colors hover:border-ink disabled:cursor-not-allowed disabled:opacity-40";
+    "grid size-11 place-items-center rounded-[6px] border border-line bg-surface text-ink transition-colors hover:border-ink disabled:cursor-not-allowed disabled:opacity-40";
 
   return (
     <section id={id} className="scroll-mt-24 bg-canvas py-8 lg:py-16">

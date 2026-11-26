@@ -122,7 +122,13 @@ export function StoryPathways() {
   );
 
   return (
-    <section ref={root} id="pathways" className="relative z-10 h-[270vh]">
+    <section
+      ref={root}
+      id="pathways"
+      // 90vh of pinned scroll (was 170vh): the robot crosses the line, and
+      // the cards slide past, in about one screen's scroll
+      className="relative z-10 h-[190vh]"
+    >
       <div className="sticky top-0 h-svh overflow-hidden">
         {/* ---------- giant sliding word (upper band) */}
         <div className="absolute inset-x-0 top-0 flex h-[48%] items-end overflow-hidden">
@@ -131,7 +137,7 @@ export function StoryPathways() {
             aria-hidden
             className="whitespace-nowrap pl-[4vw] text-[clamp(6rem,21vh,15rem)] font-extrabold uppercase leading-[0.8] tracking-[-0.04em] text-white/[0.06]"
           >
-            Three Pathways · One Degree · Three Pathways
+            One Degree · Three Pathways
           </div>
         </div>
 

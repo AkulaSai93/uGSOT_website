@@ -6,7 +6,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ArrowUpRight, RotateCcw } from "lucide-react";
-import { CornerHandles } from "@/components/site/CornerHandles";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -17,7 +16,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
  * scholarships with their eligibility text and the "Know More" link (to the
  * uGNET page, as there).
  *
- * Layout: a full-width band in warm yellow.
+ * Layout: a full-width black band (it follows the black Mentors section).
  * The heading is set like a headline: "Get Upto" above a
  * huge "100%" (its % in brand red) with "Scholarship" under it; on the right,
  * the line and "Check eligibility", with the hero's moving line round its
@@ -44,36 +43,38 @@ const SCHOLARSHIPS: Scholarship[] = [
   {
     key: "merit",
     title: "Merit-Based Scholarship",
-    art: "merit-8.webp",
+    art: "merit-8-canvas.webp",
     criteria:
       "Awarded to students with strong academic performance or outstanding achievements. This scholarship recognizes hard work, discipline, and excellence in studies.",
   },
   {
     key: "need",
     title: "Need-Based Scholarship",
-    art: "need-8.webp",
+    art: "need-8-canvas.webp",
     criteria:
       "Designed for students who require financial support to pursue their education. It ensures that deserving learners are not held back due to economic constraints.",
   },
   {
     key: "girls-in-tech",
     title: "Girls in Tech Scholarship",
-    art: "girls-in-tech-8.webp",
+    art: "girls-in-tech-8-canvas.webp",
     criteria:
       "A dedicated scholarship to encourage more young women to enter and excel in technology. It supports aspiring female students who want to build successful careers in tech.",
   },
   {
     key: "innovators",
     title: "Ronnie Screwvala Scholarship for Budding Tech Innovators",
-    art: "innovators-9.webp",
+    art: "innovators-9-canvas.webp",
     badge: "/images/scholarships/v3/ronnie-badge.jpg",
     criteria:
       "Given to students who show early talent, creativity, or passion for building innovative tech solutions. It supports future innovators who want to solve real-world problems using technology.",
   },
 ];
 
-/** the pictures' cream background, which the whole card front takes */
-const GROUND = "#fff6e3";
+/** the card front: the page's off-white (--canvas); the pictures'
+ *  backgrounds are recoloured to it (the *-canvas files), so they sit on the
+ *  card seamlessly */
+const GROUND = "#f4f4f4";
 
 /* ------------------------------------------------------------ a card */
 
@@ -113,8 +114,6 @@ function ScholarshipCard({ s }: { s: Scholarship }) {
 
   return (
     <li data-card className="relative [perspective:1400px]">
-      {/* the faculty posters' corner handles, held still while the card flips */}
-      <CornerHandles />
       <div
         ref={inner}
         className="relative aspect-[4/5] [transform-style:preserve-3d]"
@@ -124,14 +123,14 @@ function ScholarshipCard({ s }: { s: Scholarship }) {
         <div
           inert={flipped}
           style={{ background: GROUND }}
-          className="group absolute inset-0 overflow-hidden border border-black/[0.08] [backface-visibility:hidden]"
+          className="group absolute inset-0 overflow-hidden rounded-[8px] [backface-visibility:hidden]"
         >
           <div className="flex h-full flex-col">
             <h3 className="shrink-0 px-4 pb-2 pt-5 text-center font-display text-[17px] font-medium leading-[1.2] tracking-[-0.02em] text-ink">
               {s.title}
             </h3>
             {/* the picture, scaled to fit whole (never cropped) on the card's
-                cream */}
+                off-white */}
             <div className="relative min-h-0 flex-1 overflow-hidden">
               <Image
                 src={`/images/scholarships/flat/${s.art}`}
@@ -175,7 +174,7 @@ function ScholarshipCard({ s }: { s: Scholarship }) {
         {/* back: the eligibility criteria */}
         <div
           inert={!flipped}
-          className="absolute inset-0 flex flex-col justify-between border border-black/[0.08] bg-accent p-6 text-white [backface-visibility:hidden] [transform:rotateY(180deg)]"
+          className="absolute inset-0 flex flex-col justify-between overflow-hidden rounded-[8px] bg-accent p-6 text-white [backface-visibility:hidden] [transform:rotateY(180deg)]"
         >
           <div>
             <p className="text-[12.5px] font-semibold text-white/75">
@@ -215,8 +214,8 @@ function ScholarshipCard({ s }: { s: Scholarship }) {
   );
 }
 
-/** the band's warm yellow */
-const YELLOW = "#ffdf8f";
+/** the band: black with the film grain, exactly the Mentors section's ground */
+const GROUND_DARK = "#000000";
 
 export function Scholarships() {
   const root = useRef<HTMLElement>(null);
@@ -270,17 +269,18 @@ export function Scholarships() {
     <section
       ref={root}
       id="scholarships"
-      style={{ background: YELLOW }}
-      className="relative overflow-hidden py-8 lg:py-16"
+      style={{ background: GROUND_DARK }}
+      className="relative overflow-hidden pb-6 pt-8 lg:pb-10 lg:pt-16"
     >
-      {/* a soft light across the top left, so the yellow reads rich, not flat */}
+      {/* the same film grain as the Mentors section above, so the two read
+          as one black surface */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_70%_at_15%_0%,rgba(255,255,255,0.45),transparent_70%)]"
+        className="scene-grain pointer-events-none absolute inset-0"
       />
       <div className="container-page relative">
         <div className="grid items-end gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)] lg:gap-16">
-          <h2 className="text-ink max-lg:text-center">
+          <h2 className="text-white max-lg:text-center">
             <span
               data-rise
               className="block font-display text-[clamp(1.5rem,2.6vw,2.25rem)] font-medium tracking-[-0.025em]"
@@ -315,11 +315,11 @@ export function Scholarships() {
             data-rise
             className="max-lg:mx-auto max-lg:max-w-[460px] max-lg:text-center"
           >
-            <p className="text-balance text-[15.5px] leading-[1.6] text-ink/80">
+            <p className="text-balance text-[15.5px] leading-[1.6] text-white/70">
               Invest in your future with scholarship opportunities that make
               quality education more affordable and accessible.
             </p>
-            {/* the hero's moving line: a dark streak sweeping round the edge */}
+            {/* red, with the hero's moving line: a white streak sweeping round the edge */}
             <a
               href={UGNET}
               className="group relative mt-6 inline-flex overflow-hidden rounded-[6px] p-[1.5px]"
@@ -328,11 +328,11 @@ export function Scholarships() {
                 aria-hidden
                 style={{
                   backgroundImage:
-                    "conic-gradient(transparent 200deg, #0b0d12)",
+                    "conic-gradient(transparent 200deg, #ffffff)",
                 }}
                 className="cta-glow absolute left-1/2 top-1/2 aspect-square w-[160%]"
               />
-              <span className="relative z-[2] inline-flex items-center gap-2 rounded-[5px] bg-white px-6 py-3.5 text-[15px] font-semibold text-ink transition-colors duration-300 group-hover:bg-ink group-hover:text-white">
+              <span className="relative z-[2] inline-flex items-center gap-2 rounded-[5px] bg-accent px-6 py-3.5 text-[15px] font-semibold text-white transition-colors duration-300 group-hover:bg-accent-hover">
                 Check eligibility
                 <ArrowUpRight
                   size={16}
@@ -346,7 +346,7 @@ export function Scholarships() {
         </div>
 
         {/* one under another on phones, two across on tablets, four on desktop */}
-        <ul className="mt-10 grid gap-5 border-t border-black/[0.08] pt-10 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4 lg:pt-14">
+        <ul className="mt-10 grid gap-5 border-t border-white/[0.12] pt-10 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4 lg:pt-14">
           {SCHOLARSHIPS.map((s) => (
             <ScholarshipCard key={s.key} s={s} />
           ))}

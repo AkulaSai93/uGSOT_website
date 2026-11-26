@@ -164,10 +164,10 @@ export function Faqs({
               <li
                 key={f.q}
                 data-row
-                className={`rounded-[6px] border bg-white transition-colors duration-300 ${
+                className={`rounded-[6px] border bg-surface transition-colors duration-300 ${
                   isOpen
                     ? "border-ink/20"
-                    : "border-black/[0.08] hover:border-ink/20"
+                    : "border-line hover:border-ink/20"
                 }`}
               >
                 <h3>

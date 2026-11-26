@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, BadgeCheck, GraduationCap, MapPin } from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
-import { CornerHandles } from "@/components/site/CornerHandles";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { SOT_URL } from "@/components/site/contact";
 
@@ -22,8 +21,7 @@ import { SOT_URL } from "@/components/site/contact";
  * tilted red "Campus" tag (no logo, chips or address, which the card below
  * already gives). Under it: an eyebrow, the university's name on one line
  * (from sm; on phones it may wrap), its location, three key highlights and a full-width button. The card is
- * kept clean: white, no shadow, with the faculty posters' frame (square
- * corners, a thin ink edge, a "selection" handle on each corner);
+ * kept clean: white, no shadow, rounded corners and a thin edge;
  * the eyebrow and "Key highlights" in red; each highlight's icon on a small
  * lit tile (a light-deep-light red sheen, white glyph). Hovering a card lifts
  * it a touch and slowly zooms its poster.
@@ -74,7 +72,7 @@ export function Campuses() {
   // relative z-20 + -mt-px: overlaps the scroll-story sections above by a
   // pixel, so no hairline of it shows where the two meet on a fractional pixel
   return (
-    <section id="campuses" className="relative z-20 -mt-px bg-canvas py-8 lg:py-16">
+    <section id="campuses" className="relative z-20 -mt-px bg-canvas pb-4 pt-8 lg:pb-8 lg:pt-16">
       <div className="container-page">
         <SectionHeading
           title="Our"
@@ -97,9 +95,8 @@ export function Campuses() {
             <article
               key={c.key}
               data-reveal-item
-              className="group relative flex flex-col overflow-hidden rounded-[12px] border border-black/[0.08] bg-white transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1"
+              className="group relative flex flex-col overflow-hidden rounded-[8px] border border-black/[0.08] bg-white transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1"
             >
-              <CornerHandles />
               <div className="relative aspect-video overflow-hidden bg-ink">
                 <Image
                   src={`/images/campuses/cards-v2/${c.key}.webp`}

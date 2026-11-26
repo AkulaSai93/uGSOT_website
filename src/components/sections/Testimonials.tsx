@@ -242,8 +242,8 @@ export function Testimonials() {
                 onClick={() => setActive(i)}
                 className={`relative border p-5 transition-colors duration-500 [grid-area:1/1] sm:p-7 ${
                   i === active
-                    ? "border-black/[0.08] bg-accent text-white"
-                    : "cursor-pointer border-black/[0.08] bg-white text-ink"
+                    ? "border-line bg-accent text-white"
+                    : "cursor-pointer border-line bg-surface text-ink"
                 }`}
               >
                 <CornerHandles dim={i !== active} />
@@ -350,7 +350,7 @@ export function Testimonials() {
               }}
               className="cta-glow absolute left-1/2 top-1/2 aspect-square w-[160%]"
             />
-            <span className="relative z-[2] inline-flex items-center gap-2 whitespace-nowrap rounded-[5px] bg-white px-6 py-3.5 text-[15px] font-semibold text-ink transition-colors group-hover/cta:bg-white/90">
+            <span className="relative z-[2] inline-flex items-center gap-2 whitespace-nowrap rounded-[5px] bg-white px-6 py-3.5 text-[15px] font-semibold text-[#0b0d12] transition-colors group-hover/cta:bg-white/90">
               Apply Now
             </span>
           </Link>

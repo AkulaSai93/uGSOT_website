@@ -10,18 +10,14 @@ import { SectionHeading } from "@/components/site/SectionHeading";
  * The footer's disclaimer already covers them: "Logos displayed represent
  * organizations where upGrad learners, alumni, or SMEs have worked".
  *
- * Layout after the logo wall on newtonschool.co: a grid of equal cells divided
- * by hairlines (six across on desktop, four on phones and tablets, the logos
- * smaller there, as Scaler lays its logo wall out on a phone), each logo
- * centred in its cell, the last row fading away into the page, and a spaced
- * line under it for the rest ("3000+ hiring partners", the Legacy section's
- * figure).
+ * Always dark, with the film grain of the other dark sections: the logos, in
+ * their own colours (the two too dark for black in white), drift past in two full-width strips going opposite
+ * ways (the list split in half), fading out at both edges and pausing on
+ * hover.
  *
  * Each logo keeps its Figma frame: a box `w` wide at the frame's 44.08 height,
  * cropping the source image by the frame's percentages (the PNGs carry
- * padding). The box is scaled to LOGO_H. Eight of the marks are drawn in
- * white for dark grounds; on this white page those render as a dark
- * silhouette (`dark`) instead of vanishing.
+ * padding). The box is scaled to LOGO_H (or --logo-h).
  */
 export type Logo = {
   name: string;
@@ -34,6 +30,8 @@ export type Logo = {
   dark?: boolean;
   /** no crop: the image covers its frame (Figma's object-cover) */
   cover?: boolean;
+  /** its colours are too dark to read on black: knocked out to white there */
+  whiteOnDark?: boolean;
 };
 
 const FRAME_H = 44.08;
@@ -122,6 +120,7 @@ export const LOGOS: Logo[] = [
   {
     name: "PayPal",
     file: "paypal.png",
+    whiteOnDark: true,
     w: 159.265,
     crop: { w: 123.56, h: 297.62, l: -12.03, t: -100.6 },
   },
@@ -167,6 +166,7 @@ export const LOGOS: Logo[] = [
   {
     name: "Wipro",
     file: "wipro.png",
+    whiteOnDark: true,
     w: 98.521,
     crop: { w: 105.16, h: 235.04, l: -2.68, t: -67.95 },
   },
@@ -189,9 +189,13 @@ export const LOGOS: Logo[] = [
 export function LogoMark({
   logo,
   white = false,
+  onDark = false,
 }: {
   logo: Logo;
   white?: boolean;
+  /** on a dark ground: brand colours as they are (the white marks stay
+   *  white), only the too-dark ones knocked out to white */
+  onDark?: boolean;
 }) {
   const c = logo.crop;
   return (
@@ -224,17 +228,63 @@ export function LogoMark({
             : undefined
         }
         className={`${logo.cover ? "object-cover" : ""} ${
-          white ? "brightness-0 invert" : logo.dark ? "brightness-0" : ""
+          white || (onDark && logo.whiteOnDark)
+            ? "brightness-0 invert"
+            : onDark
+              ? ""
+              : logo.dark
+                ? "brightness-0"
+                : ""
         }`}
       />
     </span>
   );
 }
 
-export function AlumniCompanies() {
+/** one moving row: the list twice over, so -50% loops with no seam (each
+ *  logo carries its own trailing space, so a copy is exactly half) */
+function LogoRow({
+  logos,
+  reverse = false,
+  seconds,
+}: {
+  logos: Logo[];
+  reverse?: boolean;
+  seconds: number;
+}) {
   return (
-    <section id="alumni" className="bg-canvas py-8 lg:py-16">
-      <div className="container-page">
+    <div className="alumni-mask overflow-hidden">
+      <ul
+        className="marquee-track"
+        style={{
+          animationDuration: `${seconds}s`,
+          animationDirection: reverse ? "reverse" : "normal",
+        }}
+      >
+        {[0, 1].map((copy) =>
+          logos.map((logo) => (
+            <li
+              key={`${copy}-${logo.name}`}
+              aria-hidden={copy === 1 || undefined}
+              className="flex h-12 shrink-0 items-center px-6 sm:h-14 sm:px-8 lg:h-16 lg:px-10"
+            >
+              <LogoMark logo={logo} onDark />
+            </li>
+          )),
+        )}
+      </ul>
+    </div>
+  );
+}
+
+export function AlumniCompanies() {
+  const half = Math.ceil(LOGOS.length / 2);
+  return (
+    <section
+      id="alumni"
+      className="theme-dark relative -mt-px overflow-hidden bg-canvas pb-10 pt-4 lg:pb-14 lg:pt-6"
+    >
+      <div className="container-page relative z-[1]">
         <SectionHeading
           title="Our Alumni Work at"
           accent="Top Companies"
@@ -247,30 +297,19 @@ export function AlumniCompanies() {
             </span>
           }
         />
-
-        <Reveal className="relative mt-8 lg:mt-14">
-          {/* hairline grid: the 1px gaps show the line colour between cells */}
-          <ul className="grid grid-cols-4 gap-px border border-black/[0.08] bg-line [--logo-h:15px] sm:[--logo-h:20px] lg:grid-cols-6 lg:[--logo-h:26px]">
-            {LOGOS.map((logo) => (
-              <li
-                key={logo.name}
-                className="flex h-14 items-center justify-center bg-canvas px-1.5 sm:h-20 sm:px-4 lg:h-[104px]"
-              >
-                <LogoMark logo={logo} />
-              </li>
-            ))}
-          </ul>
-          {/* the last row fades into the page */}
-          <span
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-canvas/0 via-canvas/70 to-canvas sm:h-24 lg:h-[112px]"
-          />
-        </Reveal>
-
-        <p className="mt-6 text-center text-[13px] font-medium uppercase tracking-[0.24em] text-accent sm:text-[14px]">
-          3000+ hiring partners
-        </p>
       </div>
+
+      {/* two strips drifting in opposite directions, full width, fading out
+          at both edges; hovering a strip pauses it */}
+      <Reveal className="marquee-mask relative z-[1] mt-6 flex flex-col gap-1 [--logo-h:18px] sm:[--logo-h:22px] lg:mt-8 lg:[--logo-h:28px]">
+        <LogoRow logos={LOGOS.slice(0, half)} seconds={46} />
+        <LogoRow logos={LOGOS.slice(half)} reverse seconds={46} />
+      </Reveal>
+
+      <div
+        aria-hidden
+        className="scene-grain pointer-events-none absolute inset-0 z-[2]"
+      />
     </section>
   );
 }

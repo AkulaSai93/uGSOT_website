@@ -25,7 +25,7 @@ import { createRobotDots } from "./robotDots";
  *
  * One particle entity that changes shape as you scroll:
  *   hero            → the orbit ring ("the bubble"), centred on the hero copy
- *   Specializations → a dotted globe, high and centred, a blue horizon rising
+ *   Specializations → a dotted globe, high and centred
  *   Pathways        → a walking dotted robot on the Pathways line
  *
  * It is one sticky, full-screen canvas laid behind the hero, Specializations
@@ -118,7 +118,6 @@ export default function SceneStage() {
   const host = useRef<HTMLDivElement>(null);
   const box = useRef<HTMLDivElement>(null);
   const haze = useRef<HTMLDivElement>(null);
-  const horizon = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = host.current;
@@ -379,16 +378,11 @@ export default function SceneStage() {
 
       robot.update(dt, t, renderer.getPixelRatio(), u.uSwap.value, st.travel);
 
-      // overlays: the ring's haze fades as the globe forms; the blue horizon
-      // rises with the globe and sets as the robot arrives
+      // overlays: the ring's haze fades as the globe forms
       if (haze.current)
         haze.current.style.opacity = String(1 - Math.min(1, st.progress * 1.5));
       // hidden while the campus film fills the screen (see sceneState.veil)
       el.style.opacity = String(1 - st.veil);
-      if (horizon.current)
-        horizon.current.style.opacity = String(
-          Math.min(1, Math.max(0, st.progress)) * (1 - Math.min(1, st.path)),
-        );
 
       renderer.render(scene, camera);
     };
@@ -461,11 +455,6 @@ export default function SceneStage() {
           }}
         />
         <div ref={box} className="absolute inset-0" />
-        {/* Atmos-style blue horizon, rising as the globe forms */}
-        <div
-          ref={horizon}
-          className="absolute inset-0 opacity-0 bg-[radial-gradient(ellipse_85%_42%_at_8%_108%,rgba(37,84,255,0.85),rgba(37,84,255,0.2)_45%,transparent_75%),radial-gradient(ellipse_75%_38%_at_75%_112%,rgba(37,84,255,0.5),transparent_70%),linear-gradient(to_bottom,transparent_45%,rgba(14,28,110,0.35))]"
-        />
         {/* the prologue's film grain (Figma 47:145) */}
         <div className="scene-grain absolute inset-0" />
       </div>

@@ -504,7 +504,8 @@ const PILLARS: Pillar[] = [
 ];
 
 /** one Short, as on scaler.com's "What makes SST": the upright thumbnail
- *  with a play button, then its caption */
+ *  with a play button, in a thin frame (no caption under it; the title is the
+ *  button's label) */
 function VideoCard({
   v,
   onOpen,
@@ -538,9 +539,6 @@ function VideoCard({
             className="translate-x-[1px]"
           />
         </span>
-      </span>
-      <span className="line-clamp-2 px-1 pb-1 pt-2.5 text-[13.5px] font-semibold leading-snug text-ink">
-        {v.title}
       </span>
     </button>
   );
@@ -810,7 +808,7 @@ export function Curriculum() {
   };
 
   return (
-    <section id="curriculum" className="bg-canvas py-8 lg:py-16">
+    <section id="curriculum" className="bg-canvas py-4 lg:py-8">
       <div className="container-page">
         <SectionHeading
           title="Build Industry Preferred Skills Through"
@@ -830,7 +828,7 @@ export function Curriculum() {
           {YEARS.map((y, i) => {
             const on = open === i;
             return (
-              <div key={y.key} className="overflow-hidden rounded-[12px] border border-black/[0.08] bg-white">
+              <div key={y.key} className="overflow-hidden rounded-[8px] border border-black/[0.08] bg-white">
                 <button
                   type="button"
                   aria-expanded={on}
@@ -894,7 +892,7 @@ export function Curriculum() {
 
         {/* desktop: the tabbed card */}
         <Reveal className="mt-12 hidden lg:mt-16 lg:block">
-          <div className="relative mx-auto max-w-[1116px] rounded-[12px] border border-black/[0.08] bg-white p-5 sm:px-8 sm:py-6">
+          <div className="relative mx-auto max-w-[1116px] rounded-[8px] border border-black/[0.08] bg-white p-5 sm:px-8 sm:py-6">
             {/* the year tabs */}
             <div
               role="tablist"

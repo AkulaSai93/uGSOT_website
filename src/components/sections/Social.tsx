@@ -109,7 +109,7 @@ function TileItem({
             aria-hidden
             className="absolute inset-0 grid place-items-center bg-black/0 transition-colors duration-300 group-hover:bg-black/25 group-focus-visible:bg-black/25"
           >
-            <span className="grid size-9 scale-75 place-items-center rounded-full bg-white text-ink opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100">
+            <span className="grid size-9 scale-75 place-items-center rounded-full bg-white text-[#0b0d12] opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100">
               <Play
                 size={13}
                 fill="currentColor"
@@ -277,7 +277,7 @@ export function Social() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${handle} on ${s.label}`}
-              className="inline-flex items-center justify-center gap-3 rounded-[6px] border border-black/[0.08] bg-white px-5 py-3.5 text-[15px] font-medium text-ink transition-colors duration-300 hover:border-ink hover:bg-ink hover:text-white sm:px-6 sm:text-[16px]"
+              className="inline-flex items-center justify-center gap-3 rounded-[6px] border border-line bg-surface px-5 py-3.5 text-[15px] font-medium text-ink transition-colors duration-300 hover:border-ink hover:bg-ink hover:text-canvas sm:px-6 sm:text-[16px]"
             >
               <span
                 aria-hidden

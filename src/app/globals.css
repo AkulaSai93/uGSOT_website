@@ -56,6 +56,24 @@
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
+/* Dark stretch of the home page (Mentors → Leaders): sections inside a
+   .theme-dark wrapper keep their own markup, and the colour tokens flip so
+   bg-canvas reads black (the Mentors section's ground), ink and body copy read
+   light on it, and the site's lines and sunken fills turn to their dark
+   equivalents. Anything with a fixed colour (white cards, pinned dark text) is
+   adjusted in its own section (see page.tsx for the wrapper). */
+.theme-dark {
+  --canvas: #000000;
+  --surface: #121214;
+  --surface-sunken: #17181d;
+  --ink: #ffffff;
+  --ink-body: rgb(255 255 255 / 0.68);
+  --ink-muted: rgb(255 255 255 / 0.5);
+  --line: rgb(255 255 255 / 0.12);
+  --line-strong: rgb(255 255 255 / 0.12);
+  --accent-soft: rgb(228 0 43 / 0.16);
+}
+
 /* Base styles live in @layer base so Tailwind utilities (text-white, text-ink,
    font-display …) always win over these element selectors. */
 @layer base {
@@ -163,6 +181,11 @@ html {
 /* Pause on hover so the marks stay readable when someone looks at them. */
 .marquee-mask:hover .marquee-track {
   animation-play-state: paused;
+}
+/* The alumni strips run full width, so their edges fade over a wider band. */
+.alumni-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
 }
 
 /* Rotating conic-gradient border glow for primary CTAs (same technique as the

@@ -52,7 +52,7 @@ const LEADERS = [
 
 /* the section's colours: black throughout, no light state */
 const DARK = {
-  "--ld-bg": "#0b0b0c",
+  "--ld-bg": "#05040a",
   "--ld-fg": "#ffffff",
   "--ld-word": "rgba(255,255,255,0.85)",
   "--ld-muted": "rgba(255,255,255,0.72)",
@@ -154,12 +154,12 @@ export function Leaders() {
       className="overflow-hidden bg-[var(--ld-bg)] py-8 text-[color:var(--ld-fg)] lg:py-16"
       style={DARK as React.CSSProperties}
     >
-      {/* one enormous word, wider than the screen so it runs off both edges */}
+      {/* one enormous word, sized to sit just inside the screen edges */}
       <div aria-hidden className="flex justify-center">
-        {/* flex centring lets the word overflow both edges evenly */}
+        {/* centred; the size keeps every letter on screen */}
         <span
           data-bigword
-          className="block shrink-0 select-none whitespace-nowrap font-display text-[24vw] font-normal uppercase leading-[0.8] tracking-[-0.02em] text-[color:var(--ld-word)]"
+          className="block shrink-0 select-none whitespace-nowrap font-display text-[21.6vw] font-normal uppercase leading-[0.8] tracking-[-0.02em] text-[color:var(--ld-word)]"
         >
           Leaders
         </span>

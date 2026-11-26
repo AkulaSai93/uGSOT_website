@@ -256,7 +256,7 @@ export function Admission({
                   }}
                   className="cta-glow absolute left-1/2 top-1/2 aspect-square w-[160%]"
                 />
-                <span className="relative z-[2] flex w-full items-center justify-center gap-2 rounded-[4px] bg-white px-6 py-4 text-[16px] font-semibold text-ink transition-colors duration-200 group-hover/cta:bg-white/90">
+                <span className="relative z-[2] flex w-full items-center justify-center gap-2 rounded-[4px] bg-white px-6 py-4 text-[16px] font-semibold text-[#0b0d12] transition-colors duration-200 group-hover/cta:bg-white/90">
                   Resume Application
                   <ArrowUpRight
                     size={18}

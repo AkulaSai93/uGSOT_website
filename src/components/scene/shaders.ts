@@ -239,11 +239,12 @@ void main(){
 `;
 
 export const dustFragment = /* glsl */ `
+uniform vec3 uColor;
 varying float vAlpha;
 void main(){
   float d = length(gl_PointCoord - 0.5);
   if (d > 0.5) discard;
   float a = smoothstep(0.5, 0.0, d) * vAlpha;
-  gl_FragColor = vec4(vec3(0.95, 0.92, 0.88) * a, a);
+  gl_FragColor = vec4(uColor * a, a);
 }
 `;

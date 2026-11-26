@@ -18,6 +18,7 @@ import {
   particleVertex,
 } from "./shaders";
 import { createRobotDots } from "./robotDots";
+import { BLEND, C, PALETTE } from "./look";
 
 /**
  * The scroll story's particle scene, ported from the 3D prologue
@@ -34,39 +35,14 @@ import { createRobotDots } from "./robotDots";
  * It renders only while that stretch of the page is on screen.
  */
 
-/* sampled from the Figma hero (node 47:138), same as the 3D prologue; raw sRGB */
-const C = (hex: string) => {
-  const n = parseInt(hex.slice(1), 16);
-  return new THREE.Vector3(
-    ((n >> 16) & 255) / 255,
-    ((n >> 8) & 255) / 255,
-    (n & 255) / 255,
-  );
-};
-const PALETTE = {
-  indigo: "#7f87f2",
-  teal: "#8fe3e4",
-  arc: "#9df3a6",
-  violet: "#7d7bf0",
-  dust: "#d9f2e0",
-  red: "#ff3b2e", // the prologue's signal red: globe flecks, robot, cursor
-};
-
-/** premultiplied "over": dots cover one another, so colour holds */
-const BLEND = {
-  blending: THREE.CustomBlending,
-  blendSrc: THREE.OneFactor,
-  blendDst: THREE.OneMinusSrcAlphaFactor,
-  blendSrcAlpha: THREE.OneFactor,
-  blendDstAlpha: THREE.OneMinusSrcAlphaFactor,
-} as const;
-
 /** Per-stage layout for stages 1 (globe) and 2 (robot), as in the prologue:
  *  x / y offset (fraction of the visible size), share of width / height to
  *  fill. Stage 0 (the ring) is placed on the hero copy instead, see ringLayout. */
 // stage 2's y puts the robot's feet on the Pathways line, which sits 48% down
 // the screen (StoryPathways): feet = 0.5 - 0.48 below centre + half the
 // robot's height (2 · h / 4.2 of the screen)
+/** the Pathways line, as a share of the screen height from the top */
+const PATH_LINE = 0.48;
 const DESKTOP = {
   x: [0, 0, -0.38],
   y: [0.05, 0.17, 0.145],
@@ -215,6 +191,7 @@ export default function SceneStage() {
       uniforms: {
         uTime: { value: 0 },
         uPixelRatio: { value: renderer.getPixelRatio() },
+        uColor: { value: C("#f2ebe0") },
       },
     });
     const dust = new THREE.Points(dustGeo, dustMat);
@@ -293,7 +270,11 @@ export default function SceneStage() {
         (view.vw * L.w[i]) / STAGE_WIDTH[i],
         (view.vh * L.h[i]) / STAGE_HEIGHT[i],
       );
-      return { x: view.vw * L.x[i], y: view.vh * L.y[i], s };
+      // the robot: its feet (2 units below its centre, see robotDots) on
+      // the Pathways line, 48% down the screen, whatever its size
+      const y =
+        i === 2 ? view.vh * (0.5 - PATH_LINE) + 2 * s : view.vh * L.y[i];
+      return { x: view.vw * L.x[i], y, s };
     };
 
     /* ------------------------------------------------ pointer */
@@ -317,6 +298,38 @@ export default function SceneStage() {
     /* ------------------------------------------------ loop */
     const timer = new THREE.Timer();
     const u = material.uniforms;
+
+    /* the ring's colour cycle: it holds each set of colours (band, its lit
+       side, the bright arc) for a few seconds, then blends into the next;
+       it eases back to the story's own colours as the ring leaves the hero,
+       so the globe and the robot keep theirs */
+    const CYCLE = [
+      // band, its lit side, the arc, the big soft bubbles round the ring,
+      // and the drifting dust behind everything
+      [PALETTE.indigo, PALETTE.teal, PALETTE.arc, PALETTE.violet, "#f2ebe0"], // the hero's own
+      ["#4fd6a0", "#b4f5c9", "#e6ff9a", "#34c48c", "#d2f7e1"], // green
+      ["#4fb8f7", "#8ff0ff", "#c9b8ff", "#4a90f0", "#d9ecff"], // sky
+      ["#a78bfa", "#f0abfc", "#ff9fb8", "#b871f0", "#fbe0f1"], // violet and rose
+    ].map((set) => set.map(C));
+    const BASE = CYCLE[0];
+    const HOLD = 4; // seconds on each set
+    const MIX = 1.6; // seconds to blend into the next
+    const tint = (t: number) => {
+      const step = HOLD + MIX;
+      const k = Math.floor(t / step);
+      const f = smooth(Math.min(1, Math.max(0, (t - k * step - HOLD) / MIX)));
+      const a = CYCLE[k % CYCLE.length];
+      const b = CYCLE[(k + 1) % CYCLE.length];
+      // back to the story's colours once the ring starts to change shape
+      const away = Math.min(1, sceneState.progress * 4);
+      [u.uIndigo, u.uTeal, u.uArc, u.uViolet, dustMat.uniforms.uColor].forEach(
+        (uni, i) => {
+          (uni.value as THREE.Vector3)
+            .lerpVectors(a[i], b[i], f)
+            .lerp(BASE[i], away);
+        },
+      );
+    };
     let first = true;
     const frame = (now: number) => {
       timer.update(now);
@@ -324,9 +337,13 @@ export default function SceneStage() {
       const t = timer.getElapsed();
       const st = sceneState;
       // 0 ring → SPEC_HOLD cloud (heading) → 1 globe (rows) → 2 robot (Pathways)
-      const p = Math.min(2, st.progress * SPEC_HOLD + st.globe * (1 - SPEC_HOLD) + st.path);
+      const p = Math.min(
+        2,
+        st.progress * SPEC_HOLD + st.globe * (1 - SPEC_HOLD) + st.path,
+      );
 
       u.uTime.value = t;
+      if (!reduce) tint(t);
       u.uProgress.value = p;
       u.uRoll.value = st.travel * 9;
       u.uSwap.value = THREE.MathUtils.smoothstep(p - 1, 0.45, 0.95);
@@ -349,8 +366,21 @@ export default function SceneStage() {
         dt,
       );
 
-      camera.position.x = damp(camera.position.x, smoothed.x * 0.3, 2.5, dt);
-      camera.position.y = damp(camera.position.y, smoothed.y * 0.2, 2.5, dt);
+      // the pointer parallax eases out as the robot arrives: it walks on a
+      // fixed line in the page, so the camera must not drift off it
+      const drift = 1 - Math.min(1, st.path);
+      camera.position.x = damp(
+        camera.position.x,
+        smoothed.x * 0.3 * drift,
+        2.5,
+        dt,
+      );
+      camera.position.y = damp(
+        camera.position.y,
+        smoothed.y * 0.2 * drift,
+        2.5,
+        dt,
+      );
       // look straight ahead: turning toward an off-centre ring would squash it
       camera.lookAt(camera.position.x, camera.position.y, 0);
 

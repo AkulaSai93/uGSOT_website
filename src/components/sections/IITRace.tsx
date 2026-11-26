@@ -39,11 +39,8 @@ function Lockup({ onRed = false }: { onRed?: boolean }) {
   return (
     <span className={`flex shrink-0 items-center ${onRed ? "gap-6" : "gap-5"}`}>
       <Image
-        src={
-          onRed
-            ? "/images/spotlight/figuring-out-white.png"
-            : "/images/spotlight/figuring-out-dark.png"
-        }
+        // the page is dark now, so the white lettering everywhere
+        src="/images/spotlight/figuring-out-white.png"
         alt="Figuring Out with Raj Shamani"
         width={411}
         height={84}
@@ -56,10 +53,10 @@ function Lockup({ onRed = false }: { onRed?: boolean }) {
         className={onRed ? "text-white" : "text-body"}
       />
       <Image
-        src={onRed ? "/images/spotlight/sot-white.png" : "/images/logo-sot.png"}
+        src="/images/spotlight/sot-white.png"
         alt="upGrad School of Technology"
-        width={onRed ? 445 : 467}
-        height={onRed ? 122 : 144}
+        width={445}
+        height={122}
         className={`${h} w-auto`}
       />
     </span>
@@ -179,7 +176,7 @@ export function IITRace() {
               aria-hidden
               className="absolute inset-0 grid place-items-center"
             >
-              <span className="grid size-16 place-items-center rounded-full bg-white text-ink shadow-[0_8px_24px_-8px_rgba(11,13,18,0.5)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110 sm:size-20">
+              <span className="grid size-16 place-items-center rounded-full bg-white text-[#0b0d12] shadow-[0_8px_24px_-8px_rgba(11,13,18,0.5)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110 sm:size-20">
                 <Play
                   size={24}
                   fill="currentColor"

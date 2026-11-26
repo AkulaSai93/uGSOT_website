@@ -7,7 +7,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { sceneState } from "@/lib/sceneState";
 
-
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const PATHS = [
@@ -83,8 +82,10 @@ export function StoryPathways() {
       });
 
       // pinned horizontal scroll: cards + giant word slide, orb rolls along the line
-      const distance = () => Math.max(0, track.current!.scrollWidth - window.innerWidth);
-      const wordDistance = () => Math.max(0, word.current!.scrollWidth - window.innerWidth);
+      const distance = () =>
+        Math.max(0, track.current!.scrollWidth - window.innerWidth);
+      const wordDistance = () =>
+        Math.max(0, word.current!.scrollWidth - window.innerWidth);
       gsap
         .timeline({
           defaults: { ease: "none" },
@@ -103,7 +104,10 @@ export function StoryPathways() {
         .to(word.current, { x: () => -wordDistance(), duration: 1 }, 0);
 
       // light up the card the orb is over
-      const cards = gsap.utils.toArray<HTMLElement>("[data-card]", root.current);
+      const cards = gsap.utils.toArray<HTMLElement>(
+        "[data-card]",
+        root.current,
+      );
       const tick = () => {
         if (sceneState.path < 0.5) {
           cards.forEach((c) => (c.dataset.active = "false"));
@@ -118,7 +122,7 @@ export function StoryPathways() {
       gsap.ticker.add(tick);
       return () => gsap.ticker.remove(tick);
     },
-    { scope: root }
+    { scope: root },
   );
 
   return (
@@ -142,13 +146,22 @@ export function StoryPathways() {
         </div>
 
         {/* ---------- the line the robot walks on */}
-        <div className="absolute inset-x-0 top-[48%] h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
+        <div className="absolute inset-x-0 top-[48%] z-10 h-px bg-gradient-to-r from-white/[0.06] via-white/30 to-white/[0.06]" />
 
         {/* ---------- lower panel, white: horizontal track (the robot walks
             on the dark upper band, the cards sit on white below it; the white
             takes 52% of the screen so the photos have room) */}
         <div className="absolute inset-x-0 bottom-0 top-[48%] bg-canvas">
-          <div ref={track} className="flex h-full w-max items-end pb-[5vh]">
+          {/* the same film grain as the band above (the scene's), so the
+              panel and the band read as one ground */}
+          <div
+            aria-hidden
+            className="scene-grain pointer-events-none absolute inset-0"
+          />
+          <div
+            ref={track}
+            className="relative flex h-full w-max items-end pb-[5vh]"
+          >
             <div className="w-[88vw] shrink-0 px-5 md:w-[48vw] md:px-10 lg:pl-[6vw]">
               <h2 className="whitespace-nowrap text-[clamp(2.2rem,4vw,4rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em]">
                 <span className="text-ink">One Degree</span>
@@ -156,7 +169,8 @@ export function StoryPathways() {
                 <span className="text-accent">Three Pathways</span>
               </h2>
               <p className="mt-6 max-w-xs text-[15px] leading-relaxed text-body">
-                A successful tech career, your own startup, or pursue higher education.
+                A successful tech career, your own startup, or pursue higher
+                education.
               </p>
             </div>
 

@@ -7,7 +7,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { SectionHeading } from "@/components/site/SectionHeading";
-import { CornerHandles } from "@/components/site/CornerHandles";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -240,13 +239,12 @@ export function Testimonials() {
                 data-card
                 aria-hidden={i !== active}
                 onClick={() => setActive(i)}
-                className={`relative border p-5 transition-colors duration-500 [grid-area:1/1] sm:p-7 ${
+                className={`relative rounded-[8px] border p-5 transition-colors duration-500 [grid-area:1/1] sm:p-7 ${
                   i === active
                     ? "border-line bg-accent text-white"
                     : "cursor-pointer border-line bg-surface text-ink"
                 }`}
               >
-                <CornerHandles dim={i !== active} />
                 <figcaption className="flex items-center gap-4 sm:gap-5">
                   <Image
                     src={`/images/students/${st.img}.png`}

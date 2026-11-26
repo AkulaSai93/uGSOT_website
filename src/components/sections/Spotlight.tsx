@@ -73,7 +73,7 @@ function Card({ c, onOpen }: { c: Video; onOpen: (v: Video) => void }) {
       type="button"
       onClick={() => onOpen(c)}
       aria-label={`Play podcast: ${c.name}`}
-      className="group block w-full rounded-[6px] border border-black/[0.08] bg-white p-2 text-left outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      className="group block w-full rounded-[6px] border border-line bg-surface p-2 text-left outline-none focus-visible:ring-2 focus-visible:ring-accent"
     >
       <span className="relative block aspect-video overflow-hidden rounded-[4px] bg-sunken">
         <Image
@@ -96,7 +96,7 @@ function Card({ c, onOpen }: { c: Video; onOpen: (v: Video) => void }) {
         </span>
         <span
           aria-hidden
-          className="grid size-8 shrink-0 place-items-center rounded-full bg-ink text-white transition-colors duration-300 group-hover:bg-accent"
+          className="grid size-8 shrink-0 place-items-center rounded-full bg-white text-[#0b0d12] transition-colors duration-300 group-hover:bg-accent group-hover:text-white"
         >
           <Play
             size={12}
@@ -339,7 +339,7 @@ export function Spotlight() {
             type="button"
             aria-label={label}
             onClick={() => step(d)}
-            className="grid size-11 place-items-center rounded-[6px] border border-black/[0.08] bg-white text-ink transition-colors hover:border-ink"
+            className="grid size-11 place-items-center rounded-[6px] border border-line bg-surface text-ink transition-colors hover:border-ink"
           >
             <Icon size={18} strokeWidth={2} aria-hidden />
           </button>

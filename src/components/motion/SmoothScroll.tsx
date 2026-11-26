@@ -33,7 +33,10 @@ export function SmoothScroll() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const instance = new Lenis({
-      lerp: 0.09,
+      // a long, soft glide: lower lerp = more inertia
+      lerp: 0.075,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.4,
       anchors: { offset: -116 },
       autoRaf: false,
     });

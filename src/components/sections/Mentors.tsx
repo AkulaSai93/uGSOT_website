@@ -242,7 +242,7 @@ function MentorCard({ p, hidden }: { p: Person; hidden: boolean }) {
       aria-hidden={hidden || undefined}
       // pure black, the section's own dark, with no edge: the card itself
       // disappears and only the light and the person show
-      className="relative h-[294px] w-[208px] shrink-0 overflow-hidden rounded-[14px] bg-black"
+      className="relative h-[294px] w-[208px] shrink-0 overflow-hidden rounded-[14px] bg-[var(--mt-bg)]"
     >
       <CardGlow />
 
@@ -294,7 +294,7 @@ function MentorCard({ p, hidden }: { p: Person; hidden: boolean }) {
 
 /* the section's colours: black throughout, no light state */
 const DARK = {
-  "--mt-bg": "#000000", // pure black, the cards' own ground, so they disappear into it
+  "--mt-bg": "#05040a", // the story's near-black, the cards' own ground, so they disappear into it
   "--mt-fg": "#ffffff",
   "--mt-soft": "#e5e5e5",
   "--mt-muted": "rgba(229,229,229,0.8)",
@@ -309,14 +309,6 @@ export function Mentors() {
       className="relative overflow-hidden bg-[var(--mt-bg)] pb-16 pt-12 lg:pb-24 lg:pt-12"
       style={DARK as React.CSSProperties}
     >
-      {/* the same film grain as over the particle scene, only once dark */}
-      <div
-        aria-hidden
-        // above the cards, so the grain lies evenly over them and the black
-        // around them and can't outline them
-        className="scene-grain pointer-events-none absolute inset-0 z-10"
-        style={{ opacity: "var(--mt-grain)" }}
-      />
 
       {/* the faculty section's heading: light, the key phrases heavier */}
       <div className="container-page relative">

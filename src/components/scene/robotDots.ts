@@ -214,13 +214,19 @@ export function createRobotDots(parent: THREE.Object3D, blending: Partial<THREE.
       });
       const pos = s.points.geometry.attributes.position as THREE.BufferAttribute;
       const arr = pos.array as Float32Array;
+      let low = Infinity;
       for (let i = 0; i < s.samples.length; i++) {
         const sm = s.samples[i];
         const ca = s.cache[sm.mesh];
         const w = 1 - sm.u - sm.v;
         for (let d = 0; d < 3; d++)
           arr[i * 3 + d] = ca[sm.a * 3 + d] * w + ca[sm.b * 3 + d] * sm.u + ca[sm.c * 3 + d] * sm.v;
+        if (arr[i * 3 + 1] < low) low = arr[i * 3 + 1];
       }
+      // keep the lowest foot on the ground (y = FEET_Y) in every pose, so the
+      // walk never lifts the robot off the line
+      const drop = FEET_Y - low;
+      for (let i = 0; i < s.samples.length; i++) arr[i * 3 + 1] += drop;
       pos.needsUpdate = true;
     },
     dispose() {

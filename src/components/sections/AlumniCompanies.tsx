@@ -306,10 +306,6 @@ export function AlumniCompanies() {
         <LogoRow logos={LOGOS.slice(half)} reverse seconds={46} />
       </Reveal>
 
-      <div
-        aria-hidden
-        className="scene-grain pointer-events-none absolute inset-0 z-[2]"
-      />
     </section>
   );
 }

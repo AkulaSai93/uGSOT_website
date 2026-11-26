@@ -126,7 +126,7 @@ function ScholarshipCard({ s }: { s: Scholarship }) {
           className="group absolute inset-0 overflow-hidden rounded-[8px] [backface-visibility:hidden]"
         >
           <div className="flex h-full flex-col">
-            <h3 className="shrink-0 px-4 pb-2 pt-5 text-center font-display text-[17px] font-medium leading-[1.2] tracking-[-0.02em] text-ink">
+            <h3 className="shrink-0 px-4 pb-2 pt-5 text-center font-display text-[17px] font-medium leading-[1.2] tracking-[-0.02em] text-[#0b0d12]">
               {s.title}
             </h3>
             {/* the picture, scaled to fit whole (never cropped) on the card's
@@ -157,7 +157,7 @@ function ScholarshipCard({ s }: { s: Scholarship }) {
                 type="button"
                 onClick={() => turn(true)}
                 aria-expanded={flipped}
-                className="flex w-full items-center justify-center gap-2 bg-ink px-4 py-3.5 text-[14px] font-semibold text-white transition-colors duration-300 hover:bg-accent"
+                className="flex w-full items-center justify-center gap-2 bg-[#0b0d12] px-4 py-3.5 text-[14px] font-semibold text-white transition-colors duration-300 hover:bg-accent"
               >
                 View eligibility
                 <RotateCcw
@@ -190,7 +190,7 @@ function ScholarshipCard({ s }: { s: Scholarship }) {
           <div className="flex items-center justify-between gap-3">
             <a
               href={UGNET}
-              className="group/link inline-flex items-center gap-2 rounded-[6px] bg-white px-4 py-2.5 text-[13.5px] font-semibold text-ink transition-colors duration-300 hover:text-accent"
+              className="group/link inline-flex items-center gap-2 rounded-[6px] bg-white px-4 py-2.5 text-[13.5px] font-semibold text-[#0b0d12] transition-colors duration-300 hover:text-accent"
             >
               Know More
               <ArrowUpRight
@@ -215,7 +215,7 @@ function ScholarshipCard({ s }: { s: Scholarship }) {
 }
 
 /** the band: black with the film grain, exactly the Mentors section's ground */
-const GROUND_DARK = "#000000";
+const GROUND_DARK = "#05040a";
 
 export function Scholarships() {
   const root = useRef<HTMLElement>(null);
@@ -272,12 +272,6 @@ export function Scholarships() {
       style={{ background: GROUND_DARK }}
       className="relative overflow-hidden pb-6 pt-8 lg:pb-10 lg:pt-16"
     >
-      {/* the same film grain as the Mentors section above, so the two read
-          as one black surface */}
-      <div
-        aria-hidden
-        className="scene-grain pointer-events-none absolute inset-0"
-      />
       <div className="container-page relative">
         <div className="grid items-end gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)] lg:gap-16">
           <h2 className="text-white max-lg:text-center">

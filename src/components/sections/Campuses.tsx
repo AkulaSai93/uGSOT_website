@@ -72,7 +72,7 @@ export function Campuses() {
   // relative z-20 + -mt-px: overlaps the scroll-story sections above by a
   // pixel, so no hairline of it shows where the two meet on a fractional pixel
   return (
-    <section id="campuses" className="relative z-20 -mt-px bg-canvas pb-4 pt-8 lg:pb-8 lg:pt-16">
+    <section id="campuses" className="relative bg-canvas pb-4 pt-8 lg:pb-8 lg:pt-16">
       <div className="container-page">
         <SectionHeading
           title="Our"
@@ -95,9 +95,12 @@ export function Campuses() {
             <article
               key={c.key}
               data-reveal-item
-              className="group relative flex flex-col overflow-hidden rounded-[8px] border border-black/[0.08] bg-white transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1"
+              className="group relative flex flex-col overflow-hidden rounded-[8px] border border-line bg-surface transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1"
             >
-              <div className="relative aspect-video overflow-hidden bg-ink">
+              <div
+                data-fx="reveal"
+                className="relative aspect-video overflow-hidden bg-ink"
+              >
                 <Image
                   src={`/images/campuses/cards-v2/${c.key}.webp`}
                   alt={`${c.name}, ${c.location}`}
@@ -158,7 +161,7 @@ export function Campuses() {
                       aria-hidden
                       style={{
                         backgroundImage:
-                          "conic-gradient(transparent 200deg, #0b0d12)",
+                          "conic-gradient(transparent 200deg, #ffffff)",
                       }}
                       className="cta-glow absolute left-1/2 top-1/2 aspect-square w-[160%]"
                     />

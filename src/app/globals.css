@@ -63,7 +63,7 @@
    equivalents. Anything with a fixed colour (white cards, pinned dark text) is
    adjusted in its own section (see page.tsx for the wrapper). */
 .theme-dark {
-  --canvas: #000000;
+  --canvas: #05040a; /* the scroll story's ground (Specializations), not pure black. */
   --surface: #121214;
   --surface-sunken: #17181d;
   --ink: #ffffff;
@@ -299,6 +299,13 @@ html {
   background-repeat: repeat;
   background-size: 220px 220px;
   opacity: 0.08;
+}
+
+/* Headline word reveal (PageFX): each masked line gets room below for the
+   descenders (g, p, y), taken back with a negative margin so spacing holds. */
+.fx-line {
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
 }
 
 /* Mentor wall (from the 3D prologue): two rows of cards drifting in opposite

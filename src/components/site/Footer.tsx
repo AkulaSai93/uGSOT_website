@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,6 +12,14 @@ import { EMAIL, PHONE, SOT_URL, WHATSAPP } from "@/components/site/contact";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
+/* WebGL, client only, loaded after first paint */
+const FooterWordmark = dynamic(
+  () => import("@/components/scene/FooterWordmark"),
+  {
+    ssr: false,
+  },
+);
+
 /**
  * Footer
  *
@@ -19,21 +28,20 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
  * the five social profiles, the disclaimer, the copyright and the three legal
  * links.
  *
- * Layout after two Framer references the client supplied. From
- * conclave26.framer.ai: the footer is one full-screen illustration (a Figma AI
- * campus above the clouds in soft morning light, in the hero's style —
- * campus-day.jpg), washed white off the left and along the foot as the hero
- * is, with the closing call in large type on its left, the ways to
- * reach us under it ("Get in touch" carries the hero CTA's sweeping
- * glow), and a thin bar of fine print along the foot. From
- * northtitan.framer.website: the page above lifts away to reveal it — the
- * footer is pinned beneath the page (sticky at the bottom, behind it) so the
- * last section slides up off it like a sheet; on phones too, where a footer
- * taller than the screen is pinned so its top is uncovered first.
+ * Dark, in the hero's own look: the near-black ground with its film grain.
+ * The closing call on the left — "Let's Connect", its line, "Get in touch"
+ * (with the hero CTA's sweeping glow) and the ways to reach us — then the
+ * foot (logo, quick links, profiles, the disclaimer and the fine print), and
+ * at the very bottom the school's name, "upGrad SOT", across the full width in
+ * the hero bubble's dots (FooterWordmark), cycling through the hero ring's
+ * colours, a light of the same colour rising under it and its lower half
+ * smeared into soft horizontal streaks.
+ *
+ * It follows the FAQs in the page's normal flow (no reveal from beneath),
+ * one screen tall on desktop.
  *
  * Motion (GSAP, scrubbed by the scroll): as the footer is uncovered the
- * illustration settles from a slight zoom and brightens, and the words rise
- * in.
+ * words rise in; the name gathers out of rising dots the first time it shows.
  */
 const CONTACT = "/contact";
 
@@ -74,31 +82,8 @@ export function Footer() {
       const q = gsap.utils.selector(root);
       const mm = gsap.matchMedia();
 
-      // phones: the same pinned-beneath reveal, but the footer can be taller
-      // than the screen there, and pinned by its bottom edge its top would
-      // never show. So it is pinned by its bottom at (screen - its height):
-      // when it fits that is 0, the reveal exactly as on desktop; when it is
-      // taller it is uncovered from its top and then scrolls on to its foot.
-      mm.add("(max-width: 1023px)", () => {
-        const el = root.current!;
-        const pin = () =>
-          el.style.setProperty(
-            "--footer-pin",
-            `${Math.min(0, window.innerHeight - el.offsetHeight)}px`,
-          );
-        pin();
-        const ro = new ResizeObserver(pin);
-        ro.observe(el);
-        window.addEventListener("resize", pin);
-        return () => {
-          ro.disconnect();
-          window.removeEventListener("resize", pin);
-          el.style.removeProperty("--footer-pin");
-        };
-      });
-
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        // uncovered as the page above slides off it
+        // the words rise in as the footer scrolls into view
         gsap
           .timeline({
             scrollTrigger: {
@@ -109,16 +94,10 @@ export function Footer() {
             },
           })
           .fromTo(
-            q("[data-art]"),
-            { scale: 1.12, filter: "brightness(0.9)" },
-            { scale: 1, filter: "brightness(1)", ease: "none" },
-            0,
-          )
-          .fromTo(
             q("[data-rise]"),
             { y: 60, autoAlpha: 0 },
             { y: 0, autoAlpha: 1, ease: "power2.out", stagger: 0.08 },
-            0.3,
+            0,
           );
       });
       return () => mm.revert();
@@ -130,100 +109,82 @@ export function Footer() {
     <footer
       ref={root}
       id="site-footer"
-      className="sticky bottom-[var(--footer-pin,0px)] z-0 overflow-hidden bg-[#fbf6f1] text-ink lg:bottom-0 lg:h-[100svh] lg:min-h-[640px]"
+      className="theme-dark relative overflow-hidden bg-[#05040a] text-ink lg:flex lg:h-[100svh] lg:min-h-[680px] lg:flex-col"
     >
-      {/* the illustration, darkened on the left and along the foot so the
-          words read on it */}
-      <div data-art aria-hidden className="absolute inset-0">
-        <Image
-          src="/images/footer/campus-day.jpg"
-          alt=""
-          fill
-          // the footer sits pinned behind the page, so the browser sees it
-          // as on screen from the start: fetch it after everything else
-          fetchPriority="low"
-          sizes="100vw"
-          className="object-cover object-[70%_50%]"
-        />
-      </div>
-      {/* the hero's own wash: white fading off the left (from the top on
-          phones), and a white fade along the foot under the fine print */}
-      <span
+      <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.75)_0%,rgba(255,255,255,0.4)_40%,rgba(255,255,255,0)_60%)] max-lg:bg-[linear-gradient(180deg,rgba(255,255,255,0.55)_0%,rgba(255,255,255,0.45)_35%,rgba(255,255,255,0.82)_55%,rgba(255,255,255,0.9)_100%)]"
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-[38%] bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.55)_45%,#ffffff_100%)]"
+        className="scene-grain pointer-events-none absolute inset-0"
       />
 
-      <div className="container-page relative flex h-full flex-col pb-8 pt-24 lg:pt-28">
-        {/* the closing call, large on the left, with how to reach us under it */}
+      <div className="container-page relative flex flex-1 flex-col pt-28">
+        {/* the closing call, on the left, with how to reach us under it */}
         <div className="flex flex-1 flex-col justify-center">
           <div>
-            <h2
-              data-rise
-              className="font-display text-[clamp(2.25rem,4.6vw,4rem)] font-medium leading-[1.02] tracking-[-0.03em]"
-            >
-              Let&rsquo;s <span className="text-accent">Connect</span>
-            </h2>
-            <p
-              data-rise
-              className="mt-4 text-[16px] leading-relaxed text-body sm:whitespace-nowrap"
-            >
-              Have queries? Fill out the enquiry form and our team will reach
-              out to you!
-            </p>
-            <div data-rise className="mt-8">
-              {/* with the hero CTA's glow: a dark sliver sweeping round the edge */}
-              <a
-                href={CONTACT}
-                className="group/cta relative inline-flex overflow-hidden rounded-[4px] p-[1.5px]"
+            <div className="flex flex-col items-start">
+              <h2
+                data-rise
+                className="font-display text-[clamp(2.25rem,4.4vw,4rem)] font-medium leading-[1] tracking-[-0.04em] text-white"
               >
-                <span
-                  aria-hidden
-                  style={{
-                    backgroundImage:
-                      "conic-gradient(transparent 200deg, #0b0d12)",
-                  }}
-                  className="cta-glow absolute left-1/2 top-1/2 aspect-square w-[160%]"
-                />
-                <span className="relative z-[2] inline-flex items-center gap-2 rounded-[3px] bg-accent px-5 py-2.5 text-[14px] font-semibold text-white transition-colors group-hover/cta:bg-accent-hover">
-                  Get in touch
-                  <ArrowUpRight
-                    size={16}
-                    strokeWidth={2}
-                    aria-hidden
-                    className="transition-transform duration-300 group-hover/cta:-translate-y-0.5 group-hover/cta:translate-x-0.5"
-                  />
-                </span>
-              </a>
-            </div>
-            <div data-rise className="mt-8 flex flex-wrap gap-x-6 gap-y-3">
-              {REACH.map(({ label, href, icon: Icon }) => (
+                Let&rsquo;s <span className="text-accent">Connect</span>
+              </h2>
+              <p
+                data-rise
+                className="mt-4 max-w-[34ch] text-[16px] leading-relaxed text-white/65 sm:max-w-none sm:text-[17px]"
+              >
+                Have queries? Fill out the enquiry form and our team will reach
+                out to you!
+              </p>
+              <div data-rise className="mt-8">
+                {/* with the hero CTA's glow: a white sliver sweeping round the edge */}
                 <a
-                  key={label}
-                  href={href}
-                  target={href.startsWith("http") ? "_blank" : undefined}
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2.5 text-[14.5px] font-medium text-ink transition-colors hover:text-accent"
+                  href={CONTACT}
+                  className="group/cta relative inline-flex overflow-hidden rounded-[4px] p-[1.5px]"
                 >
-                  <span className="grid size-8 place-items-center rounded-[6px] bg-accent/10 text-accent">
-                    <Icon size={15} strokeWidth={2} aria-hidden />
+                  <span
+                    aria-hidden
+                    style={{
+                      backgroundImage:
+                        "conic-gradient(transparent 200deg, #ffffff)",
+                    }}
+                    className="cta-glow absolute left-1/2 top-1/2 aspect-square w-[160%]"
+                  />
+                  <span className="relative z-[2] inline-flex items-center gap-2 rounded-[3px] bg-accent px-5 py-2.5 text-[14px] font-semibold text-white transition-colors group-hover/cta:bg-accent-hover">
+                    Get in touch
+                    <ArrowUpRight
+                      size={16}
+                      strokeWidth={2}
+                      aria-hidden
+                      className="transition-transform duration-300 group-hover/cta:-translate-y-0.5 group-hover/cta:translate-x-0.5"
+                    />
                   </span>
-                  {label}
                 </a>
-              ))}
+              </div>
+              <div data-rise className="mt-8 flex flex-wrap gap-x-6 gap-y-3">
+                {REACH.map(({ label, href, icon: Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target={href.startsWith("http") ? "_blank" : undefined}
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2.5 text-[14.5px] font-medium text-white/85 transition-colors hover:text-white"
+                  >
+                    <span className="grid size-8 place-items-center rounded-[6px] bg-white/[0.06] text-accent ring-1 ring-white/[0.08]">
+                      <Icon size={15} strokeWidth={2} aria-hidden />
+                    </span>
+                    {label}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
         {/* the foot: logo, quick links and profiles; the disclaimer; the
             fine print */}
-        <div data-rise className="mt-12">
-          <div className="flex flex-col gap-6 border-b border-black/[0.08] pb-6 md:flex-row md:items-center md:justify-between">
+        <div data-rise className="mt-12 lg:mt-8">
+          <div className="flex flex-col gap-6 border-b border-white/[0.1] pb-6 md:flex-row md:items-center md:justify-between">
             <Image
-              src="/images/logo-sot.png"
+              src="/images/logo-sot-white.png"
               alt="upGrad School of Technology"
               width={467}
               height={144}
@@ -241,7 +202,7 @@ export function Footer() {
                   {...(l.href.startsWith("/")
                     ? {}
                     : { target: "_blank", rel: "noopener noreferrer" })}
-                  className="text-[14px] font-medium text-ink/80 transition-colors hover:text-accent"
+                  className="text-[14px] font-medium text-white/70 transition-colors hover:text-white"
                 >
                   {l.label}
                 </a>
@@ -255,7 +216,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.label}
-                  className="grid size-9 place-items-center rounded-[6px] bg-white text-ink shadow-[0_0_0_1px_rgba(11,13,18,0.08)] transition-colors hover:bg-accent hover:text-white"
+                  className="grid size-9 place-items-center rounded-[6px] bg-white/[0.06] text-white/80 ring-1 ring-white/[0.08] transition-colors hover:bg-accent hover:text-white hover:ring-accent"
                 >
                   <svg viewBox="0 0 24 24" className="size-4" aria-hidden>
                     <path d={s.path} fill="currentColor" />
@@ -265,20 +226,20 @@ export function Footer() {
             </div>
           </div>
 
-          <p className="mt-5 text-[12px] leading-relaxed text-body">
+          <p className="mt-5 text-[12px] leading-relaxed text-white/45">
             <span className={more ? "block" : "line-clamp-2"}>
               {DISCLAIMER}
             </span>
             <button
               type="button"
               onClick={() => setMore((m) => !m)}
-              className="mt-1 font-semibold text-ink/80 transition-colors hover:text-accent"
+              className="mt-1 font-semibold text-white/75 transition-colors hover:text-white"
             >
               {more ? "Read less" : "Read more"}
             </button>
           </p>
 
-          <div className="mt-5 flex flex-col gap-3 text-[13px] text-body md:flex-row md:items-center md:justify-between">
+          <div className="mt-5 flex flex-col gap-3 text-[13px] text-white/50 md:flex-row md:items-center md:justify-between">
             <p>
               &copy; 2026 Techiora Labs Private Limited. All rights reserved.
             </p>
@@ -287,7 +248,7 @@ export function Footer() {
                 <a
                   key={l.label}
                   href={l.href}
-                  className="transition-colors hover:text-accent"
+                  className="transition-colors hover:text-white"
                 >
                   {l.label}
                 </a>
@@ -295,6 +256,26 @@ export function Footer() {
             </nav>
           </div>
         </div>
+      </div>
+
+      {/* the name, in the bubble's dots: a light of its colour rising under
+          it, and its lower half smeared into soft horizontal streaks */}
+      <div
+        aria-hidden
+        className="relative mt-6 h-[clamp(7rem,21vw,16rem)] shrink-0 [--wm-glow:127_135_242] lg:h-[min(21vw,32svh)]"
+      >
+        {/* a horizontal-only blur for the smeared half of the name */}
+        <svg width="0" height="0" className="absolute">
+          <filter id="wm-smear" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur stdDeviation="22 1.2" />
+          </filter>
+        </svg>
+        {/* the light rising under the name, in its colour */}
+        <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[150%] bg-[radial-gradient(75%_70%_at_50%_100%,rgb(var(--wm-glow)/0.85),rgb(var(--wm-glow)/0.25)_45%,transparent_78%)]" />
+        <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[40%] bg-[linear-gradient(to_top,rgb(var(--wm-glow)/0.55),transparent)]" />
+        <FooterWordmark />
+        {/* fine horizontal scan lines over the smear */}
+        <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-[repeating-linear-gradient(0deg,rgba(255,255,255,0.07)_0_1px,transparent_1px_4px)] [mask-image:linear-gradient(to_top,#000_30%,transparent)]" />
       </div>
     </footer>
   );

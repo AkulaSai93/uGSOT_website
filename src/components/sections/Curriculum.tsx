@@ -362,7 +362,7 @@ function YearBody({
       {/* the black frame only shows once the list is open */}
       <div
         className={`${gap} overflow-hidden rounded-[4px] border transition-colors duration-300 ${
-          open ? "border-black" : "border-transparent"
+          open ? "border-white/15" : "border-transparent"
         }`}
       >
         {/* the toggle bar: a soft charcoal (ink on hover), white
@@ -373,7 +373,7 @@ function YearBody({
           onClick={() => setOpen((o) => !o)}
           // no browser focus ring on click (it drew a blue edge); keyboard
           // focus still shows, as a white inset ring on the black
-          className="flex w-full items-center justify-between rounded-[4px] bg-[#2b2e36] px-5 py-4 text-left outline-none transition-colors duration-300 hover:bg-ink focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/70"
+          className="flex w-full items-center justify-between rounded-[4px] bg-[#2b2e36] px-5 py-4 text-left outline-none transition-colors duration-300 hover:bg-[#3a3e49] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/70"
         >
           <span className="flex items-center gap-2">
             <span className="relative size-6 shrink-0 overflow-clip">
@@ -607,7 +607,7 @@ function VideoRow({
               aria-label={label}
               disabled={off}
               onClick={() => slide(d)}
-              className="grid size-10 place-items-center rounded-[4px] border border-black/[0.08] transition-colors hover:border-ink disabled:pointer-events-none disabled:opacity-35"
+              className="grid size-10 place-items-center rounded-[4px] border border-white/15 transition-colors hover:border-white/60 hover:bg-white/[0.06] disabled:pointer-events-none disabled:opacity-35"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -615,6 +615,8 @@ function VideoRow({
                 alt=""
                 width={17}
                 height={17}
+                // the icons are drawn dark: white on the dark page
+                className="brightness-0 invert"
               />
             </button>
           ))}
@@ -654,7 +656,7 @@ function ProjectCard({ project }: { project: Project }) {
   return (
     <article
       data-reveal-item
-      className="group relative flex w-[260px] shrink-0 snap-start flex-col border border-black/[0.08] bg-white p-2.5 sm:w-[280px]"
+      className="group relative flex w-[260px] shrink-0 snap-start flex-col border border-line bg-surface p-2.5 sm:w-[280px]"
     >
       <div className="relative aspect-video shrink-0 overflow-hidden rounded-[2px]">
         <Image
@@ -666,7 +668,7 @@ function ProjectCard({ project }: { project: Project }) {
         />
       </div>
       <div className="flex flex-1 flex-col px-1.5 pb-1.5 pt-3">
-        <h4 className="text-balance text-[15px] font-semibold leading-[20.625px] tracking-[-0.025em] text-black">
+        <h4 className="text-balance text-[15px] font-semibold leading-[20.625px] tracking-[-0.025em] text-ink">
           {project.title}
         </h4>
         <p className="mt-1 text-[13px] leading-[17.875px] text-body">
@@ -737,7 +739,7 @@ function ProjectSlider({ projects }: { projects: Project[] }) {
               aria-label={label}
               disabled={off}
               onClick={() => slide(d)}
-              className="grid size-10 place-items-center rounded-[4px] border border-black/[0.08] transition-colors hover:border-ink disabled:pointer-events-none disabled:opacity-35"
+              className="grid size-10 place-items-center rounded-[4px] border border-white/15 transition-colors hover:border-white/60 hover:bg-white/[0.06] disabled:pointer-events-none disabled:opacity-35"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -745,6 +747,8 @@ function ProjectSlider({ projects }: { projects: Project[] }) {
                 alt=""
                 width={17}
                 height={17}
+                // the icons are drawn dark: white on the dark page
+                className="brightness-0 invert"
               />
             </button>
           ))}
@@ -828,7 +832,7 @@ export function Curriculum() {
           {YEARS.map((y, i) => {
             const on = open === i;
             return (
-              <div key={y.key} className="overflow-hidden rounded-[8px] border border-black/[0.08] bg-white">
+              <div key={y.key} className="overflow-hidden rounded-[8px] border border-line bg-surface">
                 <button
                   type="button"
                   aria-expanded={on}
@@ -841,7 +845,7 @@ export function Curriculum() {
                     setOpen(on ? null : i);
                   }}
                   className={`flex w-full items-center gap-3 px-3 py-3 text-left outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/60 ${
-                    on ? "bg-accent text-white" : "bg-white text-ink"
+                    on ? "bg-accent text-white" : "bg-surface text-ink"
                   }`}
                 >
                   <span
@@ -892,13 +896,13 @@ export function Curriculum() {
 
         {/* desktop: the tabbed card */}
         <Reveal className="mt-12 hidden lg:mt-16 lg:block">
-          <div className="relative mx-auto max-w-[1116px] rounded-[8px] border border-black/[0.08] bg-white p-5 sm:px-8 sm:py-6">
+          <div className="relative mx-auto max-w-[1116px] rounded-[8px] border border-line bg-surface p-5 sm:px-8 sm:py-6">
             {/* the year tabs */}
             <div
               role="tablist"
               aria-label="Curriculum years"
               onKeyDown={onKey}
-              className="flex overflow-x-auto rounded-[4px] border border-black/[0.08] p-px [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              className="flex overflow-x-auto rounded-[4px] border border-white/15 p-px [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
               {YEARS.map((y, i) => {
                 const on = i === active;
@@ -918,8 +922,8 @@ export function Curriculum() {
                     className={`min-w-[150px] flex-1 px-5 py-2.5 text-left outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/60 ${
                       on
                         ? "bg-accent text-white"
-                        : "bg-white text-[#525252] hover:bg-sunken"
-                    } ${i === 0 ? "rounded-l-[3px]" : ""} ${i === YEARS.length - 1 ? "rounded-r-[3px]" : ""}`}
+                        : "bg-surface text-body hover:bg-sunken"
+                    } ${i === 0 ? "rounded-l-[3px]" : "border-l border-white/15"} ${i === YEARS.length - 1 ? "rounded-r-[3px]" : ""}`}
                   >
                     <span className="block text-[14px] uppercase leading-5 tracking-[0.35px]">
                       Year - {i + 1}

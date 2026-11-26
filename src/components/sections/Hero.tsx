@@ -443,7 +443,7 @@ export function Hero() {
               <Magnetic strength={0.25}>
                 <Link
                   href="#brochure"
-                  className="inline-flex items-center justify-center gap-2.5 rounded-[6px] border border-white/10 bg-white px-6 py-[11px] text-[15px] font-semibold text-ink transition-colors hover:bg-white/85 max-sm:w-full max-sm:py-[12.5px] max-sm:text-[16px]"
+                  className="inline-flex items-center justify-center gap-2.5 rounded-[6px] border border-white/10 bg-white px-6 py-[11px] text-[15px] font-semibold text-[#0b0d12] transition-colors hover:bg-white/85 max-sm:w-full max-sm:py-[12.5px] max-sm:text-[16px]"
                 >
                   <Download size={16} strokeWidth={2} aria-hidden />
                   Download Brochure
@@ -456,7 +456,13 @@ export function Hero() {
               data-reveal="fade"
               className="mt-[clamp(1.25rem,3vh,2rem)] hidden lg:block"
             >
-              <CompanyLogos tone="dark" compact className="[&>div]:mx-auto" />
+              <CompanyLogos
+                tone="dark"
+                compact
+                markHeight={30}
+                trackWidth="lg:w-[560px]"
+                className="[&>div]:mx-auto"
+              />
             </div>
           </div>
         </div>
@@ -465,7 +471,12 @@ export function Hero() {
             the black overlay */}
         <div className="hero-logos container-page absolute inset-x-0 bottom-0 z-10 pb-[max(20px,env(safe-area-inset-bottom))] text-center lg:hidden">
           <div data-reveal="fade">
-            <CompanyLogos tone="dark" compact className="[&>p]:text-[14px]" />
+            <CompanyLogos
+              tone="dark"
+              compact
+              markHeight={28}
+              className="[&>p]:text-[14px]"
+            />
           </div>
         </div>
       </div>

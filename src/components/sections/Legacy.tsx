@@ -332,10 +332,6 @@ export function Legacy() {
         </div>
       </Reveal>
 
-      <div
-        aria-hidden
-        className="scene-grain pointer-events-none absolute inset-x-0 bottom-px top-0 z-[2]"
-      />
     </section>
   );
 }

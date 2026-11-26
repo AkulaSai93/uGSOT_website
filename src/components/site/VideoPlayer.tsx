@@ -82,7 +82,7 @@ export function VideoPlayer({
           type="button"
           onClick={onClose}
           aria-label="Close video"
-          className="absolute -top-12 right-0 grid size-10 place-items-center rounded-[6px] bg-white text-ink transition-colors hover:bg-accent hover:text-white"
+          className="absolute -top-12 right-0 grid size-10 place-items-center rounded-[6px] bg-white text-[#0b0d12] transition-colors hover:bg-accent hover:text-white"
         >
           <X size={18} strokeWidth={2} />
         </button>

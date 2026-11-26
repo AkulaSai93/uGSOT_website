@@ -97,10 +97,7 @@ export function Campuses() {
               data-reveal-item
               className="group relative flex flex-col overflow-hidden rounded-[8px] border border-line bg-surface transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1"
             >
-              <div
-                data-fx="reveal"
-                className="relative aspect-video overflow-hidden bg-ink"
-              >
+              <div className="relative aspect-video overflow-hidden bg-ink">
                 <Image
                   src={`/images/campuses/cards-v2/${c.key}.webp`}
                   alt={`${c.name}, ${c.location}`}

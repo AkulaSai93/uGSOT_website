@@ -126,7 +126,7 @@ export function IITRace() {
     <section
       ref={root}
       id="iit-race"
-      className="bg-canvas pb-8 pt-10 lg:pb-14 lg:pt-20"
+      className="relative overflow-hidden bg-canvas pb-8 pt-10 lg:pb-14 lg:pt-20"
     >
       {/* the two shows in white on a full-width red band, running right to left */}
       <div aria-hidden className="overflow-hidden bg-accent py-3">

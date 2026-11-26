@@ -120,7 +120,7 @@ export function StorySpecializations() {
 
   return (
     <section ref={root} id="specializations" className="relative z-10">
-      <div className="mx-auto max-w-[1400px] px-5 pb-[4vh] pt-[22vh] md:px-10">
+      <div className="mx-auto max-w-[1400px] px-5 pb-[4vh] pt-[6vh] md:px-10 md:pt-[22vh]">
         {/* ---------- statement heading (Atmos-style scroll reveal) */}
         <h2
           data-statement

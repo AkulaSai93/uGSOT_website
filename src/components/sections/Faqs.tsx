@@ -146,7 +146,11 @@ export function Faqs({
   );
 
   return (
-    <section ref={root} id="faqs" className="bg-canvas py-8 lg:py-16">
+    <section
+      ref={root}
+      id="faqs"
+      className="relative overflow-clip bg-canvas py-8 lg:py-16"
+    >
       <div className="container-page">
         <SectionHeading
           title="Frequently Asked"

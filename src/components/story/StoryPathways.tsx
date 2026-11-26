@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { sceneState } from "@/lib/sceneState";
+import { RAIL, sceneState } from "@/lib/sceneState";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -81,46 +81,90 @@ export function StoryPathways() {
         },
       });
 
-      // pinned horizontal scroll: cards + giant word slide, orb rolls along the line
-      const distance = () =>
-        Math.max(0, track.current!.scrollWidth - window.innerWidth);
-      const wordDistance = () =>
-        Math.max(0, word.current!.scrollWidth - window.innerWidth);
-      gsap
-        .timeline({
-          defaults: { ease: "none" },
-          scrollTrigger: {
-            trigger: root.current,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 0.8,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              sceneState.travel = self.progress;
-            },
-          },
-        })
-        .to(track.current, { x: () => -distance() }, 0)
-        .to(word.current, { x: () => -wordDistance(), duration: 1 }, 0);
-
-      // light up the card the orb is over
       const cards = gsap.utils.toArray<HTMLElement>(
         "[data-card]",
         root.current,
       );
-      const tick = () => {
-        if (sceneState.path < 0.5) {
-          cards.forEach((c) => (c.dataset.active = "false"));
-          return;
-        }
-        const x = orbX(sceneState.travel);
-        cards.forEach((c) => {
-          const r = c.getBoundingClientRect();
-          c.dataset.active = String(x >= r.left && x <= r.right);
-        });
+      const scrub = {
+        trigger: root.current,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.8,
+        invalidateOnRefresh: true,
+        onUpdate: (self: ScrollTrigger) => {
+          sceneState.travel = self.progress;
+        },
       };
-      gsap.ticker.add(tick);
-      return () => gsap.ticker.remove(tick);
+      const mm = gsap.matchMedia();
+
+      // desktop and tablets: pinned horizontal scroll, the cards and the
+      // giant word slide while the robot walks along the line
+      mm.add("(min-width: 768px)", () => {
+        sceneState.vertical = false;
+        const distance = () =>
+          Math.max(0, track.current!.scrollWidth - window.innerWidth);
+        const wordDistance = () =>
+          Math.max(0, word.current!.scrollWidth - window.innerWidth);
+        gsap
+          .timeline({ defaults: { ease: "none" }, scrollTrigger: scrub })
+          .to(track.current, { x: () => -distance() }, 0)
+          .to(word.current, { x: () => -wordDistance(), duration: 1 }, 0);
+
+        // light up the card the robot is over
+        const tick = () => {
+          if (sceneState.path < 0.5) {
+            cards.forEach((c) => (c.dataset.active = "false"));
+            return;
+          }
+          const x = orbX(sceneState.travel);
+          cards.forEach((c) => {
+            const r = c.getBoundingClientRect();
+            c.dataset.active = String(x >= r.left && x <= r.right);
+          });
+        };
+        gsap.ticker.add(tick);
+        return () => gsap.ticker.remove(tick);
+      });
+
+      // phones: a vertical story (after unitedcarriers.com on a phone) — the
+      // cards stacked beside a line on the left, rising as you scroll while
+      // the robot walks down the line
+      mm.add("(max-width: 767px)", () => {
+        sceneState.vertical = true;
+        const distance = () =>
+          Math.max(
+            0,
+            track.current!.scrollHeight -
+              track.current!.parentElement!.clientHeight,
+          );
+        gsap.to(track.current, {
+          y: () => -distance(),
+          ease: "none",
+          scrollTrigger: scrub,
+        });
+
+        // light up the card level with the robot
+        const tick = () => {
+          if (sceneState.path < 0.5) {
+            cards.forEach((c) => (c.dataset.active = "false"));
+            return;
+          }
+          const feet =
+            window.innerHeight *
+            (RAIL.top + (RAIL.bottom - RAIL.top) * sceneState.travel);
+          const mid = feet - window.innerHeight * 0.06;
+          cards.forEach((c) => {
+            const r = c.getBoundingClientRect();
+            c.dataset.active = String(mid >= r.top && mid <= r.bottom);
+          });
+        };
+        gsap.ticker.add(tick);
+        return () => {
+          gsap.ticker.remove(tick);
+          sceneState.vertical = false;
+        };
+      });
+      return () => mm.revert();
     },
     { scope: root },
   );
@@ -135,7 +179,7 @@ export function StoryPathways() {
     >
       <div className="sticky top-0 h-svh overflow-hidden">
         {/* ---------- giant sliding word (upper band) */}
-        <div className="absolute inset-x-0 top-0 flex h-[48%] items-end overflow-hidden">
+        <div className="absolute inset-x-0 top-0 hidden h-[48%] items-end overflow-hidden md:flex">
           <div
             ref={word}
             aria-hidden
@@ -146,24 +190,24 @@ export function StoryPathways() {
         </div>
 
         {/* ---------- the line the robot walks on */}
-        <div className="absolute inset-x-0 top-[48%] z-10 h-px bg-gradient-to-r from-white/[0.06] via-white/30 to-white/[0.06]" />
+        <div className="absolute inset-x-0 top-[48%] z-10 hidden h-px bg-gradient-to-r from-white/[0.06] via-white/30 to-white/[0.06] md:block" />
 
         {/* ---------- lower panel, white: horizontal track (the robot walks
             on the dark upper band, the cards sit on white below it; the white
             takes 52% of the screen so the photos have room) */}
-        <div className="absolute inset-x-0 bottom-0 top-[48%] bg-canvas">
+        <div className="absolute inset-x-0 bottom-0 top-0 md:top-[48%] md:bg-canvas">
           {/* the same film grain as the band above (the scene's), so the
               panel and the band read as one ground */}
           <div
             aria-hidden
-            className="scene-grain pointer-events-none absolute inset-0"
+            className="scene-grain pointer-events-none absolute inset-0 hidden md:block"
           />
           <div
             ref={track}
-            className="relative flex h-full w-max items-end pb-[5vh]"
+            className="relative flex flex-col gap-10 pb-[6vh] pl-[24%] pr-5 pt-28 md:h-full md:w-max md:flex-row md:items-end md:gap-0 md:pb-[5vh] md:pl-0 md:pr-0 md:pt-0"
           >
-            <div className="w-[88vw] shrink-0 px-5 md:w-[48vw] md:px-10 lg:pl-[6vw]">
-              <h2 className="whitespace-nowrap text-[clamp(2.2rem,4vw,4rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em]">
+            <div className="w-full shrink-0 md:w-[48vw] md:px-10 lg:pl-[6vw]">
+              <h2 className="whitespace-nowrap text-[clamp(1.7rem,4vw,4rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em]">
                 <span className="text-ink">One Degree</span>
                 <br />
                 <span className="text-accent">Three Pathways</span>
@@ -179,13 +223,13 @@ export function StoryPathways() {
                 key={p.icon}
                 data-card
                 data-active="false"
-                className="group flex w-[86vw] shrink-0 flex-col border-l border-black/10 px-6 py-2 md:w-[34vw] md:px-12"
+                className="group flex w-full shrink-0 flex-col md:w-[34vw] md:border-l md:border-white/10 md:px-12 md:py-2"
               >
                 {/* the pathway's photo (Figma 53:834 / 53:835 / 53:836, 363×204),
                     capped by the screen height so the card always fits the
                     panel; always in full colour, it zooms in a touch while the
                     robot is over the card */}
-                <div className="relative aspect-[363/204] h-[min(220px,17svh)] md:h-[min(270px,25svh)] overflow-hidden bg-sunken">
+                <div className="relative aspect-[363/204] w-full overflow-hidden bg-sunken md:h-[min(270px,25svh)] md:w-auto">
                   <Image
                     src={p.image}
                     alt=""
@@ -202,7 +246,7 @@ export function StoryPathways() {
                 </p>
               </article>
             ))}
-            <div className="w-[4vw] shrink-0" />
+            <div className="hidden w-[4vw] shrink-0 md:block" />
           </div>
         </div>
       </div>

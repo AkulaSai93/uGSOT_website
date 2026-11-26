@@ -168,7 +168,11 @@ export function Admission({
   );
 
   return (
-    <section ref={root} id={id} className="bg-canvas py-8 lg:py-16">
+    <section
+      ref={root}
+      id={id}
+      className="relative overflow-clip bg-canvas py-8 lg:py-16"
+    >
       <div className="container-page">
         <SectionHeading title={title} accent={accent} intro={intro} />
 

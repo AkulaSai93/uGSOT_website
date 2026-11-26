@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { gsap } from "gsap";
-import { sceneState } from "@/lib/sceneState";
+import { RAIL, sceneState } from "@/lib/sceneState";
 import {
   buildDust,
   buildParticles,
@@ -264,6 +264,20 @@ export default function SceneStage() {
     /** target transform for a stage */
     const stage = (i: number) => {
       if (i === 0) return ring0;
+      // phones: the robot walks down the rail on the left, small
+      if (i === 2 && sceneState.vertical) {
+        const s = Math.min(
+          (view.vw * 0.16) / STAGE_WIDTH[2],
+          (view.vh * 0.14) / STAGE_HEIGHT[2],
+        );
+        const feet =
+          RAIL.top + (RAIL.bottom - RAIL.top) * Math.min(1, sceneState.travel);
+        return {
+          x: view.vw * (RAIL.x - 0.5),
+          y: view.vh * (0.5 - feet) + 2 * s,
+          s,
+        };
+      }
       const L = view.mobile ? MOBILE : DESKTOP;
       const s = Math.min(
         1.25,
@@ -389,7 +403,9 @@ export default function SceneStage() {
       const f = smooth(Math.min(Math.max(p - i, 0), 1));
       const a = stage(i),
         b = stage(i + 1);
-      const span = (view.mobile ? 0.6 : 0.76) * Math.min(1, st.path);
+      const span = st.vertical
+        ? 0
+        : (view.mobile ? 0.6 : 0.76) * Math.min(1, st.path);
       const tx = a.x + (b.x - a.x) * f + view.vw * st.travel * span;
       const ty = a.y + (b.y - a.y) * f;
       const ts = a.s + (b.s - a.s) * f;
@@ -406,7 +422,15 @@ export default function SceneStage() {
       group.rotation.y = damp(group.rotation.y, smoothed.x * 0.18, 2, dt);
       group.rotation.x = damp(group.rotation.x, -smoothed.y * 0.1, 2, dt);
 
-      robot.update(dt, t, renderer.getPixelRatio(), u.uSwap.value, st.travel);
+      // on the vertical rail it turns to face you, walking down the screen
+      robot.update(
+        dt,
+        t,
+        renderer.getPixelRatio(),
+        u.uSwap.value,
+        st.travel,
+        st.vertical ? 0.15 : undefined,
+      );
 
       // overlays: the ring's haze fades as the globe forms
       if (haze.current)

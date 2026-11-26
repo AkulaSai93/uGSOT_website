@@ -49,7 +49,14 @@ void main(){
   gl_FragColor = vec4(vColor * a, a);   // premultiplied
 }`;
 
-type Sample = { mesh: number; a: number; b: number; c: number; u: number; v: number };
+type Sample = {
+  mesh: number;
+  a: number;
+  b: number;
+  c: number;
+  u: number;
+  v: number;
+};
 
 /* raw sRGB, like the rest of the scene */
 const COLORS: Record<string, [number, number, number]> = {
@@ -66,14 +73,24 @@ function build(root: THREE.Object3D, count: number) {
   root.updateMatrixWorld(true);
 
   // triangles of every mesh, in rest pose, weighted by area
-  const tris: { mesh: number; a: number; b: number; c: number; area: number }[] = [];
-  const va = new THREE.Vector3(), vb = new THREE.Vector3(), vc = new THREE.Vector3();
+  const tris: {
+    mesh: number;
+    a: number;
+    b: number;
+    c: number;
+    area: number;
+  }[] = [];
+  const va = new THREE.Vector3(),
+    vb = new THREE.Vector3(),
+    vc = new THREE.Vector3();
   meshes.forEach((m, mi) => {
     const g = m.geometry;
     const idx = g.index;
     const n = idx ? idx.count : g.attributes.position.count;
     for (let t = 0; t < n; t += 3) {
-      const a = idx ? idx.getX(t) : t, b = idx ? idx.getX(t + 1) : t + 1, c = idx ? idx.getX(t + 2) : t + 2;
+      const a = idx ? idx.getX(t) : t,
+        b = idx ? idx.getX(t + 1) : t + 1,
+        c = idx ? idx.getX(t + 2) : t + 2;
       m.getVertexPosition(a, va).applyMatrix4(m.matrixWorld);
       m.getVertexPosition(b, vb).applyMatrix4(m.matrixWorld);
       m.getVertexPosition(c, vc).applyMatrix4(m.matrixWorld);
@@ -90,15 +107,20 @@ function build(root: THREE.Object3D, count: number) {
   const rnd = new Float32Array(count * 2);
   for (let i = 0; i < count; i++) {
     const r = Math.random() * total;
-    let lo = 0, hi = cum.length - 1;
+    let lo = 0,
+      hi = cum.length - 1;
     while (lo < hi) {
       const mid = (lo + hi) >> 1;
       if (cum[mid] < r) lo = mid + 1;
       else hi = mid;
     }
     const t = tris[lo];
-    let u = Math.random(), v = Math.random();
-    if (u + v > 1) { u = 1 - u; v = 1 - v; }
+    let u = Math.random(),
+      v = Math.random();
+    if (u + v > 1) {
+      u = 1 - u;
+      v = 1 - v;
+    }
     samples.push({ mesh: t.mesh, a: t.a, b: t.b, c: t.c, u, v });
     const mat = meshes[t.mesh].material as THREE.Material;
     const col = COLORS[mat.name] ?? COLORS.Grey;
@@ -116,11 +138,16 @@ function build(root: THREE.Object3D, count: number) {
     used[sm.mesh].add(sm.c);
   }
   const verts = used.map((s) => Int32Array.from(s));
-  const cache = meshes.map((m) => new Float32Array(m.geometry.attributes.position.count * 3));
+  const cache = meshes.map(
+    (m) => new Float32Array(m.geometry.attributes.position.count * 3),
+  );
   return { meshes, samples, colors, rnd, verts, cache };
 }
 
-export function createRobotDots(parent: THREE.Object3D, blending: Partial<THREE.ShaderMaterialParameters>) {
+export function createRobotDots(
+  parent: THREE.Object3D,
+  blending: Partial<THREE.ShaderMaterialParameters>,
+) {
   let cancelled = false;
   let state: {
     root: THREE.Object3D;
@@ -143,11 +170,16 @@ export function createRobotDots(parent: THREE.Object3D, blending: Partial<THREE.
     const box = new THREE.Box3().setFromObject(root, true);
     const k = HEIGHT / (box.max.y - box.min.y);
     root.scale.setScalar(k);
-    root.position.set(-((box.min.x + box.max.x) / 2) * k, FEET_Y - box.min.y * k, -((box.min.z + box.max.z) / 2) * k);
+    root.position.set(
+      -((box.min.x + box.max.x) / 2) * k,
+      FEET_Y - box.min.y * k,
+      -((box.min.z + box.max.z) / 2) * k,
+    );
     root.rotation.y = YAW;
 
     const mixer = new THREE.AnimationMixer(root);
-    const clip = gltf.animations.find((a) => a.name === "Walking") ?? gltf.animations[0];
+    const clip =
+      gltf.animations.find((a) => a.name === "Walking") ?? gltf.animations[0];
     const action = mixer.clipAction(clip);
     action.play();
     action.paused = true;
@@ -155,7 +187,10 @@ export function createRobotDots(parent: THREE.Object3D, blending: Partial<THREE.
 
     const { meshes, samples, colors, rnd, verts, cache } = build(root, count);
     const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.BufferAttribute(new Float32Array(count * 3), 3));
+    g.setAttribute(
+      "position",
+      new THREE.BufferAttribute(new Float32Array(count * 3), 3),
+    );
     g.setAttribute("aColor", new THREE.BufferAttribute(colors, 3));
     g.setAttribute("aRnd", new THREE.BufferAttribute(rnd, 2));
     const material = new THREE.ShaderMaterial({
@@ -176,14 +211,32 @@ export function createRobotDots(parent: THREE.Object3D, blending: Partial<THREE.
     points.frustumCulled = false;
     points.visible = false;
     parent.add(points);
-    state = { root, mixer, action, meshes, samples, verts, cache, points, walk: 0 };
+    state = {
+      root,
+      mixer,
+      action,
+      meshes,
+      samples,
+      verts,
+      cache,
+      points,
+      walk: 0,
+    };
   });
 
   const v = new THREE.Vector3();
 
   return {
     /** reveal 0 → 1 fades the dots in; travel 0 → 1 is distance along the line */
-    update(dt: number, time: number, pixelRatio: number, reveal: number, travel: number) {
+    update(
+      dt: number,
+      time: number,
+      pixelRatio: number,
+      reveal: number,
+      travel: number,
+      /** which way it faces; the three-quarter view by default */
+      yaw: number = YAW,
+    ) {
       const s = state;
       if (!s) return;
       const u = s.points.material.uniforms;
@@ -192,6 +245,8 @@ export function createRobotDots(parent: THREE.Object3D, blending: Partial<THREE.
       u.uPixelRatio.value = pixelRatio;
       s.points.visible = reveal > 0.001;
       if (!s.points.visible) return;
+
+      s.root.rotation.y = THREE.MathUtils.damp(s.root.rotation.y, yaw, 5, dt);
 
       // pose: the walk clip, scrubbed by distance travelled
       const dur = s.action.getClip().duration;
@@ -212,7 +267,8 @@ export function createRobotDots(parent: THREE.Object3D, blending: Partial<THREE.
           out[k * 3 + 2] = v.z;
         }
       });
-      const pos = s.points.geometry.attributes.position as THREE.BufferAttribute;
+      const pos = s.points.geometry.attributes
+        .position as THREE.BufferAttribute;
       const arr = pos.array as Float32Array;
       let low = Infinity;
       for (let i = 0; i < s.samples.length; i++) {
@@ -220,7 +276,10 @@ export function createRobotDots(parent: THREE.Object3D, blending: Partial<THREE.
         const ca = s.cache[sm.mesh];
         const w = 1 - sm.u - sm.v;
         for (let d = 0; d < 3; d++)
-          arr[i * 3 + d] = ca[sm.a * 3 + d] * w + ca[sm.b * 3 + d] * sm.u + ca[sm.c * 3 + d] * sm.v;
+          arr[i * 3 + d] =
+            ca[sm.a * 3 + d] * w +
+            ca[sm.b * 3 + d] * sm.u +
+            ca[sm.c * 3 + d] * sm.v;
         if (arr[i * 3 + 1] < low) low = arr[i * 3 + 1];
       }
       // keep the lowest foot on the ground (y = FEET_Y) in every pose, so the

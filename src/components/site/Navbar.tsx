@@ -27,34 +27,6 @@ import { PHONE, SOT_URL } from "@/components/site/contact";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-/** sections with a black background: the nav switches to its dark style over
- *  them (campus-hero: the campus pages' film) */
-const DARK_SECTIONS = [
-  "hero",
-  "mentors",
-  "scholarships",
-  "curriculum-journey",
-  "news",
-  "legacy",
-  "alumni",
-  "campuses",
-  "curriculum",
-  "admission",
-  "iit-race",
-  "spotlight",
-  "brochure",
-  "testimonials",
-  "social",
-  "faqs",
-  "site-footer",
-  "specializations",
-  "pathways",
-  "icpc",
-  "faculty",
-  "leaders",
-  "campus-hero",
-  "about",
-];
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -160,11 +132,10 @@ const HELP: MenuLink[] = [
  *          once signed in on /apply) and a Menu button.
  *
  * The bar stays pinned to the top while scrolling. Over the hero it floats
- * with no backing; once the hero has scrolled away it gains a white bar
- * (blurred, hairline bottom edge) so it never sits on top of section content.
- * Over the dark sections (Pathways, Leaders) it switches to a dark bar (white logo and
- * links, white tab and Menu button), as makro.framer.website does.
- * Menu opens a side panel, after quadcse.com and lusion.co: a white panel
+ * with no backing; once the hero has scrolled away it gains a dark bar
+ * (blurred, hairline bottom edge) so it never sits on top of section content:
+ * white logo and links, white tab and Menu button.
+ * Menu opens a side panel, after quadcse.com and lusion.co: a dark panel
  * the screen's full height slides in from the right edge while the page dims
  * and blurs behind it. In it, on two columns from tablets up, the PAGES as
  * a list (an icon, the name and a short line each), and beside them the campuses as picture cards, the featured event
@@ -185,7 +156,18 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
 
   const [open, setOpen] = useState(false);
   const [solid, setSolid] = useState(false);
-  const [dark, setDark] = useState(false);
+  /** the page opens on a light sky hero (.theme-light): until the bar turns
+   *  solid, it shows the dark logo there */
+  const [lightHero, setLightHero] = useState(false);
+  useEffect(() => {
+    const read = () =>
+      setLightHero(!!document.querySelector("main section.theme-light"));
+    const id = requestAnimationFrame(read);
+    return () => cancelAnimationFrame(id);
+  }, []);
+  /** the whole site is dark, so the bar always takes its dark style (white
+   *  logo and links, white tab and Menu button) */
+  const dark = true;
   /** phones: the pinned Apply bar waits while the hero (with its own Apply
    *  Now and the company logos at its foot) fills the screen */
   const [heroTop, setHeroTop] = useState(true);
@@ -236,19 +218,10 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
     };
   }, []);
 
-  /* ------------------------------------------------ dark bar over dark sections */
-  // Read from the section's live position on every scroll rather than from
-  // precomputed trigger offsets: Pathways changes height when it switches
-  // between its pinned and plain layouts, which would leave offsets stale.
+  /* ------------------------------------------------ phones' Apply bar */
   useEffect(() => {
     const check = () => {
       const h = window.innerHeight;
-      setDark(
-        DARK_SECTIONS.some((id) => {
-          const r = document.getElementById(id)?.getBoundingClientRect();
-          return !!r && r.top < h * 0.55 && r.bottom > h * 0.45;
-        }),
-      );
       setHeroTop(!!document.getElementById("hero") && window.scrollY < h * 0.3);
     };
     check();
@@ -363,7 +336,7 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
         }`}
       >
         <nav className="container-page flex h-[60px] items-center justify-between gap-4">
-          <Logo onDark={dark && !open} />
+          <Logo onDark={solid || !lightHero} />
 
           {links && (
             <ul
@@ -388,7 +361,7 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
                     className={`block whitespace-nowrap rounded-[4px] px-4 py-1.5 text-[14px] font-medium transition-colors duration-300 ${
                       tab.index === i
                         ? dark
-                          ? "text-ink"
+                          ? "text-[#0b0d12]"
                           : "text-white"
                         : dark
                           ? "text-white/70 hover:text-white"
@@ -424,7 +397,7 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
               aria-controls="site-menu"
               className={`group inline-flex h-[38px] items-center gap-3 rounded-[6px] pl-4 pr-3.5 text-[13.5px] font-semibold transition-colors ${
                 dark && !open
-                  ? "bg-white text-ink hover:bg-white/90"
+                  ? "bg-white text-[#0b0d12] hover:bg-white/90"
                   : "bg-ink text-white hover:bg-black"
               }`}
             >
@@ -441,14 +414,14 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
               {/* two bars that cross into an X */}
               <span aria-hidden className="relative block size-3.5">
                 <span
-                  className={`absolute left-0 h-[1.5px] w-full transition-all ${dark && !open ? "bg-ink" : "bg-white"} duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  className={`absolute left-0 h-[1.5px] w-full transition-all ${dark && !open ? "bg-[#0b0d12]" : "bg-white"} duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                     open
                       ? "top-1/2 -translate-y-1/2 rotate-45"
                       : "top-[3px] rotate-0"
                   }`}
                 />
                 <span
-                  className={`absolute left-0 h-[1.5px] transition-all ${dark && !open ? "bg-ink" : "bg-white"} duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  className={`absolute left-0 h-[1.5px] transition-all ${dark && !open ? "bg-[#0b0d12]" : "bg-white"} duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                     open
                       ? "top-1/2 w-full -translate-y-1/2 -rotate-45"
                       : "bottom-[3px] w-2/3 rotate-0 group-hover:w-full"
@@ -465,27 +438,27 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
         id="site-menu"
         aria-hidden={!open}
         inert={!open}
-        className="menu-root invisible fixed inset-0 z-40"
+        className="menu-root theme-dark invisible fixed inset-0 z-40"
       >
         {/* the page, dimmed and blurred; a click on it closes the menu */}
         <div
           onClick={close}
-          className="menu-backdrop absolute inset-0 bg-ink/30 backdrop-blur-[3px]"
+          className="menu-backdrop absolute inset-0 bg-black/60 backdrop-blur-[3px]"
         />
 
         <div
           data-lenis-prevent
-          className="menu-panel absolute inset-y-0 right-0 flex w-[min(420px,88vw)] flex-col md:w-[min(820px,92vw)] overflow-y-auto rounded-l-[6px] bg-white shadow-[var(--shadow-lg)]"
+          className="menu-panel absolute inset-y-0 right-0 flex w-[min(420px,88vw)] flex-col md:w-[min(820px,92vw)] overflow-y-auto rounded-l-[6px] border-l border-white/[0.08] bg-[#05040a] shadow-[var(--shadow-lg)]"
         >
           {/* the panel's own header: the logo, and Close level with the
               panel's padding (the bar fades away while the panel is open) */}
           <div className="flex items-center justify-between px-6 pb-5 pt-5 sm:px-8 sm:pt-6">
-            <Logo />
+            <Logo onDark />
             <button
               type="button"
               onClick={close}
               aria-label="Close menu"
-              className="group inline-flex h-[38px] items-center gap-2 rounded-[6px] bg-ink pl-4 pr-3 text-[13.5px] font-semibold text-white transition-colors hover:bg-accent"
+              className="group inline-flex h-[38px] items-center gap-2 rounded-[6px] bg-white pl-4 pr-3 text-[13.5px] font-semibold text-[#0b0d12] transition-colors hover:bg-accent hover:text-white"
             >
               Close
               <X
@@ -509,7 +482,7 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
                     onClick={close}
                     className="group flex items-center gap-3.5 rounded-[6px] px-2.5 py-2.5 transition-colors duration-300 hover:bg-sunken"
                   >
-                    <span className="grid size-10 shrink-0 place-items-center rounded-[6px] border border-black/[0.08] bg-white text-ink transition-colors duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-white">
+                    <span className="grid size-10 shrink-0 place-items-center rounded-[6px] border border-white/[0.1] bg-white/[0.04] text-ink transition-colors duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-white">
                       <Icon size={17} aria-hidden />
                     </span>
                     <span className="min-w-0 flex-1">
@@ -612,7 +585,7 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
                         <Link
                           href={href}
                           onClick={close}
-                          className="group/r flex min-h-11 w-full items-center gap-2.5 rounded-[6px] border border-black/[0.08] pl-2 pr-2.5 transition-colors duration-300 hover:border-accent hover:bg-accent-soft"
+                          className="group/r flex min-h-11 w-full items-center gap-2.5 rounded-[6px] border border-white/[0.1] pl-2 pr-2.5 transition-colors duration-300 hover:border-accent hover:bg-accent-soft"
                         >
                           <span className="grid size-7 shrink-0 place-items-center rounded-[4px] bg-accent-soft text-accent transition-colors duration-300 group-hover/r:bg-accent group-hover/r:text-white">
                             <Icon size={14} aria-hidden />
@@ -641,7 +614,7 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
                 Admission starts with uGNET
               </p>
               <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                <ApplyButton labelled onClick={close} />
+                <ApplyButton labelled streak="#ffffff" onClick={close} />
                 <a
                   href={PHONE.href}
                   className="inline-flex items-center gap-2 text-[13.5px] text-body transition-colors hover:text-ink"
@@ -673,7 +646,7 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`upGrad School of Technology on ${s.label}`}
-                    className="grid size-9 place-items-center rounded-[6px] border border-black/[0.08] text-ink/70 transition-colors duration-300 hover:border-ink hover:bg-ink hover:text-white"
+                    className="grid size-9 place-items-center rounded-[6px] border border-white/[0.1] text-ink/70 transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-white"
                   >
                     <svg
                       viewBox="0 0 24 24"

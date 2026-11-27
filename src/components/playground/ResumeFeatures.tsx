@@ -172,7 +172,7 @@ export function ResumeFeatures({ id = "features" }: { id?: string }) {
               className={`pointer-events-auto absolute transition-transform duration-300 ease-out ${SPOTS[k]}`}
             >
               <span
-                className={`block animate-[rf-float_6s_ease-in-out_infinite] rounded-[6px] border border-black/[0.06] bg-white p-1.5 shadow-[0_14px_34px_-14px_rgba(11,13,18,0.25)] transition-transform duration-500 hover:-translate-y-1.5 ${
+                className={`block animate-[rf-float_6s_ease-in-out_infinite] rounded-[6px] border border-white/[0.08] bg-surface p-1.5 shadow-[0_14px_34px_-14px_rgba(11,13,18,0.25)] transition-transform duration-500 hover:-translate-y-1.5 ${
                   k % 2 ? "[animation-delay:-3s]" : ""
                 }`}
               >
@@ -211,12 +211,12 @@ export function ResumeFeatures({ id = "features" }: { id?: string }) {
                 transform: `translateY(${DECK_Y[d]}%) scale(${DECK_S[d]})`,
                 zIndex: N - d,
               }}
-              className={`origin-top rounded-[6px] border border-black/[0.06] bg-[#fbfbfa] p-2.5 shadow-[0_18px_40px_-18px_rgba(11,13,18,0.3)] transition-[transform,z-index] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              className={`origin-top rounded-[6px] border border-white/[0.08] bg-surface p-2.5 shadow-[0_18px_40px_-18px_rgba(11,13,18,0.3)] transition-[transform,z-index] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                 d === 0 ? "relative" : ""
               } flex flex-col [grid-area:1/1]`}
             >
               <div
-                className={`relative aspect-[6/5] overflow-hidden rounded-[4px] bg-[#eef0f2]`}
+                className={`relative aspect-[6/5] overflow-hidden rounded-[4px] bg-sunken`}
               >
                 <Image
                   src={f.img}
@@ -245,7 +245,7 @@ export function ResumeFeatures({ id = "features" }: { id?: string }) {
       <div
         role="tablist"
         aria-label="Features"
-        className="relative z-10 mt-5 flex gap-1 overflow-x-auto rounded-[8px] max-lg:-mr-4 max-lg:self-stretch max-lg:rounded-r-none max-lg:border-r-0 lg:max-w-full border border-black/[0.06] bg-white p-1 shadow-[0_8px_24px_-12px_rgba(11,13,18,0.2)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="relative z-10 mt-5 flex gap-1 overflow-x-auto rounded-[8px] max-lg:-mr-4 max-lg:self-stretch max-lg:rounded-r-none max-lg:border-r-0 lg:max-w-full border border-white/[0.08] bg-surface p-1 shadow-[0_8px_24px_-12px_rgba(11,13,18,0.2)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {FEATURES.map((f, i) => (
           <button
@@ -258,7 +258,7 @@ export function ResumeFeatures({ id = "features" }: { id?: string }) {
             className={`shrink-0 whitespace-nowrap rounded-[6px] px-3.5 py-2 text-[13px] font-medium transition-colors duration-300 ${
               active === i
                 ? "bg-accent text-white"
-                : "text-ink hover:bg-black/[0.04]"
+                : "text-ink hover:bg-white/[0.04]"
             }`}
           >
             {f.title}

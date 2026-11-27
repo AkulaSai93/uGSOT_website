@@ -27,7 +27,7 @@ const OTHERS: { key: LegalKey; href: string }[] = [
 /** the legal text's own section blocks: a gap between them, a softer note
     for the opening "Related legal policies" block */
 const SECTIONS =
-  "[&_section]:scroll-mt-[148px] [&_section+section]:mt-[2.5em] [&_section>*+*]:mt-[1em] [&_section>h2:first-child]:mt-0 [&>section:not([id])]:rounded-[8px] [&>section:not([id])]:bg-[#f3f5f7] [&>section:not([id])]:p-5 [&>section:not([id])]:text-[14.5px] [&>section:not([id])>p:first-child]:font-semibold [&>section:not([id])>p:first-child]:text-ink";
+  "[&_section]:scroll-mt-[148px] [&_section+section]:mt-[2.5em] [&_section>*+*]:mt-[1em] [&_section>h2:first-child]:mt-0 [&>section:not([id])]:rounded-[8px] [&>section:not([id])]:bg-sunken [&>section:not([id])]:p-5 [&>section:not([id])]:text-[14.5px] [&>section:not([id])>p:first-child]:font-semibold [&>section:not([id])>p:first-child]:text-ink";
 
 /**
  * A legal page (Privacy Policy, Terms & Conditions, Admission Policy).
@@ -69,7 +69,7 @@ export function LegalPage({ doc: key }: { doc: LegalKey }) {
 
   return (
     <>
-      <section className="bg-[#f3f5f7] pb-10 pt-[100px] lg:pb-14 lg:pt-[128px]">
+      <section className="bg-canvas pb-10 pt-[100px] lg:pb-14 lg:pt-[128px]">
         <div className="container-page max-w-[1200px]">
           <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-accent">
             Legal
@@ -88,7 +88,7 @@ export function LegalPage({ doc: key }: { doc: LegalKey }) {
               <Link
                 key={o.key}
                 href={o.href}
-                className="rounded-[6px] border border-black/[0.1] bg-white px-3.5 py-2 text-[13px] font-medium text-ink transition-colors hover:border-ink/30"
+                className="rounded-[6px] border border-white/[0.12] bg-surface px-3.5 py-2 text-[13px] font-medium text-ink transition-colors hover:border-ink/30"
               >
                 {DOCS[o.key].title}
               </Link>
@@ -117,7 +117,7 @@ export function LegalPage({ doc: key }: { doc: LegalKey }) {
                       className={`w-full border-l-2 py-1.5 pl-4 text-left text-[13.5px] leading-snug transition-colors ${
                         active === t.id
                           ? "border-accent font-medium text-accent"
-                          : "border-black/[0.08] text-body hover:text-ink"
+                          : "border-white/[0.1] text-body hover:text-ink"
                       }`}
                     >
                       {t.text}

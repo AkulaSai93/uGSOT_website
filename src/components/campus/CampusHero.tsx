@@ -1,227 +1,237 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ArrowRight, Check, Download } from "lucide-react";
 import { GlowButton } from "@/components/site/GlowButton";
 import { CompanyLogos } from "@/components/site/CompanyLogos";
 import type { Campus } from "./campuses";
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+gsap.registerPlugin(useGSAP);
 
 /**
- * The campus page's hero, after Scaler's programme pages
- * (scaler.com/school-of-technology/ai-b): the university's own campus film
- * fills the first screen, the copy in white over its darkened foot, and a
- * panel at the side. Type, colour and corners are the home page's.
+ * The light bars, left to right, as on topflow's hero: where each column's
+ * glow begins (0 top … 1 foot) and how bright it gets. Highest at the edges,
+ * lower toward the middle (the middle column lit too, lowest of all), each a
+ * touch different from its neighbours.
+ */
+const BARS: { from: number; glow: number }[] = [
+  { from: 0.3, glow: 1 },
+  { from: 0.44, glow: 0.9 },
+  { from: 0.5, glow: 1 },
+  { from: 0.58, glow: 0.85 },
+  { from: 0.72, glow: 0.8 },
+  { from: 0.64, glow: 0.95 },
+  { from: 0.74, glow: 0.8 },
+  { from: 0.66, glow: 0.95 },
+  { from: 0.6, glow: 0.85 },
+  { from: 0.52, glow: 1 },
+  { from: 0.46, glow: 0.9 },
+  { from: 0.4, glow: 1 },
+  { from: 0.3, glow: 0.95 },
+];
+/** the glow's colour (topflow's green) */
+const GLOW = "64,190,124";
+
+/**
+ * The campus page's hero, after topflow's: the whole first screen, edge to
+ * edge. Centred: the programme as the headline, its three tracks (the text is
+ * sot.upgrad.com's), the home hero's two calls (Apply Now with its moving
+ * border, and the white Download Brochure), the UGC and AICTE approvals as one
+ * quiet line, and "Built by people who've worked at" with the company logos
+ * running. Behind it, columns of green light rise from the foot, tallest at
+ * the edges, fading into the page's ground at the bottom.
+ * Then the facts (duration, campus, eligibility, age) as a strip under it.
  *
- * Layout: the film full-bleed (its still shows until it starts), darkened from
- * the foot and the left. On it, bottom left: the programme as a
- * two-line headline (its middle in the red accent), one line of who and where
- * and the tracks, the two CTAs and the approvals as one quiet line; bottom
- * right, the home page's "Built by people who've worked at" logos, where
- * Scaler shows its "Designed & Delivered by" ones. Then the facts (duration,
- * campus, eligibility, age) on a white strip overlapping the film's
- * foot, as Scaler's highlight cards do. Below lg it stacks and centres.
- *
- * Motion (GSAP): the film settles from a slight zoom as the copy fades up line
- * by line; the logos and the facts rise last. As the page scrolls away the film drifts slower than the page.
+ * Motion (GSAP): the bars grow up from the foot, from the middle outward, then
+ * each keeps breathing softly; the copy rises line by line.
  * Reduced motion: shown as it is.
  */
 export function CampusHero({ campus }: { campus: Campus }) {
   const root = useRef<HTMLElement>(null);
-  const [filmOn, setFilmOn] = useState(false);
 
   useGSAP(
     () => {
       const q = gsap.utils.selector(root);
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const bars = q("[data-bar]");
         gsap
           .timeline({ defaults: { ease: "expo.out" } })
           .fromTo(
-            q("[data-film-media]"),
-            { scale: 1.12 },
-            { scale: 1, duration: 2.2 },
+            bars,
+            { scaleY: 0 },
+            {
+              scaleY: 1,
+              duration: 1.6,
+              stagger: { each: 0.06, from: "center" },
+            },
             0,
           )
           .fromTo(
             q("[data-fade]"),
-            { y: 24, autoAlpha: 0 },
-            { y: 0, autoAlpha: 1, duration: 1, stagger: 0.07 },
-            0.4,
-          )
-          .fromTo(
-            q("[data-panel]"),
-            { y: 40, autoAlpha: 0 },
-            { y: 0, autoAlpha: 1, duration: 1.1 },
-            0.6,
+            { y: 28, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 1, stagger: 0.08 },
+            0.25,
           )
           .fromTo(
             q("[data-facts] > *"),
-            { y: 30, autoAlpha: 0 },
-            { y: 0, autoAlpha: 1, duration: 1, stagger: 0.08 },
+            { y: 24, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 1, stagger: 0.07 },
             0.8,
           );
-
-        // the film drifts a little slower than the page as it scrolls away
-        gsap.to(q("[data-film-drift]"), {
-          yPercent: 12,
-          ease: "none",
-          scrollTrigger: {
-            trigger: root.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
+        // then each bar breathes, out of step with its neighbours
+        bars.forEach((b, i) =>
+          gsap.to(b, {
+            opacity: 0.7,
+            duration: 2.4 + (i % 4) * 0.5,
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true,
+            delay: 1.6 + (i % 5) * 0.3,
+          }),
+        );
       });
       return () => mm.revert();
     },
     { scope: root },
   );
 
-  const src = `https://player.vimeo.com/video/${campus.vimeo}?background=1&autoplay=1&loop=1&muted=1&dnt=1`;
-
   return (
     <section
       ref={root}
+      id="campus-hero"
       aria-labelledby="campus-title"
-      className="relative bg-canvas pb-8 lg:pb-14"
+      className="relative bg-canvas pb-10 lg:pb-14"
     >
-      {/* the first screen: the campus film behind the copy */}
-      <div
-        id="campus-hero"
-        className="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-ink"
-      >
+      {/* the first screen, edge to edge */}
+      <div className="relative isolate flex min-h-[100svh] flex-col items-center justify-center overflow-hidden bg-[#05040a] px-5 pb-14 pt-[132px] text-center sm:px-8 lg:pb-16">
+        {/* the bars of light, rising from the foot, each its own column */}
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 [container-type:size]"
+          className="absolute inset-x-0 bottom-1 top-0 -z-10 flex"
         >
-          <div data-film-drift className="absolute inset-0">
-            <div data-film-media className="absolute inset-0">
-              <Image
-                src={campus.poster}
-                alt=""
-                fill
-                preload
-                sizes="100vw"
-                className="object-cover"
-              />
-              {/* the 16:9 film, sized to cover the screen whatever its shape */}
-              <iframe
-                src={src}
-                title={`${campus.name} — campus film`}
-                allow="autoplay; fullscreen; picture-in-picture"
-                loading="eager"
-                tabIndex={-1}
-                onLoad={() => setFilmOn(true)}
-                className={`pointer-events-none absolute left-1/2 top-1/2 h-[max(100cqh,56.25cqw)] w-[max(100cqw,177.78cqh)] -translate-x-1/2 -translate-y-1/2 border-0 transition-opacity duration-1000 ${
-                  filmOn ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            </div>
-          </div>
-          {/* darkened from the foot and the left, so the white copy reads */}
-          {/* an even shade (deeper on phones, where the copy runs the full height) */}
-          <div className="absolute inset-0 bg-black/30 max-lg:bg-black/50" />
-          <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(0,0,0,0.9)_0%,rgba(0,0,0,0.6)_40%,rgba(0,0,0,0.2)_75%,rgba(0,0,0,0.35)_100%)]" />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.6)_0%,rgba(0,0,0,0.25)_45%,rgba(0,0,0,0)_70%)] max-lg:hidden" />
+          {BARS.map(({ from, glow }, i) => (
+            <span
+              key={i}
+              data-bar
+              className="relative h-full flex-1 origin-bottom"
+              style={{
+                background: `linear-gradient(to bottom, rgba(${GLOW},0) 0%, rgba(${GLOW},0) ${from * 100}%, rgba(${GLOW},${0.28 * glow}) ${(from + (1 - from) * 0.45) * 100}%, rgba(${GLOW},${glow}) 100%)`,
+              }}
+            />
+          ))}
+        </div>
+        {/* fine grain over the light, as on the reference */}
+        <div
+          aria-hidden
+          className="scene-grain pointer-events-none absolute inset-0 -z-10 !opacity-[0.14] mix-blend-overlay [mask-image:linear-gradient(to_bottom,#000_55%,transparent_95%)]"
+        />
+        {/* the foot fades into the page's ground, so the light ends softly
+            instead of on a hard edge */}
+        <div
+          aria-hidden
+          className="absolute inset-x-0 -bottom-1 -z-10 h-[18%] bg-[linear-gradient(to_bottom,rgba(5,4,10,0)_0%,rgba(5,4,10,0.6)_60%,#05040a_100%)]"
+        />
+        {/* a dark pool behind the copy, so it reads over the light */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_34%_38%_at_50%_44%,rgba(7,7,8,0.75)_0%,rgba(7,7,8,0.25)_65%,transparent_100%)]"
+        />
+
+        <h1
+          id="campus-title"
+          data-fade
+          className="mx-auto max-w-[1080px] font-display text-[clamp(2.6rem,5.6vw,5.4rem)] font-medium leading-[1.04] tracking-[-0.04em] text-white"
+        >
+          {campus.programme.lead} {campus.programme.accent}
+          {campus.programme.tail && <> {campus.programme.tail}</>}
+        </h1>
+
+        <p
+          data-fade
+          className="mx-auto mt-5 max-w-[36rem] text-[15.5px] leading-relaxed text-white/60 lg:text-[17px]"
+        >
+          {campus.tracks.join(" | ")}
+        </p>
+
+        {/* the home hero's two calls: Apply Now (with its moving
+                border) and the white Download Brochure */}
+        <div
+          data-fade
+          className="mt-8 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:justify-center"
+        >
+          <GlowButton
+            href="/apply"
+            className="[&>span:last-child]:py-[10.5px] max-sm:w-full max-sm:[&>span:last-child]:w-full max-sm:[&>span:last-child]:justify-center max-sm:[&>span:last-child]:py-3 max-sm:[&>span:last-child]:text-[16px]"
+          >
+            Apply Now
+            <ArrowRight
+              size={16}
+              strokeWidth={2.2}
+              aria-hidden
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            />
+          </GlowButton>
+          <Link
+            href="#brochure"
+            className="inline-flex items-center justify-center gap-2.5 rounded-[6px] border border-white/10 bg-white px-6 py-[11px] text-[15px] font-semibold text-[#0b0d12] transition-colors hover:bg-white/85 max-sm:w-full max-sm:py-[12.5px] max-sm:text-[16px]"
+          >
+            <Download size={16} strokeWidth={2} aria-hidden />
+            Download Brochure
+          </Link>
         </div>
 
-        <div className="container-page w-full pb-24 pt-[110px] lg:pb-28">
-          <div className="grid grid-cols-[minmax(0,1fr)] items-end gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-14">
-            {/* the programme, who and where, the CTAs, the approvals */}
-            <div className="text-white max-lg:text-center">
-              {/* the programme, two lines at most, its middle in the accent */}
-              <h1
-                id="campus-title"
-                data-fade
-                className="max-w-[760px] font-display text-[clamp(2rem,3.6vw,3.5rem)] font-medium leading-[1.08] tracking-[-0.035em] max-lg:mx-auto"
-              >
-                {campus.programme.lead}{" "}
-                <span className="text-accent">{campus.programme.accent}</span>
-                {campus.programme.tail && <> {campus.programme.tail}</>}
-              </h1>
+        {/* the approvals, as sot.upgrad.com lists them, as one quiet line */}
+        <ul
+          data-fade
+          className="mt-5 flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[13px] font-medium text-white/70"
+        >
+          {campus.approvals.slice(0, 2).map((a) => (
+            <li key={a} className="inline-flex items-center gap-1.5">
+              <Check
+                size={14}
+                strokeWidth={2.6}
+                aria-hidden
+                className="text-accent"
+              />
+              {a}
+            </li>
+          ))}
+        </ul>
 
-              <p
-                data-fade
-                className="mt-4 text-[16px] leading-relaxed text-white/85 lg:text-[17px]"
-              >
-                With {campus.name}, {campus.location.split(" (")[0]}
-                <span className="text-white/40"> · </span>
-                {campus.tracks.join(" | ")}
-              </p>
-
-              <div
-                data-fade
-                className="mt-7 flex flex-wrap items-center gap-3 max-lg:justify-center"
-              >
-                <GlowButton
-                  href="/apply"
-                  className="[&>span:last-child]:py-[10.5px] max-sm:w-full max-sm:[&>span:last-child]:w-full max-sm:[&>span:last-child]:justify-center max-sm:[&>span:last-child]:py-3"
-                >
-                  Apply Now
-                  <ArrowRight size={16} strokeWidth={2.2} aria-hidden />
-                </GlowButton>
-                <Link
-                  href="#brochure"
-                  className="inline-flex items-center justify-center gap-2.5 rounded-[6px] border border-white/30 bg-white/10 px-6 py-[11px] text-[15px] font-semibold text-white backdrop-blur-md transition-colors hover:border-white hover:bg-white hover:text-ink max-sm:w-full max-sm:py-[12.5px]"
-                >
-                  <Download size={16} strokeWidth={2} aria-hidden />
-                  Download Brochure
-                </Link>
-              </div>
-
-              {/* the approvals, as one quiet line under the CTAs */}
-              <ul
-                data-fade
-                className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[13px] font-medium text-white/80 max-lg:justify-center"
-              >
-                {campus.approvals.map((a) => (
-                  <li key={a} className="inline-flex items-center gap-1.5">
-                    <Check
-                      size={14}
-                      strokeWidth={2.6}
-                      aria-hidden
-                      className="text-accent"
-                    />
-                    {a}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* who builds the programme: the home page's company logos */}
-            <div data-panel className="min-w-0 lg:justify-self-end">
-              <CompanyLogos tone="dark" className="max-lg:text-center" />
-            </div>
-          </div>
+        {/* who builds the programme, running */}
+        <div data-fade className="mt-12 w-full max-w-[640px] lg:mt-14">
+          <CompanyLogos
+            tone="dark"
+            compact
+            markHeight={26}
+            trackWidth="lg:w-full"
+            className="[&>p]:text-center [&>p]:text-white/60 [&_img]:brightness-0 [&_img]:invert"
+          />
         </div>
       </div>
 
-      {/* the facts and who can apply, on a white strip over the film's foot */}
       <div className="container-page">
+        {/* ---------------------------------------- the facts, as a strip */}
         <dl
           data-facts
-          className="relative z-10 mx-auto -mt-12 grid max-w-[1080px] grid-cols-2 rounded-[6px] border border-black/[0.08] bg-white sm:-mt-14 lg:grid-cols-4"
+          className="mx-auto mt-6 grid grid-cols-2 rounded-[10px] border border-white/[0.1] bg-surface lg:mt-8 lg:grid-cols-4"
         >
           {campus.facts.map((f, i) => (
             <div
               key={f.label}
-              className={`px-4 py-2.5 sm:px-5 sm:py-3 ${i % 2 === 1 ? "border-l border-black/[0.08]" : ""} ${
-                i > 1 ? "max-lg:border-t max-lg:border-black/[0.08]" : ""
-              } ${i === 2 ? "lg:border-l lg:border-black/[0.08]" : ""}`}
+              className={`px-4 py-3 sm:px-6 sm:py-4 ${i % 2 === 1 ? "border-l border-white/[0.1]" : ""} ${
+                i > 1 ? "max-lg:border-t max-lg:border-white/[0.1]" : ""
+              } ${i === 2 ? "lg:border-l lg:border-white/[0.1]" : ""}`}
             >
               <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
                 {f.label}
               </dt>
-              <dd className="mt-0.5">
-                <span className="block font-display text-[clamp(1rem,1.8vw,1.5rem)] font-medium leading-tight tracking-[-0.02em] text-ink">
+              <dd className="mt-1">
+                <span className="block font-display text-[clamp(1.05rem,1.8vw,1.5rem)] font-medium leading-tight tracking-[-0.02em] text-white">
                   {f.value}
                 </span>
                 <span className="mt-0.5 block text-[12.5px] leading-snug text-body">

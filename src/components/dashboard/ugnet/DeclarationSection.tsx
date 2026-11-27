@@ -77,7 +77,7 @@ export function DeclarationSection({
         title="Review your answers"
         line="Check everything once before you submit"
       >
-        <ul className="-my-3 divide-y divide-black/[0.06]">
+        <ul className="-my-3 divide-y divide-white/[0.1]">
           {rows.map((r) => (
             <li
               key={r.title}

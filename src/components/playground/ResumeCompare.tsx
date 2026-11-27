@@ -254,7 +254,7 @@ function Item({ e }: { e: Entry }) {
 /** a classic one-column LaTeX-style resume (the client's reference) */
 function Page({ r, stamp = false }: { r: Resume; stamp?: boolean }) {
   return (
-    <div className="relative h-full bg-white px-8 py-8 font-serif text-[13px] leading-[1.45] text-[#1a1a1a]">
+    <div className="relative h-full bg-surface px-8 py-8 font-serif text-[13px] leading-[1.45] text-ink">
       <p className="text-center text-[26px] leading-none tracking-[0.02em] [font-variant:small-caps]">
         Aarav Mehta
       </p>
@@ -322,7 +322,7 @@ function Page({ r, stamp = false }: { r: Resume; stamp?: boolean }) {
       {stamp && (
         <span
           aria-hidden
-          className="absolute left-[22%] top-[44%] -rotate-[14deg] rounded-[6px] border-[5px] border-[#1d8a3e] px-5 py-1 font-sans text-[46px] font-black uppercase leading-none tracking-[0.06em] text-[#1d8a3e] opacity-80 mix-blend-multiply"
+          className="absolute left-[22%] top-[44%] -rotate-[14deg] rounded-[6px] border-[5px] border-[#1d8a3e] px-5 py-1 font-sans text-[46px] font-black uppercase leading-none tracking-[0.06em] text-[#4fd6a0] opacity-80 mix-blend-multiply"
         >
           Selected
         </span>
@@ -398,8 +398,8 @@ export function ResumeCompare({ id = "before-after" }: { id?: string }) {
               reference): the ATS report, the points gained, the fixes */}
           <div className="order-2 grid grid-cols-2 gap-3 lg:order-1 lg:h-full lg:grid-rows-[1fr_auto_auto]">
             {/* the report */}
-            <div className="flex flex-col overflow-hidden rounded-[10px] border border-black/[0.08] bg-white">
-              <div className="flex items-center justify-between border-b border-black/[0.06] bg-[#f6f7f9] px-4 py-2.5 text-[12.5px] text-body">
+            <div className="flex flex-col overflow-hidden rounded-[10px] border border-white/[0.1] bg-surface">
+              <div className="flex items-center justify-between border-b border-white/[0.08] bg-sunken px-4 py-2.5 text-[12.5px] text-body">
                 ATS Report
                 <X size={14} aria-hidden className="text-muted" />
               </div>
@@ -415,10 +415,10 @@ export function ResumeCompare({ id = "before-after" }: { id?: string }) {
                 <p className="mt-1.5 text-[12.5px] text-body">
                   ATS score, before and after
                 </p>
-                <div className="mt-3 border-t border-black/[0.06] pt-3 text-[12px] text-muted">
+                <div className="mt-3 border-t border-white/[0.08] pt-3 text-[12px] text-muted">
                   Keywords matched: <b className="text-ink">18 of 20</b>
                 </div>
-                <span className="mt-4 inline-flex w-fit items-center rounded-[6px] bg-ink px-3.5 py-2 text-[12.5px] font-semibold text-white">
+                <span className="mt-4 inline-flex w-fit items-center rounded-[6px] bg-white px-3.5 py-2 text-[12.5px] font-semibold text-[#0b0d12]">
                   View report
                 </span>
               </div>
@@ -434,13 +434,13 @@ export function ResumeCompare({ id = "before-after" }: { id?: string }) {
                   <ChevronRight size={26} strokeWidth={1.6} className="-ml-4" />
                 </span>
               </p>
-              <p className="mt-10 text-[13px] leading-snug text-[#1f3d55]">
+              <p className="mt-10 text-[13px] leading-snug text-ink">
                 ATS points gained on this resume, in one pass of the agent.
               </p>
             </div>
 
             {/* the fixes, as key caps */}
-            <div className="col-span-2 flex flex-wrap items-center justify-between gap-4 rounded-[10px] border border-black/[0.08] bg-white p-4 sm:p-5">
+            <div className="col-span-2 flex flex-wrap items-center justify-between gap-4 rounded-[10px] border border-white/[0.1] bg-surface p-4 sm:p-5">
               <div>
                 <p className="font-display text-[17px] font-medium text-ink">
                   Four fixes
@@ -453,7 +453,7 @@ export function ResumeCompare({ id = "before-after" }: { id?: string }) {
                 {FIXES.map((f) => (
                   <li
                     key={f}
-                    className="rounded-[6px] border border-black/[0.06] bg-[#f3f5f7] px-3 py-2 text-[12.5px] font-medium text-ink shadow-[inset_0_-2px_0_rgba(11,13,18,0.06)]"
+                    className="rounded-[6px] border border-white/[0.08] bg-sunken px-3 py-2 text-[12.5px] font-medium text-ink shadow-[inset_0_-2px_0_rgba(11,13,18,0.06)]"
                   >
                     {f}
                   </li>
@@ -462,7 +462,7 @@ export function ResumeCompare({ id = "before-after" }: { id?: string }) {
             </div>
 
             {/* each fix in a line */}
-            <ul className="col-span-2 grid gap-2.5 rounded-[10px] border border-black/[0.08] bg-white p-4 sm:p-5">
+            <ul className="col-span-2 grid gap-2.5 rounded-[10px] border border-white/[0.1] bg-surface p-4 sm:p-5">
               {CHANGES.map((c) => (
                 <li key={c.title} className="flex items-center gap-3">
                   <span className="grid size-5 shrink-0 place-items-center rounded-full bg-accent/10 text-accent">
@@ -478,7 +478,7 @@ export function ResumeCompare({ id = "before-after" }: { id?: string }) {
 
           {/* the comparison */}
           <div className="order-1 flex flex-col lg:order-2">
-            <div className="flex flex-1 flex-col rounded-[8px] bg-[#f3f5f7] p-3 sm:p-4">
+            <div className="flex flex-1 flex-col rounded-[8px] bg-sunken p-3 sm:p-4">
               <div
                 ref={frame}
                 onPointerDown={(e) => {
@@ -520,10 +520,10 @@ export function ResumeCompare({ id = "before-after" }: { id?: string }) {
                 </div>
 
                 {/* the chips */}
-                <span className="pointer-events-none absolute bottom-3 left-3 rounded-[4px] bg-ink px-2.5 py-1 text-[11.5px] font-semibold text-white">
+                <span className="pointer-events-none absolute bottom-3 left-3 rounded-[4px] bg-white px-2.5 py-1 text-[11.5px] font-semibold text-[#0b0d12]">
                   After · ATS 91
                 </span>
-                <span className="pointer-events-none absolute bottom-3 right-3 rounded-[4px] border border-black/[0.08] bg-white px-2.5 py-1 text-[11.5px] font-semibold text-ink shadow-[0_2px_8px_rgba(0,0,0,0.12)]">
+                <span className="pointer-events-none absolute bottom-3 right-3 rounded-[4px] border border-white/[0.1] bg-surface px-2.5 py-1 text-[11.5px] font-semibold text-ink shadow-[0_2px_8px_rgba(0,0,0,0.12)]">
                   Before · ATS 42
                 </span>
 

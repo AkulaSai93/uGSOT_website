@@ -14,7 +14,6 @@ import {
   Phone,
 } from "lucide-react";
 import { lenis } from "@/components/motion/SmoothScroll";
-import { CornerHandles } from "@/components/site/CornerHandles";
 import { PROSE } from "@/components/site/prose";
 import { fmtDate, type Post } from "./data";
 import { Byline, PostCard, cover } from "./PostCard";
@@ -118,7 +117,7 @@ export function PostView({
             } ${
               active === t.id
                 ? "border-accent font-medium text-accent"
-                : "border-black/[0.08] text-body hover:text-ink"
+                : "border-white/[0.1] text-body hover:text-ink"
             }`}
           >
             {t.text}
@@ -131,7 +130,7 @@ export function PostView({
   return (
     <div ref={root}>
       {/* the head, on the blogs page's grey band */}
-      <section className="bg-[#f3f5f7] pb-10 pt-[92px] lg:pb-14 lg:pt-[120px]">
+      <section className="bg-sunken pb-10 pt-[92px] lg:pb-14 lg:pt-[120px]">
         <div className="container-page max-w-[1200px]">
           <nav
             data-hero-line
@@ -166,7 +165,7 @@ export function PostView({
             <button
               type="button"
               onClick={copy}
-              className="inline-flex items-center gap-2 rounded-[6px] border border-black/[0.1] bg-white px-3.5 py-2 text-[13px] font-medium text-ink transition-colors hover:border-ink/30"
+              className="inline-flex items-center gap-2 rounded-[6px] border border-white/[0.12] bg-surface px-3.5 py-2 text-[13px] font-medium text-ink transition-colors hover:border-ink/30"
             >
               {copied ? (
                 <Check size={15} aria-hidden className="text-accent" />
@@ -183,7 +182,7 @@ export function PostView({
       <section className="bg-canvas py-10 lg:py-16">
         <div className="container-page grid max-w-[1200px] gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-16">
           <div className="min-w-0">
-            <div className="relative aspect-[1350/709] overflow-hidden rounded-[8px] bg-[#f3f5f7]">
+            <div className="relative aspect-[1350/709] overflow-hidden rounded-[8px] bg-sunken">
               <Image
                 src={cover(p.slug)}
                 alt=""
@@ -196,7 +195,7 @@ export function PostView({
 
             {/* phones: the outline, folded */}
             {toc.length > 1 && (
-              <div className="mt-6 rounded-[8px] border border-black/[0.08] lg:hidden">
+              <div className="mt-6 rounded-[8px] border border-white/[0.1] lg:hidden">
                 <button
                   type="button"
                   aria-expanded={openToc}
@@ -241,8 +240,7 @@ export function PostView({
                   process card: bold red, a hairline border with corner
                   handles, a full-width white button with the hero CTA's
                   sweeping glow round its edge */}
-              <div className="relative border border-black/[0.08] bg-accent p-6 text-white">
-                <CornerHandles />
+              <div className="relative rounded-[8px] border border-white/[0.1] bg-accent p-6 text-white">
                 <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-white/75">
                   Admissions Open 2026
                 </p>
@@ -261,11 +259,11 @@ export function PostView({
                     aria-hidden
                     style={{
                       backgroundImage:
-                        "conic-gradient(transparent 200deg, #0b0d12)",
+                        "conic-gradient(transparent 200deg, #ffffff)",
                     }}
                     className="cta-glow absolute left-1/2 top-1/2 aspect-square w-[160%]"
                   />
-                  <span className="relative z-[2] flex w-full items-center justify-center gap-2 rounded-[4px] bg-white px-5 py-3.5 text-[15px] font-semibold text-ink transition-colors duration-200 group-hover/cta:bg-white/90">
+                  <span className="relative z-[2] flex w-full items-center justify-center gap-2 rounded-[4px] bg-surface px-5 py-3.5 text-[15px] font-semibold text-ink transition-colors duration-200 group-hover/cta:bg-surface/90">
                     Apply Now
                     <ArrowUpRight
                       size={17}
@@ -290,7 +288,7 @@ export function PostView({
 
       {/* more posts */}
       {more.length > 0 && (
-        <section className="border-t border-black/[0.06] bg-canvas py-12 lg:py-20">
+        <section className="border-t border-white/[0.08] bg-canvas py-12 lg:py-20">
           <div className="container-page max-w-[1200px]">
             <div className="flex items-end justify-between gap-4">
               <h2 className="font-display text-[clamp(1.5rem,2.6vw,2rem)] font-medium tracking-[-0.025em] text-ink">

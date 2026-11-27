@@ -60,7 +60,7 @@ export function Overview() {
                 ["Application ID", applicationId(app.profile.phone)],
                 [
                   "Amount",
-                  <span key="paid" className="text-[#16794a]">
+                  <span key="paid" className="text-[#4fd6a0]">
                     Paid · {money(app.payment.amount)}
                   </span>,
                 ],

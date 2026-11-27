@@ -135,7 +135,7 @@ export function BlogsPage() {
         aria-label="Featured posts"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
-        className="bg-[#f3f5f7] pb-8 pt-[84px] lg:pb-14 lg:pt-[108px]"
+        className="bg-canvas pb-8 pt-[84px] lg:pb-14 lg:pt-[108px]"
       >
         <div className="container-page grid">
           {FEATURED.map((p, i) => (
@@ -152,7 +152,7 @@ export function BlogsPage() {
                 href={postHref(p.slug)}
                 tabIndex={-1}
                 aria-hidden
-                className="relative block aspect-[1350/709] overflow-hidden rounded-[8px] bg-white"
+                className="relative block aspect-[1350/709] overflow-hidden rounded-[8px] bg-surface"
               >
                 <Image
                   src={cover(p.slug)}
@@ -209,7 +209,7 @@ export function BlogsPage() {
                         className={`h-2 rounded-[2px] transition-all duration-500 ${
                           j === slide
                             ? "w-6 bg-accent"
-                            : "w-2 bg-ink/15 hover:bg-ink/30"
+                            : "w-2 bg-black/15 hover:bg-black/30"
                         }`}
                       />
                     ))}
@@ -225,7 +225,7 @@ export function BlogsPage() {
       <section ref={posts} className="bg-canvas pb-10 pt-7 lg:pb-20 lg:pt-14">
         {/* the chips stay under the navbar while the posts scroll */}
         <div
-          className="sticky top-[96px] z-20 border-b border-transparent bg-white/95 py-3 backdrop-blur data-[stuck]:border-black/[0.08]"
+          className="sticky top-[96px] z-20 border-b border-transparent bg-canvas/90 py-3 backdrop-blur data-[stuck]:border-white/[0.1]"
           data-chips
         >
           <div
@@ -244,7 +244,7 @@ export function BlogsPage() {
                 className={`shrink-0 whitespace-nowrap rounded-[2px] border px-4 py-2 text-[14px] transition-colors duration-300 lg:text-[16px] ${
                   active === g.id
                     ? "border-accent bg-accent text-white"
-                    : "border-black/[0.1] bg-white text-ink hover:border-ink/30"
+                    : "border-white/[0.12] bg-surface text-ink hover:border-ink/30"
                 }`}
               >
                 {g.name}

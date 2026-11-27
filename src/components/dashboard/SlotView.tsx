@@ -103,7 +103,7 @@ function Countdown({ to, now }: { to: Date; now: number }) {
       {parts.map(([label, n]) => (
         <div
           key={label}
-          className="rounded-[4px] border border-black/[0.08] px-2 py-3.5 text-center"
+          className="rounded-[4px] border border-white/[0.1] px-2 py-3.5 text-center"
         >
           <p className="font-display text-[clamp(1.5rem,3vw,2rem)] font-medium leading-none text-accent tabular-nums">
             {String(n).padStart(2, "0")}
@@ -144,7 +144,7 @@ function ConfirmDialog({
       role="dialog"
       aria-modal="true"
       aria-labelledby="confirm-title"
-      className="fixed inset-0 z-[100] flex items-end justify-center bg-ink/50 backdrop-blur-[2px] sm:items-center sm:p-6"
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-black/50 backdrop-blur-[2px] sm:items-center sm:p-6"
       onMouseDown={(e) => e.target === e.currentTarget && onCancel()}
     >
       <form
@@ -152,7 +152,7 @@ function ConfirmDialog({
           e.preventDefault();
           if (ok) onBook();
         }}
-        className="w-full max-w-[440px] rounded-t-[6px] bg-white p-6 shadow-[var(--shadow-lg)] sm:rounded-[6px]"
+        className="w-full max-w-[440px] rounded-t-[6px] bg-surface p-6 shadow-[var(--shadow-lg)] sm:rounded-[6px]"
       >
         <div className="flex items-start justify-between gap-4">
           <h2
@@ -165,7 +165,7 @@ function ConfirmDialog({
             type="button"
             onClick={onCancel}
             aria-label="Close"
-            className="grid size-9 place-items-center rounded-full text-muted hover:bg-black/[0.04] hover:text-ink"
+            className="grid size-9 place-items-center rounded-full text-muted hover:bg-white/[0.04] hover:text-ink"
           >
             <X size={18} aria-hidden />
           </button>
@@ -174,7 +174,7 @@ function ConfirmDialog({
           Slots can&apos;t be changed online after booking. Type{" "}
           <span className="font-semibold text-accent">confirm</span> to book.
         </p>
-        <div className="mt-5 grid gap-2 rounded-[6px] bg-black/[0.04] p-4 text-[14px] text-ink">
+        <div className="mt-5 grid gap-2 rounded-[6px] bg-white/[0.04] p-4 text-[14px] text-ink">
           <p className="flex items-center gap-2.5">
             <Calendar size={16} className="text-accent" aria-hidden />
             {dateLabel(TEST_DATE)}
@@ -220,14 +220,14 @@ export function TestPanel({ booking }: { booking: SlotBooking }) {
   const now = useNow();
   const live = now >= start.getTime();
   return (
-    <section className="rounded-[6px] border border-black/[0.08] bg-white p-5 sm:p-6">
+    <section className="rounded-[6px] border border-white/[0.1] bg-surface p-5 sm:p-6">
       <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-muted">
         Time until your test
       </p>
       <div className="mt-4">
         <Countdown to={start} now={now} />
       </div>
-      <div className="mt-5 flex flex-col gap-3 border-t border-black/[0.06] pt-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-5 flex flex-col gap-3 border-t border-white/[0.08] pt-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-[15px] font-semibold text-ink">uGNET assessment</p>
           <p className="text-[13px] text-muted">
@@ -251,9 +251,9 @@ function Booked({ booking }: { booking: SlotBooking }) {
 
   return (
     <div className="grid grid-cols-[minmax(0,1fr)] gap-6">
-      <section className="rounded-[6px] border border-black/[0.08] bg-white p-6 sm:p-8">
+      <section className="rounded-[6px] border border-white/[0.1] bg-surface p-6 sm:p-8">
         <div className="flex flex-col items-center text-center">
-          <span className="grid size-14 place-items-center rounded-full bg-[#e9f7ef] text-[#16794a]">
+          <span className="grid size-14 place-items-center rounded-full bg-[#16a34a]/15 text-[#4fd6a0]">
             <CheckCircle2 size={28} aria-hidden />
           </span>
           <h2 className="mt-4 font-display text-[24px] font-medium tracking-[-0.02em] text-ink">
@@ -270,7 +270,7 @@ function Booked({ booking }: { booking: SlotBooking }) {
           ].map(({ Icon, k, v }) => (
             <div
               key={k}
-              className="flex items-center gap-3 rounded-[6px] border border-black/[0.08] px-4 py-3.5"
+              className="flex items-center gap-3 rounded-[6px] border border-white/[0.1] px-4 py-3.5"
             >
               <span className="grid size-10 place-items-center rounded-[6px] bg-accent-soft text-accent">
                 <Icon size={18} aria-hidden />
@@ -288,11 +288,11 @@ function Booked({ booking }: { booking: SlotBooking }) {
 
       <TestPanel booking={booking} />
 
-      <section className="rounded-[6px] border border-black/[0.08] bg-white">
-        <h2 className="border-b border-black/[0.06] px-5 py-4 font-display text-[17px] font-semibold text-ink sm:px-6">
+      <section className="rounded-[6px] border border-white/[0.1] bg-surface">
+        <h2 className="border-b border-white/[0.08] px-5 py-4 font-display text-[17px] font-semibold text-ink sm:px-6">
           Common questions
         </h2>
-        <ul className="divide-y divide-black/[0.06]">
+        <ul className="divide-y divide-white/[0.1]">
           {FAQS.map((f, i) => (
             <li key={f.q}>
               <button
@@ -356,10 +356,10 @@ export function SlotView() {
       {app.slot ? (
         <Booked booking={app.slot} />
       ) : (
-        <section className="rounded-[6px] border border-black/[0.08] bg-white">
+        <section className="rounded-[6px] border border-white/[0.1] bg-surface">
           {/* the date */}
-          <div className="flex items-center gap-4 border-b border-black/[0.06] p-5 sm:p-6">
-            <span className="grid w-14 shrink-0 overflow-hidden rounded-[4px] border border-black/[0.08] text-center">
+          <div className="flex items-center gap-4 border-b border-white/[0.08] p-5 sm:p-6">
+            <span className="grid w-14 shrink-0 overflow-hidden rounded-[4px] border border-white/[0.1] text-center">
               <span className="bg-accent py-0.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-white">
                 {monthShort(TEST_DATE)}
               </span>
@@ -395,7 +395,7 @@ export function SlotView() {
                     className={`flex cursor-pointer items-center gap-4 rounded-[4px] border px-4 py-3.5 transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent/30 ${
                       on
                         ? "border-accent bg-accent-soft"
-                        : "border-black/[0.1] hover:border-black/30"
+                        : "border-white/[0.12] hover:border-white/30"
                     }`}
                   >
                     <input
@@ -409,7 +409,7 @@ export function SlotView() {
                     <span
                       aria-hidden
                       className={`grid size-5 shrink-0 place-items-center rounded-full border-2 ${
-                        on ? "border-accent" : "border-black/20"
+                        on ? "border-accent" : "border-white/20"
                       }`}
                     >
                       {on && (
@@ -434,7 +434,7 @@ export function SlotView() {
           </div>
 
           {/* the choice, and booking it */}
-          <div className="flex flex-col gap-3 border-t border-black/[0.06] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+          <div className="flex flex-col gap-3 border-t border-white/[0.08] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <p className="text-[13.5px] text-muted">
               {slot ? (
                 <>

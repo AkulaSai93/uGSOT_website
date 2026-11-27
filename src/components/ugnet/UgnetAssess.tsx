@@ -87,7 +87,7 @@ export function UgnetAssess() {
           <div
             role="tablist"
             aria-label="uGNET sections"
-            className="flex max-w-full gap-1 overflow-x-auto rounded-[4px] border border-black/[0.08] bg-white p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="flex max-w-full gap-1 overflow-x-auto rounded-[4px] border border-white/[0.1] bg-surface p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {AREAS.map((ar, i) => {
               const on = i === active;
@@ -100,13 +100,13 @@ export function UgnetAssess() {
                   aria-controls="assess-panel"
                   onClick={() => setActive(i)}
                   className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-[3px] px-2.5 py-2 text-[13px] font-semibold sm:gap-2 sm:px-3.5 sm:text-[14px] transition-colors duration-300 ${
-                    on ? "bg-ink text-white" : "text-body hover:text-ink"
+                    on ? "bg-white text-[#0b0d12]" : "text-body hover:text-ink"
                   }`}
                 >
                   <ar.Icon
                     size={15}
                     aria-hidden
-                    className={on ? "text-white" : "text-accent"}
+                    className="text-accent"
                   />
                   {/* on phones the first word, so all three fit */}
                   <span className="sm:hidden">{ar.name.split(" ")[0]}</span>
@@ -123,7 +123,7 @@ export function UgnetAssess() {
             id="assess-panel"
             role="tabpanel"
             aria-label={a.name}
-            className="rounded-[8px] border border-black/[0.08] bg-white p-5 lg:px-6 lg:py-5"
+            className="rounded-[8px] border border-white/[0.1] bg-surface p-5 lg:px-6 lg:py-5"
           >
             <div
               key={a.name}
@@ -163,14 +163,14 @@ export function UgnetAssess() {
 
               {/* its weight: a ring for its share of the marks, its figures
                   under it */}
-              <div className="flex flex-col items-center justify-center gap-5 rounded-[8px] bg-[linear-gradient(160deg,#fff7f8_0%,#ffe9ec_100%)] p-5">
+              <div className="flex flex-col items-center justify-center gap-5 rounded-[8px] bg-[linear-gradient(160deg,rgba(228,0,43,0.12)_0%,rgba(228,0,43,0.06)_100%)] p-5">
                 <div
                   className="relative grid size-36 place-items-center rounded-full"
                   style={{
                     background: `conic-gradient(var(--accent) ${(a.marks / TOTAL_MARKS) * 360}deg, rgba(228,0,43,0.12) 0deg)`,
                   }}
                 >
-                  <div className="grid size-[112px] place-items-center rounded-full bg-white text-center">
+                  <div className="grid size-[112px] place-items-center rounded-full bg-surface text-center">
                     <span>
                       <span className="block font-display text-[28px] font-medium leading-none text-ink">
                         {Math.round((a.marks / TOTAL_MARKS) * 100)}%
@@ -181,7 +181,7 @@ export function UgnetAssess() {
                     </span>
                   </div>
                 </div>
-                <dl className="grid w-full grid-cols-3 divide-x divide-black/[0.08] rounded-[6px] bg-white py-3 text-center">
+                <dl className="grid w-full grid-cols-3 divide-x divide-white/[0.1] rounded-[6px] bg-surface py-3 text-center">
                   {[
                     { k: "Questions", v: a.questions },
                     { k: "Marks", v: a.marks },

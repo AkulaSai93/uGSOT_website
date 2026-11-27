@@ -65,8 +65,8 @@ export function UgnetPreview({
           ]}
         >
           {s.photo && (
-            <div className="mt-5 flex items-center gap-3 border-t border-black/[0.06] pt-4">
-              <span className="relative size-12 overflow-hidden rounded-full border border-black/[0.08]">
+            <div className="mt-5 flex items-center gap-3 border-t border-white/[0.08] pt-4">
+              <span className="relative size-12 overflow-hidden rounded-full border border-white/[0.1]">
                 <Image
                   src={s.photo}
                   alt="Your photo"
@@ -144,7 +144,7 @@ export function UgnetPreview({
             {exams.map((x, i) => (
               <li
                 key={i}
-                className="flex flex-wrap items-baseline justify-between gap-2 border-b border-black/[0.06] pb-3 last:border-0 last:pb-0"
+                className="flex flex-wrap items-baseline justify-between gap-2 border-b border-white/[0.08] pb-3 last:border-0 last:pb-0"
               >
                 <span className="text-[14.5px] font-medium text-ink">
                   {x.name}{" "}

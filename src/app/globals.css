@@ -1,37 +1,39 @@
 @import "tailwindcss";
 
 /* ============================================================
-   upGrad School of Technology — Design Tokens (light theme only)
+   upGrad School of Technology — Design Tokens (dark theme, site-wide)
    ============================================================ */
 :root {
-  /* Surfaces */
-  --canvas: #f4f4f4; /* page background: an off-white (the United Carriers reference's #f4f4f4), not pure white */
-  --surface: #ffffff; /* cards */
-  --surface-sunken: #f4f4f1; /* subtle fills, chips */
+  color-scheme: dark;
 
-  /* Ink */
-  --ink: #0b0d12; /* headings */
-  --ink-body: #3d4452; /* body copy */
-  --ink-muted: #6b7280; /* captions, labels */
+  /* Surfaces: the scroll story's near-black ground, cards a step up from it */
+  --canvas: #05040a;
+  --surface: #121214;
+  --surface-sunken: #17181d;
+
+  /* Ink: white headings, softened body copy */
+  --ink: #ffffff;
+  --ink-body: rgb(255 255 255 / 0.68);
+  --ink-muted: rgb(255 255 255 / 0.5);
 
   /* Brand */
   --accent: #e4002b; /* upGrad red */
   --topbar: var(--accent); /* announcement strip — brand red */
   --accent-hover: #c40025;
-  --accent-soft: #fff1f3; /* tinted background */
+  --accent-soft: rgb(228 0 43 / 0.16); /* tinted background */
 
   /* Lines */
-  --line: #ebebeb; /* the site's one border grey: black at 8% on white */
-  --line-strong: #ebebeb;
+  --line: rgb(255 255 255 / 0.12);
+  --line-strong: rgb(255 255 255 / 0.12);
 
   /* Chrome above the fold: the announcement strip (36px) + the bar (60px),
      plus 32px of breathing room */
   --header-h: 128px;
 
   /* Elevation */
-  --shadow-sm: 0 1px 2px rgba(11, 13, 18, 0.04);
-  --shadow-md: 0 8px 24px -8px rgba(11, 13, 18, 0.12);
-  --shadow-lg: 0 24px 64px -24px rgba(11, 13, 18, 0.22);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 24px 64px -24px rgba(0, 0, 0, 0.7);
 }
 
 @theme inline {
@@ -56,22 +58,23 @@
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-/* Dark stretch of the home page (Mentors → Leaders): sections inside a
-   .theme-dark wrapper keep their own markup, and the colour tokens flip so
-   bg-canvas reads black (the Mentors section's ground), ink and body copy read
-   light on it, and the site's lines and sunken fills turn to their dark
-   equivalents. Anything with a fixed colour (white cards, pinned dark text) is
-   adjusted in its own section (see page.tsx for the wrapper). */
-.theme-dark {
-  --canvas: #05040a; /* the scroll story's ground (Specializations), not pure black. */
-  --surface: #121214;
-  --surface-sunken: #17181d;
-  --ink: #ffffff;
-  --ink-body: rgb(255 255 255 / 0.68);
-  --ink-muted: rgb(255 255 255 / 0.5);
-  --line: rgb(255 255 255 / 0.12);
-  --line-strong: rgb(255 255 255 / 0.12);
-  --accent-soft: rgb(228 0 43 / 0.16);
+/* .theme-dark: kept as a marker on sections built dark from the start; the
+   whole site uses the dark tokens above now, so it needs no overrides. */
+
+/* .theme-light: the page heroes that open on a sky photo (admission, uGNET,
+   FAQs, the dashboard banner) keep their light sky and dark type; the page
+   turns dark from their foot down (they fade into it). */
+.theme-light {
+  --canvas: #f4f4f4;
+  --surface: #ffffff;
+  --surface-sunken: #f4f4f1;
+  --ink: #0b0d12;
+  --ink-body: #3d4452;
+  --ink-muted: #6b7280;
+  --line: #ebebeb;
+  --line-strong: #ebebeb;
+  --accent-soft: #fff1f3;
+  color-scheme: light;
 }
 
 /* Base styles live in @layer base so Tailwind utilities (text-white, text-ink,
@@ -316,4 +319,19 @@ html {
   .mentor-track {
     animation: none;
   }
+}
+
+/* The fixed grain the layout lays over every page; the home page has its
+   own (the scroll story's and its sections'), so it skips this one. */
+body:has(#hero) .page-grain {
+  display: none;
+}
+/* …and where it shows, the footer's own grain steps aside, or the two would
+   stack and the footer would read lighter than the page above it (the home
+   page, with no page grain, keeps the footer's own) */
+#site-footer > .scene-grain {
+  display: none;
+}
+body:has(#hero) #site-footer > .scene-grain {
+  display: block;
 }

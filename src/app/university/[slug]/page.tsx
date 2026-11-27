@@ -9,7 +9,7 @@ import { CampusFees } from "@/components/campus/CampusFees";
 import { CampusLoans } from "@/components/campus/CampusLoans";
 import { CampusRecognitions } from "@/components/campus/CampusRecognitions";
 // shared with the home page, as sot.upgrad.com's university pages repeat them
-import { Faculty } from "@/components/sections/Faculty";
+import { Mentors } from "@/components/sections/Mentors";
 import { Scholarships } from "@/components/sections/Scholarships";
 import { Admission } from "@/components/sections/Admission";
 import { Faqs } from "@/components/sections/Faqs";
@@ -71,7 +71,7 @@ async function Campus({
       <CampusFees campus={campus} />
       <CampusLoans />
       <Scholarships />
-      <Faculty />
+      <Mentors />
       <Admission />
       <Faqs university={campus.short} />
     </div>

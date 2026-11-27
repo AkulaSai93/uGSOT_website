@@ -33,7 +33,7 @@ const NAME_RE = /^[A-Za-z][A-Za-z .'-]{1,59}$/;
 const PHONE_RE = /^[6-9]\d{9}$/;
 
 const FIELD =
-  "h-12 w-full rounded-[6px] border border-black/[0.1] bg-white px-4 text-[15px] text-ink outline-none transition-colors placeholder:text-muted focus:border-ink";
+  "h-12 w-full rounded-[6px] border border-white/[0.12] bg-surface px-4 text-[15px] text-ink outline-none transition-colors placeholder:text-muted focus:border-ink";
 
 const PRIMARY =
   "inline-flex h-12 w-full items-center justify-center gap-2 rounded-[6px] bg-accent text-[15px] font-semibold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50";
@@ -84,8 +84,8 @@ function ApplyForm() {
           >
             Mobile number
           </label>
-          <div className="flex h-12 items-center rounded-[6px] border border-black/[0.1] transition-colors focus-within:border-ink">
-            <span className="border-r border-black/[0.08] px-4 text-[15px] font-medium text-ink">
+          <div className="flex h-12 items-center rounded-[6px] border border-white/[0.12] transition-colors focus-within:border-ink">
+            <span className="border-r border-white/[0.1] px-4 text-[15px] font-medium text-ink">
               +91
             </span>
             <input
@@ -215,7 +215,7 @@ export function ApplyView() {
   const { index, go } = useShowcase();
 
   return (
-    <main className="flex min-h-svh flex-col bg-ink lg:relative lg:flex-row lg:p-3">
+    <main className="flex min-h-svh flex-col bg-canvas lg:relative lg:flex-row lg:p-3">
       {/* the photo side: logo and way back, the slides and the logos. On
           phones it is a band at the top, its photos behind it (running on
           under the card's rounded corners); on desktop the photos fill the
@@ -253,7 +253,7 @@ export function ApplyView() {
       </section>
 
       {/* the card */}
-      <section className="relative z-10 flex-1 rounded-t-[14px] bg-white px-5 pb-10 pt-8 sm:px-8 lg:flex lg:flex-none lg:w-[min(560px,44vw)] lg:shrink-0 lg:flex-col lg:justify-center lg:rounded-[10px] lg:px-14 lg:py-12">
+      <section className="relative z-10 flex-1 rounded-t-[14px] bg-surface px-5 pb-10 pt-8 sm:px-8 lg:flex lg:flex-none lg:w-[min(560px,44vw)] lg:shrink-0 lg:flex-col lg:justify-center lg:rounded-[10px] lg:px-14 lg:py-12">
         <div className="mx-auto w-full max-w-[420px]">
           <h1 className="font-display text-[clamp(1.75rem,2.6vw,2.25rem)] font-medium leading-tight tracking-[-0.03em] text-ink">
             Step Into Your Future

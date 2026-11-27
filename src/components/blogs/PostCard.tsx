@@ -10,7 +10,7 @@ export function PostCard({ post: p }: { post: Post }) {
   return (
     <Link href={postHref(p.slug)} className="group flex h-full flex-col">
       {/* the cover whole, at its own shape */}
-      <div className="relative aspect-[1350/709] overflow-hidden rounded-[8px] bg-[#f3f5f7]">
+      <div className="relative aspect-[1350/709] overflow-hidden rounded-[8px] bg-sunken">
         <Image
           src={cover(p.slug)}
           alt=""

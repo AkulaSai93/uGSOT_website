@@ -69,7 +69,7 @@ export function VideoPlayer({
       aria-modal="true"
       aria-label={`Video: ${video.name}`}
       onClick={onClose}
-      className="fixed inset-0 z-[100] grid place-items-center bg-ink/70 p-4 backdrop-blur-[3px] sm:p-10"
+      className="fixed inset-0 z-[100] grid place-items-center bg-black/70 p-4 backdrop-blur-[3px] sm:p-10"
     >
       <div
         data-frame
@@ -87,7 +87,7 @@ export function VideoPlayer({
           <X size={18} strokeWidth={2} />
         </button>
         <div
-          className={`overflow-hidden rounded-[6px] bg-ink shadow-[0_40px_80px_-30px_rgba(11,13,18,0.6)] ${
+          className={`overflow-hidden rounded-[6px] bg-sunken shadow-[0_40px_80px_-30px_rgba(11,13,18,0.6)] ${
             video.vertical
               ? "aspect-[9/16] h-[min(78svh,760px)] max-w-[calc(100vw-2rem)]"
               : "aspect-video"

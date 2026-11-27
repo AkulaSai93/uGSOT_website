@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
-import { CornerHandles } from "@/components/site/CornerHandles";
 import { GlowButton } from "@/components/site/GlowButton";
 import { SectionHeading } from "@/components/site/SectionHeading";
 
@@ -64,8 +63,7 @@ export function UgnetWho() {
         >
           {WHO.map(({ title, line, img }) => (
             <div key={title} data-reveal-item>
-              <article className="group relative flex h-full flex-col border border-black/[0.08] bg-white">
-                <CornerHandles />
+              <article className="group relative flex h-full flex-col overflow-hidden rounded-[8px] border border-white/[0.1] bg-surface">
                 {/* the illustration, full bleed, fading into the card */}
                 <div className="relative aspect-[3/2] overflow-hidden">
                   <Image
@@ -77,7 +75,7 @@ export function UgnetWho() {
                   />
                   <span
                     aria-hidden
-                    className="absolute inset-x-0 bottom-0 h-1/2 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,#fff_90%)]"
+                    className="absolute inset-x-0 bottom-0 h-1/2 bg-[linear-gradient(180deg,rgba(5,4,10,0)_0%,#05040a_90%)]"
                   />
                 </div>
                 {/* the copy, on the illustration's white foot */}
@@ -95,7 +93,7 @@ export function UgnetWho() {
         </Reveal>
 
         <div className="mt-10 flex flex-col items-center gap-4 text-center lg:mt-12">
-          <GlowButton href="#apply" streak="#0b0d12">
+          <GlowButton href="#apply" streak="#ffffff">
             Apply for uGNET
             <ArrowRight size={16} strokeWidth={2.2} aria-hidden />
           </GlowButton>

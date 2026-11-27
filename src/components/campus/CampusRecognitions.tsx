@@ -6,7 +6,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ArrowRight } from "lucide-react";
-import { CornerHandles } from "@/components/site/CornerHandles";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import type { Campus } from "./campuses";
 
@@ -79,12 +78,10 @@ export function CampusRecognitions({ campus }: { campus: Campus }) {
         {/* the panel: the site's grey frame with a handle on each corner */}
         <div
           data-panel
-          className="relative mt-10 border border-black/[0.08] lg:mt-14"
+          className="relative mt-10 overflow-hidden rounded-[8px] border border-white/[0.1] lg:mt-14"
         >
-          <CornerHandles />
-
           {/* the cells, hairlines between them */}
-          <ul className="grid grid-cols-2 gap-px bg-black/[0.08] lg:grid-cols-3">
+          <ul className="grid grid-cols-2 gap-px bg-white/[0.08] lg:grid-cols-3">
             {campus.recognitions.map((r) => {
               const rank = typeof r.figure === "number";
               return (
@@ -129,7 +126,7 @@ export function CampusRecognitions({ campus }: { campus: Campus }) {
               </p>
               <Link
                 href="/apply"
-                className="group inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-[6px] bg-white px-3.5 py-2.5 sm:px-4 text-[14px] font-semibold text-ink transition-colors duration-300 hover:bg-ink hover:text-white"
+                className="group inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-[6px] bg-surface px-3.5 py-2.5 sm:px-4 text-[14px] font-semibold text-ink transition-colors duration-300 hover:bg-white hover:text-[#0b0d12]"
               >
                 Apply Now
                 <ArrowRight

@@ -8,7 +8,6 @@ import {
   Trophy,
   Workflow,
 } from "lucide-react";
-import { CornerHandles } from "@/components/site/CornerHandles";
 import { SectionHeading } from "@/components/site/SectionHeading";
 
 /**
@@ -96,10 +95,9 @@ export function UgnetPattern() {
           ].map(({ k, v, Icon }) => (
             <li
               key={k}
-              className="relative flex flex-col items-start gap-3 bg-accent p-3 text-white sm:flex-row sm:items-center sm:p-4"
+              className="relative flex flex-col items-start gap-3 rounded-[8px] bg-accent p-3 text-white sm:flex-row sm:items-center sm:p-4"
             >
-              <CornerHandles />
-              <span className="grid size-10 shrink-0 place-items-center rounded-[6px] bg-white text-accent">
+              <span className="grid size-10 shrink-0 place-items-center rounded-[6px] bg-white/15 text-white ring-1 ring-white/25">
                 <Icon size={19} aria-hidden />
               </span>
               <span>
@@ -115,11 +113,10 @@ export function UgnetPattern() {
         </ul>
 
         {/* tablet and up: the table */}
-        <div className="relative mx-auto mt-4 hidden max-w-[1040px] border border-black/[0.08] md:block">
-          <CornerHandles />
+        <div className="relative mx-auto mt-4 hidden max-w-[1040px] overflow-hidden rounded-[8px] border border-white/[0.1] md:block">
           <table className="w-full text-[14px]">
             <thead>
-              <tr className="bg-[#f6f7f9] text-left">
+              <tr className="bg-sunken text-left">
                 <th scope="col" className="px-5 py-3.5 font-semibold text-ink">
                   Section
                 </th>
@@ -127,7 +124,7 @@ export function UgnetPattern() {
                   <th
                     key={c.key}
                     scope="col"
-                    className="border-l border-black/[0.08] px-4 py-3.5 text-center font-semibold text-ink"
+                    className="border-l border-white/[0.1] px-4 py-3.5 text-center font-semibold text-ink"
                   >
                     {c.label}
                     {"note" in c && (
@@ -141,7 +138,7 @@ export function UgnetPattern() {
             </thead>
             <tbody>
               {ROWS.map((r) => (
-                <tr key={r.name} className="border-t border-black/[0.08]">
+                <tr key={r.name} className="border-t border-white/[0.1]">
                   <th
                     scope="row"
                     className="px-5 py-4 text-left font-medium text-ink"
@@ -156,14 +153,14 @@ export function UgnetPattern() {
                   {COLS.map((c) => (
                     <td
                       key={c.key}
-                      className="border-l border-black/[0.08] px-4 py-4 text-center tabular-nums text-body"
+                      className="border-l border-white/[0.1] px-4 py-4 text-center tabular-nums text-body"
                     >
                       {cell(r, c.key)}
                     </td>
                   ))}
                 </tr>
               ))}
-              <tr className="border-t border-black/[0.08]">
+              <tr className="border-t border-white/[0.1]">
                 <th
                   scope="row"
                   className="px-5 py-4 text-left font-semibold text-ink"
@@ -173,7 +170,7 @@ export function UgnetPattern() {
                 {COLS.map((c) => (
                   <td
                     key={c.key}
-                    className="border-l border-black/[0.08] px-4 py-4 text-center font-semibold tabular-nums text-ink"
+                    className="border-l border-white/[0.1] px-4 py-4 text-center font-semibold tabular-nums text-ink"
                   >
                     {cell(TOTAL, c.key)}
                   </td>
@@ -188,9 +185,8 @@ export function UgnetPattern() {
           {ROWS.map((r) => (
             <li
               key={r.name}
-              className="relative border border-black/[0.08] bg-white p-4"
+              className="relative rounded-[8px] border border-white/[0.1] bg-surface p-4"
             >
-              <CornerHandles />
               <div className="flex items-center gap-3">
                 <span className="grid size-9 shrink-0 place-items-center rounded-[6px] bg-accent-soft text-accent">
                   <r.Icon size={16} aria-hidden />
@@ -204,7 +200,7 @@ export function UgnetPattern() {
               </div>
               {/* the three figures that matter, plain, then the
                   difficulty split as one quiet line */}
-              <dl className="mt-4 grid grid-cols-3 divide-x divide-black/[0.08] border-y border-black/[0.08] py-3 text-center">
+              <dl className="mt-4 grid grid-cols-3 divide-x divide-white/[0.1] border-y border-white/[0.1] py-3 text-center">
                 {(
                   [
                     { k: "Questions", v: r.questions },

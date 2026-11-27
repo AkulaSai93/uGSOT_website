@@ -39,7 +39,7 @@ export default function BlogPostPage({
     <>
       <Navbar links={false} />
       <main className="relative z-10 min-h-svh flex-1 bg-canvas">
-        <Suspense fallback={<div className="min-h-svh bg-[#f3f5f7]" />}>
+        <Suspense fallback={<div className="min-h-svh bg-sunken" />}>
           <BlogPost params={params} />
         </Suspense>
       </main>

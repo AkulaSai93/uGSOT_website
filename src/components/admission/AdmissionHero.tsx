@@ -81,7 +81,7 @@ export function AdmissionHero() {
     <section
       ref={root}
       aria-labelledby="admission-title"
-      className="relative overflow-hidden bg-[linear-gradient(180deg,#9ac9f6_0%,#bcdbf7_45%,#e7ebec_100%)] pt-24 lg:h-[max(100svh,760px)] lg:pb-0 lg:pt-[88px] [@media(min-width:1024px)_and_(max-height:820px)]:pt-[76px]"
+      className="theme-light relative overflow-hidden bg-[linear-gradient(180deg,#9ac9f6_0%,#bcdbf7_45%,#e7ebec_100%)] pt-24 lg:h-[max(100svh,760px)] lg:pb-0 lg:pt-[88px] [@media(min-width:1024px)_and_(max-height:820px)]:pt-[76px]"
     >
       <div
         data-hero-copy
@@ -172,7 +172,7 @@ export function AdmissionHero() {
       {/* the foot fades into the page's white */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-16 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,#fff_100%)] lg:h-24"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-16 bg-[linear-gradient(180deg,rgba(5,4,10,0)_0%,#05040a_100%)] lg:h-24"
       />
     </section>
   );

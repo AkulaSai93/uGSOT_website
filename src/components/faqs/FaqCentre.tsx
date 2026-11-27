@@ -95,7 +95,7 @@ export function FaqCentre() {
           hero's own sky above, the headline and its line centred over it */}
       <section
         aria-labelledby="faq-title"
-        className="relative overflow-hidden bg-[linear-gradient(180deg,#a3ccf5_0%,#bbdbfa_45%,#d4e8f7_100%)] pt-24 lg:h-[max(96svh,760px)] lg:pt-[112px]"
+        className="theme-light relative overflow-hidden bg-[linear-gradient(180deg,#a3ccf5_0%,#bbdbfa_45%,#d4e8f7_100%)] pt-24 lg:h-[max(96svh,760px)] lg:pt-[112px]"
       >
         <div
           data-hero-copy
@@ -110,7 +110,7 @@ export function FaqCentre() {
           </h1>
           <p
             data-hero-line
-            className="mx-auto mt-4 max-w-[640px] text-balance text-[15.5px] leading-[1.6] text-[#294454] lg:text-[17px]"
+            className="mx-auto mt-4 max-w-[640px] text-balance text-[15.5px] leading-[1.6] text-ink lg:text-[17px]"
           >
             Everything you need to know about uGNET, admissions, fees, outcomes
             and our AI agents, all in one place.
@@ -133,14 +133,14 @@ export function FaqCentre() {
         {/* the foot fades into the page's white */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-16 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,#fff_100%)] lg:h-24"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-16 bg-[linear-gradient(180deg,rgba(5,4,10,0)_0%,#05040a_100%)] lg:h-24"
         />
       </section>
 
       {/* phones: the topics as a sticky row of chips */}
       <nav
         aria-label="FAQ topics"
-        className="sticky top-[96px] z-20 border-b border-black/[0.08] bg-white/95 backdrop-blur lg:hidden"
+        className="sticky top-[96px] z-20 border-b border-white/[0.1] bg-canvas/90 backdrop-blur lg:hidden"
       >
         <div className="flex gap-2 overflow-x-auto px-4 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {shown.map((t) => (
@@ -151,8 +151,8 @@ export function FaqCentre() {
               onClick={() => goTo(`faq-${t.id}`)}
               className={`shrink-0 whitespace-nowrap rounded-[6px] border px-4 py-2 text-[13px] font-medium transition-colors ${
                 active === t.id
-                  ? "border-ink bg-ink text-white"
-                  : "border-black/[0.1] bg-white text-ink"
+                  ? "border-ink bg-white text-[#0b0d12]"
+                  : "border-white/[0.12] bg-surface text-ink"
               }`}
             >
               {t.title}
@@ -250,10 +250,10 @@ export function FaqCentre() {
                         <li
                           key={key}
                           id={`faq-${key}`}
-                          className={`scroll-mt-[164px] rounded-[6px] border bg-white transition-colors duration-300 ${
+                          className={`scroll-mt-[164px] rounded-[6px] border bg-surface transition-colors duration-300 ${
                             on
                               ? "border-ink/20"
-                              : "border-black/[0.08] hover:border-ink/20"
+                              : "border-white/[0.1] hover:border-ink/20"
                           }`}
                         >
                           <button

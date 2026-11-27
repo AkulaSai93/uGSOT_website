@@ -253,7 +253,7 @@ function ClassFields({
           </>
         )}
         {status && c.status === "Waiting for results" && (
-          <p className="flex items-start gap-2 rounded-[6px] bg-black/[0.04] px-4 py-3 text-[13.5px] text-body sm:col-span-2">
+          <p className="flex items-start gap-2 rounded-[6px] bg-white/[0.04] px-4 py-3 text-[13.5px] text-body sm:col-span-2">
             <Info
               size={16}
               className="mt-0.5 shrink-0 text-muted"

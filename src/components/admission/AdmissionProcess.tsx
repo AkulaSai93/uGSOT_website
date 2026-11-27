@@ -114,16 +114,16 @@ const STEPS: Step[] = [
   },
 ];
 
-/** the section's colours (light) */
+/** the section's colours (dark, as the whole site) */
 const LIGHT = {
-  "--ap-bg": "#ffffff",
-  "--ap-fg": "#0b0d12",
-  "--ap-body": "#3d4452",
-  "--ap-muted": "#6b7280",
-  "--ap-line": "rgba(0,0,0,0.08)",
-  "--ap-chip": "#f6f7f9",
-  "--ap-tick": "#fde8ec",
-  "--ap-num": "rgba(0,0,0,0.14)",
+  "--ap-bg": "#05040a",
+  "--ap-fg": "#ffffff",
+  "--ap-body": "rgba(255,255,255,0.68)",
+  "--ap-muted": "rgba(255,255,255,0.5)",
+  "--ap-line": "rgba(255,255,255,0.12)",
+  "--ap-chip": "#17181d",
+  "--ap-tick": "rgba(228,0,43,0.16)",
+  "--ap-num": "rgba(255,255,255,0.14)",
 };
 
 /** a smooth curve through points (Catmull-Rom as cubic Béziers) */
@@ -351,7 +351,7 @@ export function AdmissionProcess() {
               </p>
               <GlowButton
                 href="/apply"
-                streak="#0b0d12"
+                streak="#ffffff"
                 className="mt-6 max-sm:w-full max-sm:[&>span:last-child]:w-full max-sm:[&>span:last-child]:justify-center"
               >
                 Apply Now
@@ -372,7 +372,7 @@ export function AdmissionProcess() {
                 >
                   <div
                     data-visual
-                    className={`relative aspect-[16/10] w-full translate-y-8 lg:max-w-[460px] overflow-hidden rounded-[10px] bg-[#eef0e6] opacity-0 transition-[opacity,transform] duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[on]:translate-y-0 group-data-[on]:opacity-100 max-lg:order-2 ${flip ? "lg:order-2 lg:justify-self-end" : ""}`}
+                    className={`relative aspect-[16/10] w-full translate-y-8 lg:max-w-[460px] overflow-hidden rounded-[10px] bg-sunken opacity-0 transition-[opacity,transform] duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[on]:translate-y-0 group-data-[on]:opacity-100 max-lg:order-2 ${flip ? "lg:order-2 lg:justify-self-end" : ""}`}
                   >
                     <Image
                       src={`/images/admission/step-v6-${i + 1}.webp`}

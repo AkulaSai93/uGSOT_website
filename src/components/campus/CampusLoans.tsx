@@ -91,10 +91,10 @@ export function CampusLoans() {
                   aria-selected={on}
                   aria-controls="loan-terms"
                   onClick={() => setActive(i)}
-                  className={`flex items-center gap-3 rounded-[6px] border bg-white px-4 py-3.5 text-left transition-colors duration-300 ${
+                  className={`flex items-center gap-3 rounded-[6px] border bg-surface px-4 py-3.5 text-left transition-colors duration-300 ${
                     on
                       ? "border-ink ring-1 ring-ink"
-                      : "border-black/[0.08] hover:border-ink/30"
+                      : "border-white/[0.1] hover:border-ink/30"
                   }`}
                 >
                   <span className="relative h-8 w-10 shrink-0">
@@ -136,7 +136,7 @@ export function CampusLoans() {
               <li
                 key={l.name}
                 data-loan-rise
-                className="overflow-hidden rounded-[6px] border border-black/[0.08] bg-white"
+                className="overflow-hidden rounded-[6px] border border-white/[0.1] bg-surface"
               >
                 <button
                   type="button"
@@ -199,10 +199,10 @@ export function CampusLoans() {
 function Terms({ lender }: { lender: Lender }) {
   return (
     <>
-      <div className="hidden overflow-hidden rounded-[6px] border border-black/[0.08] sm:block">
+      <div className="hidden overflow-hidden rounded-[6px] border border-white/[0.1] sm:block">
         <table className="w-full table-fixed text-[14px]">
           <thead>
-            <tr className="bg-[#f6f7f9] text-left">
+            <tr className="bg-sunken text-left">
               <th
                 scope="col"
                 className="w-[32%] px-5 py-4 font-semibold text-ink"
@@ -213,7 +213,7 @@ function Terms({ lender }: { lender: Lender }) {
                 <th
                   key={c}
                   scope="col"
-                  className="border-l border-black/[0.08] px-5 py-4 font-semibold text-ink"
+                  className="border-l border-white/[0.1] px-5 py-4 font-semibold text-ink"
                 >
                   {c}
                 </th>
@@ -224,7 +224,7 @@ function Terms({ lender }: { lender: Lender }) {
             {lender.rows.map((r) => (
               <tr
                 key={r.label}
-                className="border-t border-black/[0.08] align-top"
+                className="border-t border-white/[0.1] align-top"
               >
                 <th
                   scope="row"
@@ -236,7 +236,7 @@ function Terms({ lender }: { lender: Lender }) {
                   <td
                     key={i}
                     colSpan={r.values.length === 1 ? lender.columns.length : 1}
-                    className="border-l border-black/[0.08] px-5 py-4 leading-relaxed text-body"
+                    className="border-l border-white/[0.1] px-5 py-4 leading-relaxed text-body"
                   >
                     {v}
                   </td>
@@ -247,7 +247,7 @@ function Terms({ lender }: { lender: Lender }) {
         </table>
       </div>
 
-      <dl className="divide-y divide-black/[0.08] overflow-hidden rounded-[6px] border border-black/[0.08] sm:hidden">
+      <dl className="divide-y divide-white/[0.1] overflow-hidden rounded-[6px] border border-white/[0.1] sm:hidden">
         {lender.rows.map((r) => (
           <div key={r.label} className="px-4 py-3.5">
             <dt className="text-[13px] font-semibold text-ink">{r.label}</dt>

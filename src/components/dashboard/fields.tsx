@@ -30,7 +30,7 @@ import {
  */
 
 export const INPUT =
-  "h-11 w-full rounded-[4px] border border-black/[0.1] bg-white px-3.5 text-[14.5px] text-ink outline-none transition-colors placeholder:text-muted/80 focus:border-ink disabled:cursor-not-allowed disabled:bg-black/[0.035] disabled:text-body aria-[invalid=true]:border-accent";
+  "h-11 w-full rounded-[4px] border border-white/[0.12] bg-surface px-3.5 text-[14.5px] text-ink outline-none transition-colors placeholder:text-muted/80 focus:border-ink disabled:cursor-not-allowed disabled:bg-white/[0.035] disabled:text-body aria-[invalid=true]:border-accent";
 
 /** a labelled field: label, optional hint, the control, then any error */
 export function Field({
@@ -138,7 +138,7 @@ function useDismiss(
 }
 
 const POPOVER =
-  "absolute inset-x-0 top-[calc(100%+6px)] z-30 overflow-hidden rounded-[4px] border border-black/[0.1] bg-white shadow-[var(--shadow-lg)]";
+  "absolute inset-x-0 top-[calc(100%+6px)] z-30 overflow-hidden rounded-[4px] border border-white/[0.12] bg-surface shadow-[var(--shadow-lg)]";
 
 /** the list in a popover: options, the active one tinted, the chosen one ticked */
 function OptionList({
@@ -185,7 +185,7 @@ function OptionList({
           onMouseEnter={() => setActive(i)}
           onClick={() => choose(o)}
           className={`flex cursor-pointer items-center justify-between gap-3 rounded-[4px] px-3 py-2.5 text-[14px] ${
-            i === active ? "bg-black/[0.045]" : ""
+            i === active ? "bg-white/[0.045]" : ""
           } ${o === value ? "font-medium text-accent" : "text-ink"}`}
         >
           {o}
@@ -292,7 +292,7 @@ export function Select({
       {open && (
         <div className={POPOVER}>
           {search && (
-            <div className="border-b border-black/[0.06] p-1.5">
+            <div className="border-b border-white/[0.08] p-1.5">
               <input
                 autoFocus
                 aria-label="Search"
@@ -303,7 +303,7 @@ export function Select({
                   setActive(0);
                 }}
                 onKeyDown={onKeys}
-                className="h-9 w-full rounded-[4px] bg-black/[0.035] px-3 text-[14px] text-ink outline-none placeholder:text-muted/80"
+                className="h-9 w-full rounded-[4px] bg-white/[0.035] px-3 text-[14px] text-ink outline-none placeholder:text-muted/80"
               />
             </div>
           )}
@@ -443,7 +443,7 @@ export function Chips({
                 ? "border-accent bg-accent-soft text-accent"
                 : invalid
                   ? "border-accent/50 text-ink hover:border-ink"
-                  : "border-black/[0.1] text-ink hover:border-ink"
+                  : "border-white/[0.12] text-ink hover:border-ink"
             }`}
           >
             <input
@@ -500,12 +500,12 @@ export function Radios({
             />
             <span
               aria-hidden
-              className={`grid size-5 place-items-center rounded-full border-2 bg-white transition-colors ${
+              className={`grid size-5 place-items-center rounded-full border-2 bg-surface transition-colors ${
                 on
                   ? "border-accent"
                   : invalid
                     ? "border-accent/60"
-                    : "border-black/25"
+                    : "border-white/25"
               }`}
             >
               {on && <span className="size-2.5 rounded-full bg-accent" />}
@@ -544,8 +544,8 @@ export function Checkbox({
           checked
             ? "border-accent bg-accent"
             : invalid
-              ? "border-accent bg-white"
-              : "border-black/20 bg-white"
+              ? "border-accent bg-surface"
+              : "border-white/20 bg-surface"
         }`}
       >
         {checked && <Check size={13} strokeWidth={3} />}
@@ -573,8 +573,8 @@ export function ScoreInput({
 }) {
   return (
     <div
-      className={`flex h-11 overflow-hidden rounded-[4px] border bg-white transition-colors focus-within:border-ink ${
-        invalid ? "border-accent" : "border-black/[0.1]"
+      className={`flex h-11 overflow-hidden rounded-[4px] border bg-surface transition-colors focus-within:border-ink ${
+        invalid ? "border-accent" : "border-white/[0.12]"
       }`}
     >
       <input
@@ -585,7 +585,7 @@ export function ScoreInput({
         onChange={(e) => onValue(e.target.value.replace(/[^\d.]/g, ""))}
         className="min-w-0 flex-1 bg-transparent px-3.5 text-[14.5px] text-ink outline-none placeholder:text-muted/80"
       />
-      <div className="relative border-l border-black/[0.08] bg-black/[0.035]">
+      <div className="relative border-l border-white/[0.1] bg-white/[0.035]">
         <select
           aria-label="Score type"
           value={unit}
@@ -641,7 +641,7 @@ export function FileDrop({
 
   if (value) {
     return (
-      <div className="flex items-center gap-3 rounded-[4px] border border-black/[0.1] bg-white px-3.5 py-3">
+      <div className="flex items-center gap-3 rounded-[4px] border border-white/[0.12] bg-surface px-3.5 py-3">
         <span className="grid size-9 shrink-0 place-items-center rounded-[4px] bg-accent-soft text-accent">
           <FileCheck2 size={18} aria-hidden />
         </span>
@@ -656,7 +656,7 @@ export function FileDrop({
         <button
           type="button"
           onClick={() => onChange(undefined)}
-          className="inline-flex items-center gap-1 rounded-[4px] px-2 py-1.5 text-[13px] font-medium text-body transition-colors hover:bg-black/[0.04] hover:text-ink"
+          className="inline-flex items-center gap-1 rounded-[4px] px-2 py-1.5 text-[13px] font-medium text-body transition-colors hover:bg-white/[0.04] hover:text-ink"
         >
           <Trash2 size={15} aria-hidden />
           Remove
@@ -683,8 +683,8 @@ export function FileDrop({
           over
             ? "border-accent bg-accent-soft"
             : invalid
-              ? "border-accent bg-white"
-              : "border-black/20 bg-white hover:border-ink"
+              ? "border-accent bg-surface"
+              : "border-white/20 bg-surface hover:border-ink"
         }`}
       >
         <UploadCloud size={22} className="text-accent" aria-hidden />
@@ -739,7 +739,7 @@ export function SectionCard({
         </div>
         {action}
       </header>
-      <div className="rounded-[6px] border border-black/[0.08] bg-white px-5 py-5 sm:px-6 sm:py-6">
+      <div className="rounded-[6px] border border-white/[0.1] bg-surface px-5 py-5 sm:px-6 sm:py-6">
         {children}
       </div>
     </section>
@@ -770,14 +770,14 @@ export function ReviewCard({
           <button
             type="button"
             onClick={onEdit}
-            className="inline-flex items-center gap-1.5 rounded-[4px] border border-black/[0.1] px-3 py-1.5 text-[13px] font-semibold text-ink transition-colors hover:border-ink"
+            className="inline-flex items-center gap-1.5 rounded-[4px] border border-white/[0.12] px-3 py-1.5 text-[13px] font-semibold text-ink transition-colors hover:border-ink"
           >
             <Pencil size={13} aria-hidden />
             Edit
           </button>
         )}
       </header>
-      <div className="rounded-[6px] border border-black/[0.08] bg-white px-5 py-5 sm:px-6">
+      <div className="rounded-[6px] border border-white/[0.1] bg-surface px-5 py-5 sm:px-6">
         {rows && (
           <dl className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
             {rows.map(([label, value]) => (
@@ -814,8 +814,8 @@ export function InfoCard({
       <h2 className="mb-3 text-[13.5px] font-semibold uppercase tracking-[0.08em] text-ink">
         {title}
       </h2>
-      <div className="rounded-[6px] border border-black/[0.08] bg-white px-5 py-2 sm:px-6">
-        <dl className="divide-y divide-black/[0.06]">
+      <div className="rounded-[6px] border border-white/[0.1] bg-surface px-5 py-2 sm:px-6">
+        <dl className="divide-y divide-white/[0.1]">
           {rows.map(([label, value]) => (
             <div
               key={label}
@@ -831,7 +831,7 @@ export function InfoCard({
           ))}
         </dl>
         {footer && (
-          <div className="border-t border-black/[0.06] py-4">{footer}</div>
+          <div className="border-t border-white/[0.08] py-4">{footer}</div>
         )}
       </div>
     </section>
@@ -860,4 +860,4 @@ export const PRIMARY_BUTTON =
   "inline-flex h-11 items-center justify-center gap-2 rounded-[4px] bg-accent px-5 text-[14.5px] font-semibold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50";
 
 export const SECONDARY_BUTTON =
-  "inline-flex h-11 items-center justify-center gap-2 rounded-[4px] border border-black/[0.1] bg-white px-5 text-[14.5px] font-semibold text-ink transition-colors hover:border-ink disabled:cursor-not-allowed disabled:opacity-50";
+  "inline-flex h-11 items-center justify-center gap-2 rounded-[4px] border border-white/[0.12] bg-surface px-5 text-[14.5px] font-semibold text-ink transition-colors hover:border-ink disabled:cursor-not-allowed disabled:opacity-50";

@@ -121,7 +121,10 @@ export default function SceneStage() {
     renderer.setClearColor(0x000000, 0);
     // phones draw at a lower pixel ratio so the scroll stays at full frame rate
     renderer.setPixelRatio(
-      Math.min(window.devicePixelRatio || 1, window.innerWidth < 768 ? 1.25 : 1.75),
+      Math.min(
+        window.devicePixelRatio || 1,
+        window.innerWidth < 768 ? 1.25 : 1.75,
+      ),
     );
     const canvas = renderer.domElement;
     canvas.style.cssText =
@@ -336,6 +339,8 @@ export default function SceneStage() {
     const HOLD = 4; // seconds on each set
     const MIX = 1.6; // seconds to blend into the next
     const tint = (t: number) => {
+      // the clock can read NaN on the very first frame: skip it
+      if (!Number.isFinite(t) || t < 0) return;
       const step = HOLD + MIX;
       const k = Math.floor(t / step);
       const f = smooth(Math.min(1, Math.max(0, (t - k * step - HOLD) / MIX)));

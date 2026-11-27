@@ -146,8 +146,8 @@ function PhotoPicker({
   };
 
   return (
-    <div className="flex flex-col items-center rounded-[4px] border border-black/[0.08] bg-black/[0.015] px-5 py-6 text-center">
-      <span className="relative grid size-24 shrink-0 place-items-center overflow-hidden rounded-full border border-black/[0.08] bg-white text-muted">
+    <div className="flex flex-col items-center rounded-[4px] border border-white/[0.1] bg-white/[0.015] px-5 py-6 text-center">
+      <span className="relative grid size-24 shrink-0 place-items-center overflow-hidden rounded-full border border-white/[0.1] bg-surface text-muted">
         {value ? (
           <Image
             src={value}
@@ -555,7 +555,7 @@ export function StudentSection({
             at="current"
             errors={errors}
           />
-          <div className="border-t border-black/[0.06] pt-5">
+          <div className="border-t border-white/[0.08] pt-5">
             <Checkbox
               checked={s.permanentSame}
               onChange={(permanentSame) => set({ permanentSame })}

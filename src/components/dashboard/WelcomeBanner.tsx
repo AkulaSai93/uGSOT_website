@@ -29,7 +29,7 @@ export function WelcomeBanner() {
   const Arrow = here ? ArrowDown : ArrowRight;
 
   return (
-    <section className="relative overflow-hidden rounded-[6px] bg-[linear-gradient(180deg,#e3eefe_0%,#b0d9fd_50%,#d4eafe_100%)]">
+    <section className="theme-light relative overflow-hidden rounded-[6px] bg-[linear-gradient(180deg,#e3eefe_0%,#b0d9fd_50%,#d4eafe_100%)]">
       {/* the photo at the right at the banner's full height, its left
             edge fading into the matching sky behind the copy (on phones
             too, so the banner stays short) */}

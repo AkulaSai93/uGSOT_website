@@ -128,7 +128,7 @@ export function ResumeHero({
     <section
       ref={root}
       aria-labelledby="resume-title"
-      className="relative overflow-hidden bg-[linear-gradient(180deg,#7fb8ee_0%,#a9d2f5_30%,#e6f1fb_58%,#f4f9fe_80%,#ffffff_100%)] pb-14 pt-24 lg:min-h-[max(100svh,820px)] lg:pb-24 lg:pt-[84px]"
+      className="theme-light relative overflow-hidden bg-[linear-gradient(180deg,#7fb8ee_0%,#a9d2f5_30%,#e6f1fb_58%,#dbe9f6_84%,#05040a_100%)] pb-14 pt-24 lg:min-h-[max(100svh,820px)] lg:pb-24 lg:pt-[84px]"
     >
       <style>{`@keyframes rh-float{0%,100%{translate:0 0}50%{translate:0 -12px}}@media (prefers-reduced-motion:reduce){[class*="rh-float"]{animation:none!important}}`}</style>
 

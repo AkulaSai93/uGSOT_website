@@ -109,7 +109,7 @@ function StepIcon({ state, index }: { state: StepState; index: number }) {
           ? "border-[#16a34a] bg-[#16a34a] text-white"
           : state === "current"
             ? "border-accent bg-accent-soft text-accent"
-            : "border-black/[0.08] bg-black/[0.04] text-muted"
+            : "border-white/[0.1] bg-white/[0.04] text-muted"
       }`}
     >
       {state === "done" ? (
@@ -166,7 +166,7 @@ function StepList({
               <span
                 aria-hidden
                 className={`absolute left-[29px] top-[46px] h-[calc(100%-38px)] w-px ${
-                  state === "done" ? "bg-[#16a34a]" : "bg-black/[0.08]"
+                  state === "done" ? "bg-[#16a34a]" : "bg-white/[0.08]"
                 }`}
               />
             )}
@@ -176,7 +176,7 @@ function StepList({
                 onClick={onPick}
                 aria-current={here ? "page" : undefined}
                 className={`flex items-start gap-3 rounded-[6px] px-3 py-2 transition-colors ${
-                  here ? "bg-black/[0.04]" : "hover:bg-black/[0.03]"
+                  here ? "bg-white/[0.04]" : "hover:bg-white/[0.03]"
                 }`}
               >
                 {body}
@@ -208,7 +208,7 @@ function StepsPanel({
   return (
     <>
       {/* the progress, on the site's dark ground with a red glow */}
-      <div className="relative overflow-hidden rounded-[6px] bg-ink p-5 text-white">
+      <div className="relative overflow-hidden rounded-[6px] bg-surface p-5 text-white ring-1 ring-white/10">
         <span
           aria-hidden
           className="pointer-events-none absolute -right-12 -top-16 size-44 rounded-full bg-accent/45 blur-3xl"
@@ -231,17 +231,17 @@ function StepsPanel({
       </div>
       <nav
         aria-label="Application"
-        className="rounded-[6px] border border-black/[0.08] bg-white p-3"
+        className="rounded-[6px] border border-white/[0.1] bg-surface p-3"
       >
         <Link
           href="/dashboard"
           onClick={onPick}
           aria-current={path === "/dashboard" ? "page" : undefined}
           className={`mb-2 flex items-center gap-3 rounded-[4px] px-3 py-2.5 text-[14px] font-medium text-ink transition-colors ${
-            path === "/dashboard" ? "bg-black/[0.04]" : "hover:bg-black/[0.03]"
+            path === "/dashboard" ? "bg-white/[0.04]" : "hover:bg-white/[0.03]"
           }`}
         >
-          <span className="grid size-9 place-items-center rounded-full border border-black/[0.08] bg-white">
+          <span className="grid size-9 place-items-center rounded-full border border-white/[0.1] bg-surface">
             <LayoutDashboard size={16} aria-hidden />
           </span>
           Overview
@@ -257,7 +257,7 @@ function StepsPanel({
 
 function Header({ app, onMenu }: { app?: Application; onMenu?: () => void }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-black/[0.06] bg-white/90 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-white/[0.08] bg-canvas/85 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-[1240px] items-center justify-between gap-4 px-4 sm:px-6">
         <div className="flex items-center gap-3">
           {onMenu && (
@@ -265,12 +265,12 @@ function Header({ app, onMenu }: { app?: Application; onMenu?: () => void }) {
               type="button"
               onClick={onMenu}
               aria-label="Show application steps"
-              className="grid size-10 place-items-center rounded-[4px] border border-black/[0.08] text-ink transition-colors hover:border-ink lg:hidden"
+              className="grid size-10 place-items-center rounded-[4px] border border-white/[0.1] text-ink transition-colors hover:border-ink lg:hidden"
             >
               <PanelLeft size={18} aria-hidden />
             </button>
           )}
-          <Logo />
+          <Logo onDark />
         </div>
         <div className="flex items-center gap-4">
           <a
@@ -308,7 +308,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
 
   if (!hydrated) {
     return (
-      <div className="min-h-svh bg-white">
+      <div className="min-h-svh bg-canvas">
         <Header />
       </div>
     );
@@ -316,7 +316,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
 
   if (!app) {
     return (
-      <div className="min-h-svh bg-white">
+      <div className="min-h-svh bg-canvas">
         <Header />
         <div className="mx-auto flex max-w-[480px] flex-col items-center px-5 pt-28 text-center">
           <h1 className="font-display text-[28px] font-medium tracking-[-0.03em] text-ink">
@@ -344,14 +344,14 @@ export function DashboardShell({ children }: { children: ReactNode }) {
 
   return (
     <ApplicationContext.Provider value={app}>
-      <div className="min-h-svh bg-[#f3f5f8]">
+      <div className="min-h-svh bg-canvas">
         <Header app={app} onMenu={() => setStepsOpen(true)} />
         {/* phones and tablets: a slim progress strip pinned under the
             header, opening the steps */}
         <button
           type="button"
           onClick={() => setStepsOpen(true)}
-          className="sticky top-16 z-30 flex w-full items-center gap-3 border-b border-black/[0.06] bg-white/95 px-4 py-2.5 text-left backdrop-blur-xl sm:px-6 lg:hidden"
+          className="sticky top-16 z-30 flex w-full items-center gap-3 border-b border-white/[0.08] bg-canvas/90 px-4 py-2.5 text-left backdrop-blur-xl sm:px-6 lg:hidden"
         >
           <ProgressRing done={done} size={40} />
           <span className="min-w-0 flex-1">
@@ -396,7 +396,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
         >
           <div
             onClick={() => setStepsOpen(false)}
-            className={`absolute inset-0 bg-ink/40 transition-opacity duration-300 ${
+            className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${
               stepsOpen ? "opacity-100" : "opacity-0"
             }`}
           />
@@ -404,7 +404,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
             role="dialog"
             aria-modal="true"
             aria-label="Application steps"
-            className={`absolute inset-y-0 left-0 grid w-[min(340px,86vw)] auto-rows-max content-start gap-3 overflow-y-auto overscroll-contain bg-white p-4 shadow-[var(--shadow-lg)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            className={`absolute inset-y-0 left-0 grid w-[min(340px,86vw)] auto-rows-max content-start gap-3 overflow-y-auto overscroll-contain bg-surface p-4 shadow-[var(--shadow-lg)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
               stepsOpen ? "translate-x-0" : "-translate-x-full"
             }`}
           >
@@ -416,7 +416,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
                 type="button"
                 onClick={() => setStepsOpen(false)}
                 aria-label="Close"
-                className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-black/[0.04] hover:text-ink"
+                className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-white/[0.04] hover:text-ink"
               >
                 <X size={18} aria-hidden />
               </button>
@@ -470,8 +470,8 @@ export function StepGate({
   if (states[index] !== "locked") return <>{children}</>;
   const blocker = STEPS[states.indexOf("current")];
   return (
-    <div className="rounded-[6px] border border-black/[0.08] bg-white px-6 py-14 text-center">
-      <span className="mx-auto grid size-12 place-items-center rounded-full bg-black/[0.04] text-muted">
+    <div className="rounded-[6px] border border-white/[0.1] bg-surface px-6 py-14 text-center">
+      <span className="mx-auto grid size-12 place-items-center rounded-full bg-white/[0.04] text-muted">
         <Lock size={20} aria-hidden />
       </span>
       <h1 className="mt-4 font-display text-[22px] font-medium tracking-[-0.02em] text-ink">

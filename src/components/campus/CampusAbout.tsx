@@ -15,16 +15,17 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 /** the section's colours, light and dark: it fades to dark while it holds
  *  the middle of the screen (as the faculty section does) */
 const LIGHT = {
-  "--ab-bg": "#ffffff",
-  "--ab-fg": "#0b0d12",
-  "--ab-body": "#3d4452",
-  "--ab-line": "rgba(0,0,0,0.08)",
-  "--ab-chip": "#ffffff",
-  "--heading-fg": "#0b0d12",
-  "--heading-muted": "#3d4452",
+  // the site is dark throughout now, so "light" is the same dark ground
+  "--ab-bg": "#05040a",
+  "--ab-fg": "#ffffff",
+  "--ab-body": "rgba(255,255,255,0.68)",
+  "--ab-line": "rgba(255,255,255,0.12)",
+  "--ab-chip": "#121214",
+  "--heading-fg": "#ffffff",
+  "--heading-muted": "rgba(255,255,255,0.68)",
 };
 const DARK = {
-  "--ab-bg": "#000000",
+  "--ab-bg": "#05040a",
   "--ab-fg": "#ffffff",
   "--ab-body": "rgba(229,229,229,0.8)",
   "--ab-line": "rgba(255,255,255,0.16)",
@@ -262,7 +263,7 @@ export function CampusAbout({ campus }: { campus: Campus }) {
                 i === 0 ? "lg:row-span-2" : ""
               }`}
             >
-              <div className="relative size-full overflow-hidden rounded-[6px] bg-ink">
+              <div className="relative size-full overflow-hidden rounded-[6px] bg-sunken">
                 <div className="absolute inset-0">
                   <Image
                     src={`/images/campuses/${campus.slug}/${it.img}.webp`}
@@ -342,7 +343,7 @@ function MainFilm({
         })
       }
       aria-label={`Play: ${v.title}`}
-      className="group relative block aspect-[4/3] w-full overflow-hidden rounded-[8px] bg-ink outline-none [container-type:size] focus-visible:ring-2 focus-visible:ring-accent lg:aspect-[8/7]"
+      className="group relative block aspect-[4/3] w-full overflow-hidden rounded-[8px] bg-sunken outline-none [container-type:size] focus-visible:ring-2 focus-visible:ring-accent lg:aspect-[8/7]"
     >
       {/* the campus still until the film starts (the film's own thumbnail
           has its title across it, which this frame would crop) */}
@@ -372,7 +373,7 @@ function MainFilm({
       />
       <span
         aria-hidden
-        className="absolute left-1/2 top-1/2 grid size-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white text-ink transition-all duration-300 group-hover:scale-110 group-hover:bg-accent group-hover:text-white lg:size-[72px]"
+        className="absolute left-1/2 top-1/2 grid size-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-surface text-ink transition-all duration-300 group-hover:scale-110 group-hover:bg-accent group-hover:text-white lg:size-[72px]"
       >
         <Play
           size={22}

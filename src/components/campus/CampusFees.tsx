@@ -98,11 +98,11 @@ export function CampusFees({ campus }: { campus: Campus }) {
         <div
           data-fee-cards
           data-fee-rise
-          className="mt-8 hidden overflow-hidden rounded-[6px] border border-black/[0.08] lg:mt-12 lg:block"
+          className="mt-8 hidden overflow-hidden rounded-[6px] border border-white/[0.1] lg:mt-12 lg:block"
         >
           <table className="w-full text-[14px]">
             <thead>
-              <tr className="bg-[#f6f7f9] text-left">
+              <tr className="bg-sunken text-left">
                 <th scope="col" className="px-5 py-4 font-semibold text-ink">
                   Fee Components
                 </th>
@@ -110,7 +110,7 @@ export function CampusFees({ campus }: { campus: Campus }) {
                   <th
                     key={s.sem}
                     scope="col"
-                    className="border-l border-black/[0.08] px-5 py-4 font-semibold text-ink"
+                    className="border-l border-white/[0.1] px-5 py-4 font-semibold text-ink"
                   >
                     Semester {s.sem}
                   </th>
@@ -119,7 +119,7 @@ export function CampusFees({ campus }: { campus: Campus }) {
             </thead>
             <tbody>
               {components.map((c) => (
-                <tr key={c} className="border-t border-black/[0.08]">
+                <tr key={c} className="border-t border-white/[0.1]">
                   <th
                     scope="row"
                     className="px-5 py-4 text-left font-medium text-body"
@@ -129,14 +129,14 @@ export function CampusFees({ campus }: { campus: Campus }) {
                   {fees.semesters.map((s) => (
                     <td
                       key={s.sem}
-                      className="border-l border-black/[0.08] px-5 py-4 tabular-nums text-body"
+                      className="border-l border-white/[0.1] px-5 py-4 tabular-nums text-body"
                     >
                       {amountOf(s, c) ?? "-"}
                     </td>
                   ))}
                 </tr>
               ))}
-              <tr className="border-t border-black/[0.08] text-ink">
+              <tr className="border-t border-white/[0.1] text-ink">
                 <th
                   scope="row"
                   className="px-5 py-4 text-left font-medium uppercase tracking-[0.04em]"
@@ -146,7 +146,7 @@ export function CampusFees({ campus }: { campus: Campus }) {
                 {fees.semesters.map((s) => (
                   <td
                     key={s.sem}
-                    className="border-l border-black/[0.08] px-5 py-4 font-medium tabular-nums"
+                    className="border-l border-white/[0.1] px-5 py-4 font-medium tabular-nums"
                   >
                     {s.total}
                   </td>
@@ -163,13 +163,13 @@ export function CampusFees({ campus }: { campus: Campus }) {
             return (
               <li
                 key={s.sem}
-                className="overflow-hidden rounded-[6px] border border-black/[0.08]"
+                className="overflow-hidden rounded-[6px] border border-white/[0.1]"
               >
                 <button
                   type="button"
                   aria-expanded={isOpen}
                   onClick={() => setOpenSem(isOpen ? null : i)}
-                  className={`flex w-full items-center justify-between gap-3 px-4 py-4 text-left transition-colors duration-300 ${isOpen ? "bg-accent text-white" : "bg-white text-ink"}`}
+                  className={`flex w-full items-center justify-between gap-3 px-4 py-4 text-left transition-colors duration-300 ${isOpen ? "bg-accent text-white" : "bg-surface text-ink"}`}
                 >
                   <span className="font-display text-[16px] font-medium">
                     Semester {s.sem}
@@ -188,13 +188,13 @@ export function CampusFees({ campus }: { campus: Campus }) {
                     {s.items.map((it) => (
                       <div
                         key={it.label}
-                        className="flex justify-between gap-4 border-t border-black/[0.08] px-4 py-3"
+                        className="flex justify-between gap-4 border-t border-white/[0.1] px-4 py-3"
                       >
                         <dt className="text-body">{it.label}</dt>
                         <dd className="tabular-nums text-body">{it.amount}</dd>
                       </div>
                     ))}
-                    <div className="flex justify-between gap-4 border-t border-black/[0.08] px-4 py-3 font-medium text-ink">
+                    <div className="flex justify-between gap-4 border-t border-white/[0.1] px-4 py-3 font-medium text-ink">
                       <dt className="uppercase tracking-[0.04em]">Total</dt>
                       <dd className="font-display">{s.total}</dd>
                     </div>
@@ -230,8 +230,8 @@ export function CampusFees({ campus }: { campus: Campus }) {
                 aria-hidden
                 className={`grid size-8 shrink-0 place-items-center rounded-[6px] transition-[transform,background-color,color] duration-300 ${
                   hostelOpen
-                    ? "rotate-180 bg-ink text-white"
-                    : "bg-white text-ink"
+                    ? "rotate-180 bg-white text-[#0b0d12]"
+                    : "bg-surface text-ink"
                 }`}
               >
                 <ChevronDown size={18} />
@@ -250,7 +250,7 @@ export function CampusFees({ campus }: { campus: Campus }) {
                 <div
                   role="tablist"
                   aria-label="Hostel"
-                  className="flex gap-1 rounded-[6px] bg-white p-1 max-sm:w-full"
+                  className="flex gap-1 rounded-[6px] bg-surface p-1 max-sm:w-full"
                 >
                   {hostel.groups.map((h, i) => (
                     <button
@@ -261,7 +261,7 @@ export function CampusFees({ campus }: { campus: Campus }) {
                       onClick={() => setGroup(i)}
                       className={`whitespace-nowrap rounded-[6px] px-4 py-2 text-[14px] font-semibold transition-colors duration-300 max-sm:flex-1 ${
                         i === group
-                          ? "bg-ink text-white"
+                          ? "bg-white text-[#0b0d12]"
                           : "text-body hover:text-ink"
                       }`}
                     >
@@ -282,7 +282,7 @@ export function CampusFees({ campus }: { campus: Campus }) {
                 {g.rooms.map((r) => (
                   <li
                     key={r.occupancy}
-                    className="rounded-[6px] border border-black/[0.08] bg-white p-5"
+                    className="rounded-[6px] border border-white/[0.1] bg-surface p-5"
                   >
                     <p className="font-display text-[17px] font-medium tracking-[-0.02em] text-ink">
                       {r.occupancy}
@@ -306,7 +306,7 @@ export function CampusFees({ campus }: { campus: Campus }) {
                     {r.acNote && (
                       <p className="mt-2 text-[12px] text-body">{r.acNote}</p>
                     )}
-                    <dl className="mt-4 space-y-2 border-t border-black/[0.08] pt-4 text-[13px]">
+                    <dl className="mt-4 space-y-2 border-t border-white/[0.1] pt-4 text-[13px]">
                       {r.location && (
                         <div className="flex justify-between gap-3">
                           <dt className="text-muted">Location</dt>

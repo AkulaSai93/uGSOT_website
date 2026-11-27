@@ -16,7 +16,7 @@ import { GlowButton } from "./GlowButton";
  * icon for the bar's dark look.
  */
 export function ApplyButton({
-  streak = "#0b0d12",
+  streak = "#ffffff",
   labelled = false,
   onDark = false,
   className = "",

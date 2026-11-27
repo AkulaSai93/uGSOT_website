@@ -82,7 +82,7 @@ function Stepper({
             {i > 0 && (
               <span
                 aria-hidden
-                className={`absolute right-1/2 top-5 h-0.5 w-full -translate-y-1/2 ${i <= reached ? "bg-[#16a34a]" : "bg-black/[0.08]"}`}
+                className={`absolute right-1/2 top-5 h-0.5 w-full -translate-y-1/2 ${i <= reached ? "bg-[#16a34a]" : "bg-white/[0.08]"}`}
               />
             )}
             <button
@@ -93,10 +93,10 @@ function Stepper({
               aria-label={`${title}${done ? " (done)" : ""}`}
               className={`relative z-[1] grid size-10 place-items-center rounded-full border-2 transition-colors ${
                 i === at
-                  ? "border-accent bg-white text-accent"
+                  ? "border-accent bg-surface text-accent"
                   : done
                     ? "border-[#16a34a] bg-[#16a34a] text-white"
-                    : "border-black/[0.08] bg-white text-muted"
+                    : "border-white/[0.1] bg-surface text-muted"
               } ${open ? "cursor-pointer" : "cursor-not-allowed"}`}
             >
               {done ? (
@@ -275,7 +275,7 @@ export function UgnetFormView() {
           </p>
 
           {/* the way back and on, kept in reach at the foot of the screen */}
-          <div className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-3 border-t border-black/[0.06] bg-white/95 px-4 py-3 shadow-[0_-4px_16px_rgba(11,13,18,0.06)] backdrop-blur sm:px-6 lg:sticky lg:z-10 lg:rounded-[6px] lg:border lg:px-5 lg:shadow-none">
+          <div className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-3 border-t border-white/[0.08] bg-surface/95 px-4 py-3 shadow-[0_-4px_16px_rgba(11,13,18,0.06)] backdrop-blur sm:px-6 lg:sticky lg:z-10 lg:rounded-[6px] lg:border lg:px-5 lg:shadow-none">
             {editing ? (
               <button
                 type="button"

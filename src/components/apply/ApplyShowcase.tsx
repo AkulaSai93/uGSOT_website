@@ -218,7 +218,7 @@ export function ShowcaseSlides({
             aria-current={i === index}
             onClick={() => go(i)}
             className={`h-1 rounded-full transition-all duration-500 ${
-              i === index ? "w-6 bg-white" : "w-2 bg-white/40 hover:bg-white/70"
+              i === index ? "w-6 bg-surface" : "w-2 bg-white/40 hover:bg-surface/70"
             }`}
           />
         ))}

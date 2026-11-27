@@ -79,7 +79,7 @@ export function UgnetHero() {
     <section
       ref={root}
       aria-labelledby="ugnet-title"
-      className="relative flex flex-col overflow-hidden bg-canvas pt-28 lg:h-[max(100svh,720px)] lg:pt-28"
+      className="theme-light relative flex flex-col overflow-hidden bg-canvas pt-28 lg:h-[max(100svh,720px)] lg:pt-28"
     >
       {/* the sky behind it all, full width (Figma 209:11105) */}
       <div
@@ -179,7 +179,7 @@ export function UgnetHero() {
       {/* the overlay: the sky fades into the page's white at the foot */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-28 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.7)_55%,#fff_100%)] lg:h-44"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-28 bg-[linear-gradient(180deg,rgba(5,4,10,0)_0%,rgba(5,4,10,0.7)_55%,#05040a_100%)] lg:h-44"
       />
     </section>
   );

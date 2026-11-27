@@ -95,7 +95,7 @@ export function AccountMenu({
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-haspopup="menu"
-          className="flex items-center gap-2 rounded-[4px] border border-black/[0.08] bg-white py-1 pl-1 pr-2.5 transition-colors hover:border-ink"
+          className="flex items-center gap-2 rounded-[4px] border border-white/[0.1] bg-surface py-1 pl-1 pr-2.5 transition-colors hover:border-ink"
         >
           <span className="grid size-8 place-items-center rounded-full bg-accent text-[13px] font-semibold text-white">
             {initial}
@@ -114,7 +114,7 @@ export function AccountMenu({
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-[calc(100%+10px)] z-[60] w-[272px] overflow-hidden rounded-[6px] border border-black/[0.08] bg-white shadow-[var(--shadow-lg)]"
+          className="absolute right-0 top-[calc(100%+10px)] z-[60] w-[272px] overflow-hidden rounded-[6px] border border-white/[0.1] bg-surface shadow-[var(--shadow-lg)]"
         >
           <div className="px-4 pb-3.5 pt-4">
             <p className="truncate text-[16px] font-semibold text-ink">
@@ -127,13 +127,13 @@ export function AccountMenu({
               {email || `+91 ${phone}`}
             </p>
           </div>
-          <div className="border-t border-black/[0.06] p-1.5">
+          <div className="border-t border-white/[0.08] p-1.5">
             {!inDashboard && (
               <Link
                 role="menuitem"
                 href="/dashboard"
                 onClick={() => setOpen(false)}
-                className={`${item} text-ink hover:bg-black/[0.04]`}
+                className={`${item} text-ink hover:bg-white/[0.04]`}
               >
                 <LayoutDashboard size={17} aria-hidden />
                 Dashboard
@@ -155,7 +155,7 @@ export function AccountMenu({
                   router.push("/dashboard");
                   window.scrollTo({ top: 0 });
                 }}
-                className={`${item} text-ink hover:bg-black/[0.04]`}
+                className={`${item} text-ink hover:bg-white/[0.04]`}
               >
                 <RotateCcw size={17} aria-hidden />
                 Reset application

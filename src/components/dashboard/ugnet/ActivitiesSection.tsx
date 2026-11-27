@@ -84,8 +84,8 @@ function ActivityList({
       action={list.length > 0 ? add : undefined}
     >
       {list.length === 0 ? (
-        <div className="flex flex-col items-center rounded-[6px] border border-dashed border-black/15 px-6 py-9 text-center">
-          <span className="grid size-11 place-items-center rounded-full bg-black/[0.04] text-muted">
+        <div className="flex flex-col items-center rounded-[6px] border border-dashed border-white/15 px-6 py-9 text-center">
+          <span className="grid size-11 place-items-center rounded-full bg-white/[0.04] text-muted">
             <Icon size={20} aria-hidden />
           </span>
           <p className="mt-3 text-[15px] font-medium text-ink">
@@ -99,7 +99,7 @@ function ActivityList({
           {list.map((x, i) => (
             <div
               key={i}
-              className="rounded-[6px] border border-black/[0.08] p-4 sm:p-5"
+              className="rounded-[6px] border border-white/[0.1] p-4 sm:p-5"
             >
               <div className="mb-4 flex items-center justify-between">
                 <p className="text-[14px] font-semibold text-ink">

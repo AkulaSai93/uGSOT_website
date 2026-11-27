@@ -128,7 +128,7 @@ export function ContactHero() {
         {/* the enquiry form */}
         <div
           data-hero-card
-          className="rounded-[8px] bg-white p-5 shadow-[0_16px_40px_0_rgba(0,31,36,0.12)] sm:p-6"
+          className="theme-light rounded-[8px] bg-white p-5 shadow-[0_16px_40px_0_rgba(0,31,36,0.12)] sm:p-6"
         >
           {sent ? (
             <div className="grid min-h-[420px] place-items-center text-center">
@@ -294,7 +294,7 @@ export function ContactHero() {
       {/* the foot fades into the page's white */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,#fff_100%)] lg:h-36"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(180deg,rgba(5,4,10,0)_0%,#05040a_100%)] lg:h-36"
       />
     </section>
   );

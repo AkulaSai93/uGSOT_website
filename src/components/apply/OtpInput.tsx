@@ -77,7 +77,7 @@ export function OtpInput({
           onKeyDown={(e) => onKeyDown(i, e)}
           onPaste={(e) => onPaste(i, e)}
           onFocus={(e) => e.target.select()}
-          className="aspect-square w-full rounded-[6px] border border-black/[0.1] bg-white text-center text-[20px] font-semibold text-ink outline-none transition-colors focus:border-ink"
+          className="aspect-square w-full rounded-[6px] border border-white/[0.12] bg-surface text-center text-[20px] font-semibold text-ink outline-none transition-colors focus:border-ink"
         />
       ))}
     </div>

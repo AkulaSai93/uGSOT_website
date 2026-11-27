@@ -43,6 +43,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col bg-canvas selection:bg-accent selection:text-white max-sm:has-[#apply-bar]:pb-[56px]">
         <SmoothScroll />
         {children}
+        {/* the home page's film grain over every other page too, so they
+            share its ground (the home page draws its own: see .page-grain) */}
+        <div
+          aria-hidden
+          className="page-grain scene-grain pointer-events-none fixed inset-0 z-[25]"
+        />
       </body>
     </html>
   );

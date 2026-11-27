@@ -129,7 +129,7 @@ function EmailField({
           <button
             type="button"
             onClick={() => update({ emailVerified: false })}
-            className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-[4px] px-3 text-[13.5px] font-medium text-[#16794a]"
+            className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-[4px] px-3 text-[13.5px] font-medium text-[#4fd6a0]"
             title="Change email"
           >
             <BadgeCheck size={17} aria-hidden />
@@ -151,7 +151,7 @@ function EmailField({
       </div>
 
       {sent && !profile.emailVerified && (
-        <div className="mt-1 rounded-[6px] border border-black/[0.08] bg-black/[0.03] p-4">
+        <div className="mt-1 rounded-[6px] border border-white/[0.1] bg-white/[0.03] p-4">
           <p className="text-[13.5px] text-body">
             Enter the {OTP_LENGTH}-digit code sent to{" "}
             <span className="font-semibold text-ink">{profile.email}</span>
@@ -212,7 +212,7 @@ function PaymentSummary({
   const row = "flex items-center justify-between gap-4 text-[14px]";
 
   return (
-    <aside className="rounded-[6px] border border-black/[0.08] bg-white p-5 sm:p-6">
+    <aside className="rounded-[6px] border border-white/[0.1] bg-surface p-5 sm:p-6">
       <h2 className="font-display text-[18px] font-semibold tracking-[-0.01em] text-ink">
         Payment summary
       </h2>
@@ -223,9 +223,9 @@ function PaymentSummary({
         </div>
         {fee.coupon && (
           <div className={row}>
-            <dt className="flex flex-wrap items-center gap-2 text-[#16794a]">
+            <dt className="flex flex-wrap items-center gap-2 text-[#4fd6a0]">
               Discount
-              <span className="inline-flex items-center gap-1 rounded-[4px] bg-[#e9f7ef] px-1.5 py-0.5 text-[11.5px] font-semibold">
+              <span className="inline-flex items-center gap-1 rounded-[4px] bg-[#16a34a]/15 px-1.5 py-0.5 text-[11.5px] font-semibold">
                 <Tag size={11} aria-hidden />
                 {fee.coupon}
                 <button
@@ -238,7 +238,7 @@ function PaymentSummary({
                 </button>
               </span>
             </dt>
-            <dd className="font-semibold text-[#16794a]">
+            <dd className="font-semibold text-[#4fd6a0]">
               −{money(fee.discount)}
             </dd>
           </div>
@@ -251,7 +251,7 @@ function PaymentSummary({
           <dt className="text-body">IGST (18%)</dt>
           <dd className="font-semibold text-ink">{money(fee.igst)}</dd>
         </div>
-        <div className="mt-1 flex items-center justify-between gap-4 border-t border-dashed border-black/15 pt-4">
+        <div className="mt-1 flex items-center justify-between gap-4 border-t border-dashed border-white/15 pt-4">
           <dt className="text-[16px] font-semibold text-ink">Total payable</dt>
           <dd className="font-display text-[22px] font-semibold tracking-[-0.02em] text-accent">
             {money(fee.total)}
@@ -379,12 +379,12 @@ function Checkout({
       role="dialog"
       aria-modal="true"
       aria-labelledby="checkout-title"
-      className="fixed inset-0 z-[100] flex items-end justify-center bg-ink/50 backdrop-blur-[2px] sm:items-center sm:p-6"
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-black/50 backdrop-blur-[2px] sm:items-center sm:p-6"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget && !paying) onClose();
       }}
     >
-      <div className="w-full max-w-[440px] rounded-t-[6px] bg-white p-6 shadow-[var(--shadow-lg)] sm:rounded-[6px]">
+      <div className="w-full max-w-[440px] rounded-t-[6px] bg-surface p-6 shadow-[var(--shadow-lg)] sm:rounded-[6px]">
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2
@@ -402,7 +402,7 @@ function Checkout({
             onClick={onClose}
             disabled={paying}
             aria-label="Close"
-            className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-black/[0.04] hover:text-ink disabled:opacity-40"
+            className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-white/[0.04] hover:text-ink disabled:opacity-40"
           >
             <X size={18} aria-hidden />
           </button>
@@ -416,7 +416,7 @@ function Checkout({
               className={`flex cursor-pointer items-center gap-3 rounded-[6px] border px-4 py-3 transition-colors ${
                 method === id
                   ? "border-accent bg-accent-soft"
-                  : "border-black/[0.1] hover:border-ink"
+                  : "border-white/[0.12] hover:border-ink"
               }`}
             >
               <input
@@ -430,8 +430,8 @@ function Checkout({
               <span
                 className={`grid size-9 place-items-center rounded-[4px] ${
                   method === id
-                    ? "bg-white text-accent"
-                    : "bg-black/[0.04] text-ink"
+                    ? "bg-surface text-accent"
+                    : "bg-white/[0.04] text-ink"
                 }`}
               >
                 <Icon size={17} aria-hidden />
@@ -444,7 +444,7 @@ function Checkout({
               </span>
               <span
                 aria-hidden
-                className={`size-4 rounded-full border-[5px] ${method === id ? "border-accent" : "border-black/15"}`}
+                className={`size-4 rounded-full border-[5px] ${method === id ? "border-accent" : "border-white/15"}`}
               />
             </label>
           ))}
@@ -599,7 +599,7 @@ export function ApplicationFee() {
                 disabled
               />
             </div>
-            <span className="inline-flex h-11 shrink-0 items-center gap-1.5 px-3 text-[13.5px] font-medium text-[#16794a]">
+            <span className="inline-flex h-11 shrink-0 items-center gap-1.5 px-3 text-[13.5px] font-medium text-[#4fd6a0]">
               <BadgeCheck size={17} aria-hidden />
               Verified
             </span>

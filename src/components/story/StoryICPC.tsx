@@ -19,8 +19,8 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
  * Foundation logo, a red line, the headline (its key phrase in red) and a
  * sentence, and the qualifiers' photo; and rising from the foot, a pile of
  * square pixels on each side, tallest at the edges — in the hero ring's
- * colours, cycling with it (indigo, green, sky, violet), with white and a
- * few red, that build up from the bottom as the section scrolls in and keep
+ * colours, cycling on their own (red, indigo, green, sky, violet), with
+ * white, that build up from the bottom as the section scrolls in and keep
  * flickering softly (Mosaic below).
  *
  * The facts are uGSOT's (its LinkedIn ICPC post, as the site's earlier
@@ -376,7 +376,6 @@ const SHADES: RGB[] = [
   [226, 228, 255], // near white
   [255, 255, 255],
 ];
-const RED: RGB = [228, 0, 43];
 
 /* the hero ring's colour sets (SceneStage's cycle): [band, lit side], each
    held 4s and blended into the next over 1.6s, so the mosaic changes colour
@@ -428,7 +427,6 @@ type Cell = {
   row: number; // from the foot, 0 up
   shade: number;
   jitter: number; // when it appears, against the build
-  red: boolean;
 };
 
 /**
@@ -516,8 +514,8 @@ function Mosaic({
             row: r,
             shade: Math.floor(rand() * SHADES.length),
             jitter: rand() * 0.15,
-            red: rand() < 0.012,
           };
+          rand(); // (a draw kept so the piles keep the shape they had)
           // the few loose squares right under the photo (above the base,
           // within its width) are left out, so its faded foot stays clean;
           // every other square is kept as it was
@@ -556,7 +554,7 @@ function Mosaic({
       const gap = Math.max(2, size * 0.1);
       const paint = (cell: Cell, round: boolean) => {
         if (cell.row > reach - cell.jitter * rows) return;
-        const c = cell.red ? RED : shades[cell.shade];
+        const c = shades[cell.shade];
         ctx.fillStyle = `rgb(${c[0] | 0},${c[1] | 0},${c[2] | 0})`;
         if (round) {
           ctx.beginPath();
@@ -587,7 +585,7 @@ function Mosaic({
           const i = Math.floor(Math.random() * all);
           const cell =
             i < squares.length ? squares[i] : dots[i - squares.length];
-          if (cell && !cell.red)
+          if (cell)
             cell.shade = Math.floor(Math.random() * SHADES.length);
         }
       }

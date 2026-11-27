@@ -73,6 +73,10 @@ function ringLayout(w: number, h: number, content: Box | null) {
       cy: content?.cy ?? (h + 80) / 2,
       d: Math.min(h * 0.98, w * 0.85),
     };
+  // phones: small enough that the whole ring reads round the copy (only its
+  // sides run off the screen), not just its bottom arc
+  if (w < 640)
+    return { cx, cy: content?.cy ?? h * 0.45, d: Math.min(h * 0.84, w * 1.55) };
   return { cx, cy: content?.cy ?? h * 0.45, d: h * 0.84 };
 }
 
@@ -115,7 +119,10 @@ export default function SceneStage() {
       return; // no WebGL: the dark page and the haze stay on their own
     }
     renderer.setClearColor(0x000000, 0);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    // phones draw at a lower pixel ratio so the scroll stays at full frame rate
+    renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio || 1, window.innerWidth < 768 ? 1.25 : 1.75),
+    );
     const canvas = renderer.domElement;
     canvas.style.cssText =
       "position:absolute;inset:0;width:100%;height:100%;display:block";
@@ -427,7 +434,8 @@ export default function SceneStage() {
         dt,
         t,
         renderer.getPixelRatio(),
-        u.uSwap.value,
+        // it fades away as the ICPC section comes in
+        u.uSwap.value * (1 - Math.min(1, st.icpc * 1.4)),
         st.travel,
         st.vertical ? 0.15 : undefined,
       );

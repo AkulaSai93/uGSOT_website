@@ -262,7 +262,8 @@ export function Footer() {
           it, and its lower half smeared into soft horizontal streaks */}
       <div
         aria-hidden
-        className="relative mt-6 h-[clamp(7rem,21vw,16rem)] shrink-0 [--wm-glow:127_135_242] lg:h-[min(21vw,32svh)]"
+        data-wm-band
+        className="relative mt-6 h-[clamp(6rem,19vw,14rem)] shrink-0 [--wm-glow:127_135_242] lg:h-[min(19vw,30svh)]"
       >
         {/* a horizontal-only blur for the smeared half of the name */}
         <svg width="0" height="0" className="absolute">
@@ -273,7 +274,12 @@ export function Footer() {
         {/* the light rising under the name, in its colour */}
         <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[150%] bg-[radial-gradient(75%_70%_at_50%_100%,rgb(var(--wm-glow)/0.85),rgb(var(--wm-glow)/0.25)_45%,transparent_78%)]" />
         <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[40%] bg-[linear-gradient(to_top,rgb(var(--wm-glow)/0.55),transparent)]" />
-        <FooterWordmark />
+        {/* the name spans the page's content width, as every section does */}
+        <div className="container-page relative h-full">
+          <div className="relative h-full">
+            <FooterWordmark />
+          </div>
+        </div>
         {/* fine horizontal scan lines over the smear */}
         <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-[repeating-linear-gradient(0deg,rgba(255,255,255,0.07)_0_1px,transparent_1px_4px)] [mask-image:linear-gradient(to_top,#000_30%,transparent)]" />
       </div>

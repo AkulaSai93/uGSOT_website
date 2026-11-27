@@ -204,7 +204,7 @@ export function StoryPathways() {
           />
           <div
             ref={track}
-            className="relative flex flex-col gap-10 pb-[6vh] pl-[24%] pr-5 pt-28 md:h-full md:w-max md:flex-row md:items-end md:gap-0 md:pb-[5vh] md:pl-0 md:pr-0 md:pt-0"
+            className="relative flex flex-col gap-10 pb-4 pl-[24%] pr-5 pt-28 md:h-full md:w-max md:flex-row md:items-end md:gap-0 md:pb-[5vh] md:pl-0 md:pr-0 md:pt-0"
           >
             <div className="w-full shrink-0 md:w-[48vw] md:px-10 lg:pl-[6vw]">
               <h2 className="whitespace-nowrap text-[clamp(1.7rem,4vw,4rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em]">

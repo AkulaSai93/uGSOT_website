@@ -316,7 +316,7 @@ export function Hero() {
               where the copy is, lighter at the top and the foot so the ring's
               arcs still glow. (Desktop needs none: the orbit darkens its own
               centre, where the copy sits.) */}
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,4,10,0.2)_0%,rgba(5,4,10,0.5)_22%,rgba(5,4,10,0.66)_50%,rgba(5,4,10,0.35)_70%,rgba(5,4,10,0)_82%)] lg:hidden" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,4,10,0.1)_0%,rgba(5,4,10,0.35)_22%,rgba(5,4,10,0.45)_50%,rgba(5,4,10,0.2)_70%,rgba(5,4,10,0)_82%)] lg:hidden" />
           {/* the prologue's vignette: edges fall away into the dark */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_90%_at_50%_50%,rgba(5,4,10,0)_55%,rgba(5,4,10,0.7)_100%)]" />
           {/* phones: a black overlay low at the foot, just under the white
@@ -469,7 +469,7 @@ export function Hero() {
 
         {/* phones and tablets: the strip at the hero's foot, in white over
             the black overlay */}
-        <div className="hero-logos container-page absolute inset-x-0 bottom-0 z-10 pb-[max(20px,env(safe-area-inset-bottom))] text-center lg:hidden">
+        <div className="hero-logos container-page absolute inset-x-0 bottom-0 z-10 pb-[calc(78px+env(safe-area-inset-bottom))] text-center sm:pb-[max(20px,env(safe-area-inset-bottom))] lg:hidden">
           <div data-reveal="fade">
             <CompanyLogos
               tone="dark"

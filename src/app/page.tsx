@@ -23,6 +23,7 @@ import { PageFX } from "@/components/motion/PageFX";
 import { SceneLayer } from "@/components/scene/SceneLayer";
 import { StorySpecializations } from "@/components/story/StorySpecializations";
 import { StoryPathways } from "@/components/story/StoryPathways";
+import { StoryICPC } from "@/components/story/StoryICPC";
 
 export default function Home() {
   return (
@@ -38,6 +39,7 @@ export default function Home() {
           <Hero />
           <StorySpecializations />
           <StoryPathways />
+          <StoryICPC />
         </div>
         {/* everything after the story on the story's own ground (#05040a,
             the dark tokens), under one even film grain, so the whole page

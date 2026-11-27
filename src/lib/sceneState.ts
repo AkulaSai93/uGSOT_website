@@ -20,6 +20,8 @@ export const sceneState = {
   /** phones: Pathways is a vertical story, the robot walking down a line
    *  on the left beside the stacked cards (set by StoryPathways) */
   vertical: false,
+  /** 0 → 1 : the ICPC section coming in; the robot fades away */
+  icpc: 0,
 };
 
 /** the phones' Pathways line: across from the left edge, and its top and

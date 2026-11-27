@@ -49,6 +49,7 @@ const DARK_SECTIONS = [
   "site-footer",
   "specializations",
   "pathways",
+  "icpc",
   "faculty",
   "leaders",
   "campus-hero",
@@ -331,13 +332,13 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
           the bottom of the screen instead */}
       <div
         id="apply-bar"
-        className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-3 border-t border-black/[0.08] bg-white/95 px-4 pb-[calc(8px+env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl sm:hidden"
+        className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-3 border-t border-white/[0.1] bg-[#05040a]/90 px-4 pb-[calc(8px+env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl sm:hidden"
       >
         <div className="min-w-0">
-          <p className="truncate text-[13.5px] font-semibold leading-tight text-ink">
+          <p className="truncate text-[13.5px] font-semibold leading-tight text-white">
             Applications open · 2027
           </p>
-          <p className="truncate text-[11.5px] leading-tight text-muted">
+          <p className="truncate text-[11.5px] leading-tight text-white/55">
             Deadline 9th Jan · via uGNET
           </p>
         </div>

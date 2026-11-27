@@ -7,8 +7,8 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
  * (public domain, by Tomás Laulhé, public/models/robot.glb) playing its
  * Walking clip, drawn as dots like the rest of the scene. Dots are fixed
  * points on the model's surface (area-weighted), re-skinned every frame so
- * they ride the animation; the body is upGrad red, the joints white, the face
- * dark.
+ * they ride the animation; the body is the hero ring's green, the joints mint,
+ * the face dark; the far side dims so the shape reads clearly.
  *
  * Added to the particle entity's group, so it shares its position and scale:
  * normalised to ~4 units tall with its feet at y = -2 (the stage-2 frame).
@@ -33,9 +33,13 @@ void main(){
   vec4 mv = modelViewMatrix * vec4(position, 1.0);
   gl_Position = projectionMatrix * mv;
   float on = smoothstep(aRnd.x, aRnd.x + 0.15, uReveal * 1.15);
-  gl_PointSize = uSize * (0.55 + aRnd.y * 0.45) * on * uPixelRatio / -mv.z;
-  vColor = aColor;
-  vAlpha = on * (0.8 + 0.2 * sin(uTime * 2.0 + aRnd.y * 40.0));
+  gl_PointSize = uSize * (0.8 + aRnd.y * 0.2) * on * uPixelRatio / -mv.z;
+  // the far side of the body dims, so the near side reads as a clear shape
+  // instead of both sides' dots piling into one blur
+  float c = (modelViewMatrix * vec4(0.0, 0.0, 0.0, 1.0)).z;
+  float near = clamp((mv.z - c) / 0.9 * 0.5 + 0.5, 0.0, 1.0);
+  vColor = aColor * (0.55 + 0.45 * near);
+  vAlpha = on * (0.45 + 0.55 * near) * (0.92 + 0.08 * sin(uTime * 2.0 + aRnd.y * 40.0));
 }`;
 
 const frag = /* glsl */ `
@@ -60,9 +64,9 @@ type Sample = {
 
 /* raw sRGB, like the rest of the scene */
 const COLORS: Record<string, [number, number, number]> = {
-  Main: [1, 0.176, 0.247], // #ff2d3f, the body: upGrad red
-  Grey: [0.933, 0.941, 1], // #eef0ff, joints, hands, feet: white
-  Black: [0.227, 0.239, 0.29], // #3a3d4a, face visor: dim
+  Main: [0.31, 0.839, 0.627], // #4fd6a0, the body: the hero ring's green
+  Grey: [0.706, 0.961, 0.788], // #b4f5c9, joints, hands, feet: its light mint
+  Black: [0.09, 0.231, 0.18], // #173b2e, face visor: deep green, dim
 };
 
 function build(root: THREE.Object3D, count: number) {
@@ -125,7 +129,7 @@ function build(root: THREE.Object3D, count: number) {
     const mat = meshes[t.mesh].material as THREE.Material;
     const col = COLORS[mat.name] ?? COLORS.Grey;
     // a few white sparks across the red body, as on the globe
-    const spark = mat.name === "Main" && Math.random() < 0.14;
+    const spark = mat.name === "Main" && Math.random() < 0.03;
     colors.set(spark ? COLORS.Grey : col, i * 3);
     rnd[i * 2] = Math.random() * 0.85;
     rnd[i * 2 + 1] = Math.random();
@@ -161,7 +165,7 @@ export function createRobotDots(
     walk: number;
   } | null = null;
 
-  const count = window.innerWidth < 768 ? 2600 : 4200;
+  const count = window.innerWidth < 768 ? 5000 : 9000;
   new GLTFLoader().load("/models/robot.glb", (gltf) => {
     if (cancelled) return;
     const root = gltf.scene;
@@ -201,7 +205,7 @@ export function createRobotDots(
       depthTest: false,
       ...blending,
       uniforms: {
-        uSize: { value: 22 }, // the prologue's 15, lifted: no bloom pass here
+        uSize: { value: 13 }, // fine, dense dots so the outline reads cleanly
         uPixelRatio: { value: 1 },
         uReveal: { value: 0 },
         uTime: { value: 0 },

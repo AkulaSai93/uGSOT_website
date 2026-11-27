@@ -301,6 +301,22 @@ html {
   opacity: 0.08;
 }
 
+/* ICPC / IAIB slides: the current slide's bar fills over its play time,
+   then the next slide comes in (StoryICPC listens for the end). */
+@keyframes icpc-play {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+.icpc-play {
+  animation-name: icpc-play;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
 /* Headline word reveal (PageFX): each masked line gets room below for the
    descenders (g, p, y), taken back with a negative margin so spacing holds. */
 .fx-line {

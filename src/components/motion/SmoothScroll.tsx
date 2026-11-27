@@ -36,11 +36,19 @@ export function SmoothScroll() {
       // a long, soft glide: lower lerp = more inertia
       lerp: 0.075,
       wheelMultiplier: 0.9,
-      touchMultiplier: 1.4,
+      // phones glide too: the finger's swipe is eased by Lenis as well (not
+      // the browser's own scroll), with a soft inertia once it lifts
+      syncTouch: true,
+      syncTouchLerp: 0.085,
+      touchInertiaMultiplier: 28,
+      touchMultiplier: 1,
       anchors: { offset: -116 },
       autoRaf: false,
     });
     instance.on("scroll", ScrollTrigger.update);
+    // the address bar sliding in and out on phones changes the viewport
+    // height mid-scroll; don't re-measure every trigger for it (a jolt)
+    ScrollTrigger.config({ ignoreMobileResize: true });
     lenis = instance;
 
     const tick = (time: number) => instance.raf(time * 1000);

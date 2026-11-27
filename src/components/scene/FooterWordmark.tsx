@@ -114,7 +114,8 @@ export default function FooterWordmark() {
   useEffect(() => {
     const el = host.current;
     if (!el) return;
-    const glowHost = el.parentElement;
+    const glowHost =
+      el.closest<HTMLElement>("[data-wm-band]") ?? el.parentElement;
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;

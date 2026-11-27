@@ -21,6 +21,7 @@ import { Social } from "@/components/sections/Social";
 import { Footer } from "@/components/site/Footer";
 import { PageFX } from "@/components/motion/PageFX";
 import { SceneLayer } from "@/components/scene/SceneLayer";
+import { IntroCurtain } from "@/components/motion/IntroCurtain";
 import { StorySpecializations } from "@/components/story/StorySpecializations";
 import { StoryPathways } from "@/components/story/StoryPathways";
 import { StoryICPC } from "@/components/story/StoryICPC";
@@ -28,6 +29,7 @@ import { StoryICPC } from "@/components/story/StoryICPC";
 export default function Home() {
   return (
     <>
+      <IntroCurtain />
       <Navbar links={false} />
       {/* the page sits above the footer and slides up off it */}
       <main className="theme-dark relative z-10 flex-1 bg-canvas">

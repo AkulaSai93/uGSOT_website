@@ -335,3 +335,14 @@ body:has(#hero) .page-grain {
 body:has(#hero) #site-footer > .scene-grain {
   display: block;
 }
+
+/* The home page's opening curtain (IntroCurtain): it plays on every load,
+   but not without JS, nor under reduced motion. */
+html:not(.js) .intro-curtain {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-curtain {
+    display: none;
+  }
+}

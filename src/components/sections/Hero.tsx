@@ -11,6 +11,7 @@ import { Magnetic } from "@/components/motion/Magnetic";
 import { CompanyLogos } from "@/components/site/CompanyLogos";
 import { GlowButton } from "@/components/site/GlowButton";
 import { HeroFacts } from "@/components/site/HeroFacts";
+import { whenIntroDone } from "@/lib/intro";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -97,7 +98,12 @@ export function Hero() {
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         /* ---------------------------------------------- act 1: entrance */
-        const intro = gsap.timeline({ defaults: { ease: "expo.out" } });
+        // held until the opening curtain (IntroCurtain) starts to lift
+        const intro = gsap.timeline({
+          paused: true,
+          defaults: { ease: "expo.out" },
+        });
+        whenIntroDone(() => intro.play());
         intro
           .fromTo(
             q(".hero-bg"),
@@ -366,7 +372,8 @@ export function Hero() {
               picture show between the buttons and the logos. */}
           <h1
             data-orbit-anchor
-            className="font-display text-[min(10.2vw,8.6vh)] font-medium leading-[0.95] tracking-[-0.04em] text-center max-lg:leading-[1.08] sm:text-[min(9vw,8.6vh)] lg:text-[min(6vw,9.5vh)]">
+            className="font-display text-[min(10.2vw,8.6vh)] font-medium leading-[0.95] tracking-[-0.04em] text-center max-lg:leading-[1.08] sm:text-[min(9vw,8.6vh)] lg:text-[min(6vw,9.5vh)]"
+          >
             <span className="block">
               <span className="hero-line-1 block">
                 <MaskWord attr="hero">AI-First</MaskWord>
@@ -454,10 +461,7 @@ export function Hero() {
             {/* the strip under the buttons (phones too: at the hero's foot
                 it fell behind the buttons and the pinned Apply bar on
                 shorter screens) */}
-            <div
-              data-reveal="fade"
-              className="mt-[clamp(1rem,2.6svh,2rem)]"
-            >
+            <div data-reveal="fade" className="mt-[clamp(1rem,2.6svh,2rem)]">
               <CompanyLogos
                 tone="dark"
                 compact

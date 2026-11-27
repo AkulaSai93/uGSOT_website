@@ -10,8 +10,8 @@ import { sceneState } from "@/lib/sceneState";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
-// each row's picture: a clean photo of the field at work, made in Figma for
-// this section (public/images/specializations/scene)
+// each row's picture: one simple object for the field, glowing on a dark
+// ground, made in Figma for this section (public/images/specializations/clean)
 const ITEMS = [
   {
     tag: "Artificial Intelligence",
@@ -50,7 +50,7 @@ const ITEMS = [
     img: "cloud",
   },
 ];
-const src = (img: string) => `/images/specializations/scene/${img}.webp`;
+const src = (img: string) => `/images/specializations/clean/${img}.webp`;
 
 /**
  * Specializations, copied from the 3D prologue: the hero particle ring

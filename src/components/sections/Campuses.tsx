@@ -15,11 +15,9 @@ import { SOT_URL } from "@/components/site/contact";
  * university page (see campus/campuses.ts).
  *
  * Layout after "Explore Programmes" on scaler.com/school-of-technology: two
- * big cards side by side (stacked below lg). Each opens with a 16:9 poster —
- * public/images/campuses/cards-v2, made in the style of Scaler's thumbnails:
- * the campus photo under a dark fade with only the city set huge and a
- * tilted red "Campus" tag (no logo, chips or address, which the card below
- * already gives). Under it: an eyebrow, the university's name on one line
+ * big cards side by side (stacked below lg). Each opens with the campus's
+ * own photo, as sot.upgrad.com shows it (public/images/campuses/photos),
+ * clean, with no text over it. Under it: an eyebrow, the university's name on one line
  * (from sm; on phones it may wrap), its location, three key highlights and a full-width button. The card is
  * kept clean: white, no shadow, rounded corners and a thin edge;
  * the eyebrow and "Key highlights" in red; each highlight's icon on a small
@@ -99,7 +97,7 @@ export function Campuses() {
             >
               <div className="relative aspect-video overflow-hidden bg-ink">
                 <Image
-                  src={`/images/campuses/cards-v2/${c.key}.webp`}
+                  src={`/images/campuses/photos/${c.key}.webp`}
                   alt={`${c.name}, ${c.location}`}
                   fill
                   quality={90}

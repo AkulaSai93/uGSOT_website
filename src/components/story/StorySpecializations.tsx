@@ -10,8 +10,8 @@ import { sceneState } from "@/lib/sceneState";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
-// each row's picture: one simple object for the field, glowing on a dark
-// ground, made in Figma for this section (public/images/specializations/clean)
+// each row's picture: the illustrations up-grad-sot-website.vercel.app uses
+// for these fields (public/images/specializations/v9, 16:9)
 const ITEMS = [
   {
     tag: "Artificial Intelligence",
@@ -41,7 +41,7 @@ const ITEMS = [
     tag: "Cyber",
     title: "Security",
     body: "Protect systems with advanced security practices",
-    img: "security",
+    img: "cybersecurity",
   },
   {
     tag: "Cloud",
@@ -50,7 +50,7 @@ const ITEMS = [
     img: "cloud",
   },
 ];
-const src = (img: string) => `/images/specializations/clean/${img}.webp`;
+const src = (img: string) => `/images/specializations/v9/${img}.webp`;
 
 /**
  * Specializations, copied from the 3D prologue: the hero particle ring
@@ -218,7 +218,7 @@ export function StorySpecializations() {
             className="pointer-events-none absolute left-0 top-0 z-20 hidden md:block"
           >
             <div
-              className={`relative aspect-[4/3] w-[clamp(260px,24vw,360px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[4px] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] ring-1 ring-white/10 transition-[opacity,scale] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              className={`relative aspect-video w-[clamp(280px,26vw,400px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[4px] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] ring-1 ring-white/10 transition-[opacity,scale] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                 hovered >= 0 ? "scale-100 opacity-100" : "scale-0 opacity-0"
               }`}
             >
@@ -228,7 +228,7 @@ export function StorySpecializations() {
                   src={src(it.img)}
                   alt=""
                   fill
-                  sizes="340px"
+                  sizes="400px"
                   // the card starts off-screen, so lazy loading would wait
                   loading="eager"
                   fetchPriority="low"

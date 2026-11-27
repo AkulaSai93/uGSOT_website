@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, Sun } from "lucide-react";
+import { ArrowUpRight, Play, Sun, X } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { sceneState } from "@/lib/sceneState";
+import { VideoPlayer, type Video } from "@/components/site/VideoPlayer";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -13,7 +14,8 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
  * ICPC, right after "One Degree, Three Pathways". The Pathways robot fades
  * away as it comes in (SceneStage reads sceneState.icpc, written here).
  *
- * Laid out as a centred statement: the ICPC
+ * Three slides in turn (ICPC, IAIB, the Figuring Out episode), each laid
+ * out as a centred statement: the ICPC
  * Foundation logo, a red line, the headline (its key phrase in red) and a
  * sentence, and the qualifiers' photo; and rising from the foot, a pile of
  * square pixels on each side, tallest at the edges — in the hero ring's
@@ -26,7 +28,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
  * Asia regionals, Amritapuri and Kanpur, in its first semester.
  */
 /** seconds each slide stays before the next comes in */
-const PLAY = 6;
+const PLAY = 3;
 
 type Slide = {
   key: string;
@@ -41,6 +43,10 @@ type Slide = {
   link?: { label: string; href: string };
   /** a figure on its own (no frame, no background) instead of a photo */
   figure?: boolean;
+  /** the picture is a video's thumbnail: clicking it plays the video */
+  video?: Video;
+  /** the headline on one line (its red phrase after the title) */
+  oneLine?: boolean;
 };
 
 /* the slides. ICPC: uGSOT's first batch (its LinkedIn post). IAIB, the
@@ -94,12 +100,52 @@ const SLIDES: Slide[] = [
     figure: true,
     link: { label: "Explore IAIB", href: "https://sot.upgrad.com/events/iaib" },
   },
+  {
+    // the Figuring Out episode (as in the IIT Race section further down)
+    key: "IIT Race",
+    logo: (
+      <span className="flex items-center gap-4">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/spotlight/figuring-out-white.png"
+          alt="Figuring Out with Raj Shamani"
+          width={411}
+          height={84}
+          className="h-6 w-auto sm:h-8"
+        />
+        <X aria-hidden size={18} strokeWidth={1.75} className="text-white/60" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/spotlight/sot-white.png"
+          alt="upGrad School of Technology"
+          width={445}
+          height={122}
+          className="h-6 w-auto sm:h-8"
+        />
+      </span>
+    ),
+    eyebrow: "Figuring Out with Raj Shamani",
+    title: "Inside The",
+    accent: "IIT Race",
+    oneLine: true,
+    body: "Raj Shamani and Vishwa Mohan on the reality behind the IIT dream, and why chasing salary numbers sets the wrong expectations.",
+    img: "/images/spotlight/iit-race.jpg",
+    alt: "Raj Shamani and Vishwa Mohan on Figuring Out",
+    pos: "50% 50%",
+    video: {
+      id: "Zmz5gE9nJqY",
+      name: "Inside The IIT Race — Raj Shamani × Vishwa Mohan",
+      thumb: "/images/spotlight/iit-race.jpg",
+    },
+  },
 ];
 
 export function StoryICPC() {
   const root = useRef<HTMLElement>(null);
   const build = useRef(0);
   const [slide, setSlide] = useState(0);
+  /** the episode playing in the overlay (the slides wait meanwhile) */
+  const [playing, setPlaying] = useState<Video | null>(null);
   /** set by the mosaic: moves it on to the next colour set */
   const nudgeRef = useRef<() => void>(() => {});
 
@@ -167,7 +213,10 @@ export function StoryICPC() {
               key={`play-${slide}`}
               onAnimationEnd={() => setSlide((n) => (n + 1) % SLIDES.length)}
               className="icpc-play absolute inset-y-0 left-0 rounded-full bg-white/80"
-              style={{ animationDuration: `${PLAY}s` }}
+              style={{
+                animationDuration: `${PLAY}s`,
+                animationPlayState: playing ? "paused" : "running",
+              }}
             />
           )}
         </button>
@@ -225,7 +274,10 @@ export function StoryICPC() {
               className="mt-3 font-display text-[clamp(2rem,min(4.4vw,7svh),4rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-white"
             >
               {sl.title}
-              <span className="block text-accent">{sl.accent}</span>
+              {sl.oneLine ? " " : null}
+              <span className={sl.oneLine ? "text-accent" : "block text-accent"}>
+                {sl.accent}
+              </span>
             </h2>
             <p
               data-icpc-rise={i === 0 || undefined}
@@ -244,7 +296,31 @@ export function StoryICPC() {
                 </a>
               )}
             </p>
-            {sl.figure ? (
+            {sl.video ? (
+              // the episode's thumbnail: plays it in the overlay
+              <button
+                type="button"
+                onClick={() => setPlaying(sl.video!)}
+                aria-label={`Play the episode: ${sl.title} ${sl.accent}`}
+                tabIndex={i === slide ? 0 : -1}
+                className="group relative mt-4 aspect-[16/9] w-full max-w-[min(300px,40svh)] overflow-hidden rounded-[10px] ring-1 ring-white/10 sm:mt-6 sm:max-w-[min(520px,62svh)]"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={sl.img}
+                  alt={sl.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 size-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
+                  style={{ objectPosition: sl.pos }}
+                />
+                <span aria-hidden className="absolute inset-0 grid place-items-center bg-black/15">
+                  <span className="grid size-12 place-items-center rounded-full bg-white text-[#0b0d12] shadow-[0_8px_24px_-8px_rgba(0,0,0,0.6)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110 sm:size-16">
+                    <Play size={20} fill="currentColor" strokeWidth={0} className="translate-x-[2px]" />
+                  </span>
+                </span>
+              </button>
+            ) : sl.figure ? (
               // the mascot on its own, its pixels kept crisp as it scales up
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -281,6 +357,10 @@ export function StoryICPC() {
 
       {/* which slide (tablets and up: top left; phones: under the picture) */}
       {bars("absolute left-5 z-[2] hidden sm:top-24 sm:flex lg:left-10 lg:top-28")}
+
+      {playing && (
+        <VideoPlayer video={playing} onClose={() => setPlaying(null)} />
+      )}
     </section>
   );
 }
@@ -313,8 +393,8 @@ const CYCLE: RGB[][] = [
   ["#a78bfa", "#f0abfc"],
 ].map((set) => set.map(hex));
 // each set holds a couple of seconds, then blends on into the next by itself
-const HOLD = 2.5;
-const MIX = 1.4;
+const HOLD = 2.1;
+const MIX = 0.9;
 const mixRGB = (a: RGB, b: RGB, f: number): RGB => [
   a[0] + (b[0] - a[0]) * f,
   a[1] + (b[1] - a[1]) * f,

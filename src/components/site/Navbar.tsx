@@ -186,6 +186,9 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
   const [open, setOpen] = useState(false);
   const [solid, setSolid] = useState(false);
   const [dark, setDark] = useState(false);
+  /** phones: the pinned Apply bar waits while the hero (with its own Apply
+   *  Now and the company logos at its foot) fills the screen */
+  const [heroTop, setHeroTop] = useState(true);
   const [tab, setTab] = useState({ left: 0, width: 0, index: 0 });
 
   /* ------------------------------------------------ sliding tab in the pill */
@@ -246,6 +249,7 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
           return !!r && r.top < h * 0.55 && r.bottom > h * 0.45;
         }),
       );
+      setHeroTop(!!document.getElementById("hero") && window.scrollY < h * 0.3);
     };
     check();
     window.addEventListener("scroll", check, { passive: true });
@@ -332,7 +336,7 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
           the bottom of the screen instead */}
       <div
         id="apply-bar"
-        className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-3 border-t border-white/[0.1] bg-[#05040a]/90 px-4 pb-[calc(8px+env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl sm:hidden"
+        className={`fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-3 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${heroTop ? "translate-y-full" : "translate-y-0"} border-t border-white/[0.1] bg-[#05040a]/90 px-4 pb-[calc(8px+env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl sm:hidden`}
       >
         <div className="min-w-0">
           <p className="truncate text-[13.5px] font-semibold leading-tight text-white">
@@ -342,7 +346,7 @@ export function Navbar({ links = true }: { links?: boolean } = {}) {
             Deadline 9th Jan · via uGNET
           </p>
         </div>
-        <ApplyButton labelled className="shrink-0" />
+        <ApplyButton labelled streak="#ffffff" className="shrink-0" />
       </div>
 
       {/* ------------------------------------------------------------ bar */}

@@ -356,7 +356,7 @@ export function Hero() {
         </div>
 
         {/* ------------------------------------------------------- act 1 */}
-        <div className="container-page relative z-10 flex h-full flex-col justify-start pb-[118px] pt-[clamp(84px,12svh,112px)] lg:justify-center lg:pb-8 lg:pt-[88px]">
+        <div className="container-page relative z-10 flex h-full flex-col justify-start pb-[76px] pt-[clamp(64px,10svh,112px)] lg:justify-center lg:pb-8 lg:pt-[88px]">
           {/* The words are the heading's real text (one mask each, real spaces
               between), so it reads, selects and copies as written. */}
           {/* Below lg (phones, mostly) the whole block is centred and a size
@@ -451,32 +451,21 @@ export function Hero() {
               </Magnetic>
             </div>
 
-            {/* desktop: the strip under the buttons */}
+            {/* the strip under the buttons (phones too: at the hero's foot
+                it fell behind the buttons and the pinned Apply bar on
+                shorter screens) */}
             <div
               data-reveal="fade"
-              className="mt-[clamp(1.25rem,3vh,2rem)] hidden lg:block"
+              className="mt-[clamp(1rem,2.6svh,2rem)]"
             >
               <CompanyLogos
                 tone="dark"
                 compact
                 markHeight={30}
                 trackWidth="lg:w-[560px]"
-                className="[&>div]:mx-auto"
+                className="[&>div]:mx-auto max-lg:[&>p]:text-[14px]"
               />
             </div>
-          </div>
-        </div>
-
-        {/* phones and tablets: the strip at the hero's foot, in white over
-            the black overlay */}
-        <div className="hero-logos container-page absolute inset-x-0 bottom-0 z-10 pb-[calc(78px+env(safe-area-inset-bottom))] text-center sm:pb-[max(20px,env(safe-area-inset-bottom))] lg:hidden">
-          <div data-reveal="fade">
-            <CompanyLogos
-              tone="dark"
-              compact
-              markHeight={28}
-              className="[&>p]:text-[14px]"
-            />
           </div>
         </div>
       </div>

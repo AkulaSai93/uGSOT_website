@@ -253,7 +253,10 @@ function MentorCard({ p, hidden }: { p: Person; hidden: boolean }) {
         width={500}
         height={500}
         sizes="230px"
+        // eager (the wall drifts sideways, where lazy loading would pop them
+        // in late) but low priority, so they never hold up the hero
         loading="eager"
+        fetchPriority="low"
         className="absolute bottom-0 left-1/2 h-auto w-[110%] max-w-none -translate-x-1/2"
       />
 

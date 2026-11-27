@@ -148,6 +148,33 @@ export function StoryICPC() {
     { scope: root },
   );
 
+  /** which slide: one bar each, the current one filling as it plays;
+   *  click a bar to go to it. Rendered in two places, one shown at a time
+   *  (a hidden copy's animation doesn't run, so it never moves the slides) */
+  const bars = (className: string) => (
+    <div className={`gap-1.5 ${className}`}>
+      {SLIDES.map((sl, i) => (
+        <button
+          key={sl.key}
+          type="button"
+          aria-label={`Show ${sl.key}`}
+          aria-current={i === slide || undefined}
+          onClick={() => setSlide(i)}
+          className="relative h-1 w-10 overflow-hidden rounded-full bg-white/15"
+        >
+          {i === slide && (
+            <span
+              key={`play-${slide}`}
+              onAnimationEnd={() => setSlide((n) => (n + 1) % SLIDES.length)}
+              className="icpc-play absolute inset-y-0 left-0 rounded-full bg-white/80"
+              style={{ animationDuration: `${PLAY}s` }}
+            />
+          )}
+        </button>
+      ))}
+    </div>
+  );
+
   return (
     <section
       ref={root}
@@ -163,14 +190,14 @@ export function StoryICPC() {
         onClick={() => nudgeRef.current()}
         aria-label="Change the colours"
         title="Change the colours"
-        className="absolute right-5 top-2 z-[2] grid size-11 place-items-center rounded-[10px] border border-white/15 bg-white/[0.04] text-[color:var(--mosaic,#7f87f2)] backdrop-blur-sm transition-[border-color,transform] duration-300 hover:scale-105 hover:border-white/40 active:scale-95 sm:top-24 lg:right-10 lg:top-28"
+        className="absolute right-5 top-3 z-[2] grid size-8 place-items-center rounded-[8px] sm:size-11 sm:rounded-[10px] border border-white/15 bg-white/[0.04] text-[color:var(--mosaic,#7f87f2)] backdrop-blur-sm transition-[border-color,transform] duration-300 hover:scale-105 hover:border-white/40 active:scale-95 sm:top-24 lg:right-10 lg:top-28"
       >
-        <Sun size={20} strokeWidth={2} aria-hidden />
+        <Sun strokeWidth={2} aria-hidden className="size-4 sm:size-5" />
       </button>
 
       {/* the story, centred: one slide at a time, moving on every few
           seconds (ICPC, then IAIB), all in the same place */}
-      <div className="container-page relative z-[1] grid pb-[190px] pt-16 text-center sm:pb-[22svh] sm:pt-20 lg:pb-[9svh]">
+      <div className="container-page relative z-[1] grid pb-[210px] pt-12 text-center sm:pb-[22svh] sm:pt-20 lg:pb-[9svh]">
         {SLIDES.map((sl, i) => (
           <div
             key={sl.key}
@@ -249,31 +276,11 @@ export function StoryICPC() {
             )}
           </div>
         ))}
+        {bars("relative z-[2] mt-5 flex justify-center [grid-area:2/1] sm:hidden")}
       </div>
 
-      {/* which slide: one bar each, the current one filling as it plays;
-          click a bar to go to it */}
-      <div className="absolute left-5 top-[1.75rem] z-[2] flex gap-1.5 sm:top-24 lg:left-10 lg:top-28">
-        {SLIDES.map((sl, i) => (
-          <button
-            key={sl.key}
-            type="button"
-            aria-label={`Show ${sl.key}`}
-            aria-current={i === slide || undefined}
-            onClick={() => setSlide(i)}
-            className="relative h-1 w-10 overflow-hidden rounded-full bg-white/15"
-          >
-            {i === slide && (
-              <span
-                key={`play-${slide}`}
-                onAnimationEnd={() => setSlide((n) => (n + 1) % SLIDES.length)}
-                className="icpc-play absolute inset-y-0 left-0 rounded-full bg-white/80"
-                style={{ animationDuration: `${PLAY}s` }}
-              />
-            )}
-          </button>
-        ))}
-      </div>
+      {/* which slide (tablets and up: top left; phones: under the picture) */}
+      {bars("absolute left-5 z-[2] hidden sm:top-24 sm:flex lg:left-10 lg:top-28")}
     </section>
   );
 }

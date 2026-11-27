@@ -476,9 +476,8 @@ export default function SceneStage() {
       ? null
       : gsap.to(u.uIntro, {
           value: 1,
-          duration: 3.2,
-          delay: 0.15,
-          ease: "none",
+          duration: 1.8,
+          ease: "power2.out",
         });
 
     return () => {

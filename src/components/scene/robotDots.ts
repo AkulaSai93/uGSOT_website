@@ -1,5 +1,8 @@
 import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import {
+  GLTFLoader,
+  type GLTF,
+} from "three/examples/jsm/loaders/GLTFLoader.js";
 
 /**
  * The Pathways robot, ported from the 3D prologue (RobotDots.tsx, there an
@@ -166,7 +169,15 @@ export function createRobotDots(
   } | null = null;
 
   const count = window.innerWidth < 768 ? 5000 : 9000;
-  new GLTFLoader().load("/models/robot.glb", (gltf) => {
+  // the robot only walks in Pathways, well down the page: its model is
+  // fetched once the browser is idle, so it never competes with the hero
+  const idle =
+    window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 1200));
+  idle(() => {
+    if (cancelled) return;
+    new GLTFLoader().load("/models/robot.glb", onModel);
+  });
+  function onModel(gltf: GLTF) {
     if (cancelled) return;
     const root = gltf.scene;
 
@@ -226,7 +237,7 @@ export function createRobotDots(
       points,
       walk: 0,
     };
-  });
+  }
 
   const v = new THREE.Vector3();
 

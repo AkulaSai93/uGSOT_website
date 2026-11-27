@@ -231,6 +231,7 @@ export function StorySpecializations() {
                   sizes="340px"
                   // the card starts off-screen, so lazy loading would wait
                   loading="eager"
+                  fetchPriority="low"
                   className={`object-cover transition-[opacity,scale] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${i === hovered ? "scale-100 opacity-100" : "scale-110 opacity-0"}`}
                 />
               ))}
